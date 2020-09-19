@@ -19,11 +19,7 @@ import androidx.core.app.ActivityCompat;
 
 
 public class LocationTracker implements LocationListener {
-    static final String TRACK_STOP = "com.example.im_home.stop";
-    static final String TRACK_START = "com.example.im_home.start";
-    static final String TRACK_UPDATE = "com.example.im_home.update";
-    static final String INTENT_DATA = "data";
-    private static final String MSG = "Location services are MANDATORY for the app to work. It's a location based app.";
+    private static final String MSG = "Location services are MANDATORY. Without permission some features won't work.";
     private int CODE = 1;
 
 
@@ -32,19 +28,26 @@ public class LocationTracker implements LocationListener {
     private LocationInfo info;
     private boolean isTracking;
 
+    /**
+     * constructor for location manager
+     * @param cnt application context
+     */
     public LocationTracker(Context cnt) {
         context = cnt;
         info = new LocationInfo();
         isTracking = false;
-
-        if (!(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
-        }
+        startTracking();
     }
 
+    /**
+     * checks is there is a permission for location, if not, requests.
+     * else, start tracking.
+     */
     public void startTracking() {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // ask for permission
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
             Log.d("Error", "Can't get location permissions");
             return;
         }
@@ -54,33 +57,46 @@ public class LocationTracker implements LocationListener {
 
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this, Looper.getMainLooper());
-        broadCast(TRACK_START, null);
+//        broadCast(TRACK_START, null);
         isTracking = true;
     }
 
+    /**
+     * stop location updates
+     */
     public void stopTracking() {
         locationManager.removeUpdates(this);
-        broadCast(TRACK_STOP, null);
+//        broadCast(TRACK_STOP, null);
         isTracking = false;
     }
 
-    private void broadCast(String msg, LocationInfo data) {
-        Intent intent = new Intent();
-        intent.setAction(msg);
-        intent.putExtra(INTENT_DATA, data);
-        context.sendBroadcast(intent);
-    }
+//    private void broadCast(String msg, LocationInfo data) {
+//        Intent intent = new Intent();
+//        intent.setAction(msg);
+//        intent.putExtra(INTENT_DATA, data);
+//        context.sendBroadcast(intent);
+//    }
 
+    /**
+     * function which called evey location update, updates the location
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
         if (!((location.getLongitude() == info.getLongitude()) &&
                 (location.getLatitude() == info.getLatitude()) &&
                 (location.getAccuracy() == info.getAccuracy()))) {
             info.setParams(location.getLongitude(), location.getLatitude(), location.getAccuracy());
-            broadCast(TRACK_UPDATE, info);
+//            broadCast(TRACK_UPDATE, info);
         }
     }
 
+    /**
+     * called when the permission request is back
+     * @param requestCode location request code
+     * @param permission location permission
+     * @param grantResults results
+     */
     public void onPermissionResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
         if (grantResults[0] != PackageManager.PERMISSION_GRANTED && requestCode == CODE) {
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -92,8 +108,9 @@ public class LocationTracker implements LocationListener {
                             }
                         })
                         .create().show();
-
             }
+        } else {
+            startTracking();
         }
     }
 
@@ -109,10 +126,18 @@ public class LocationTracker implements LocationListener {
     public void onProviderDisabled(String provider) {
     }
 
+    /**
+     * gets the tracking status
+     * @return
+     */
     public boolean isTracking() {
         return isTracking;
     }
 
+    /**
+     * gets the last location
+     * @return
+     */
     public LocationInfo getInfo() {
         return info;
     }

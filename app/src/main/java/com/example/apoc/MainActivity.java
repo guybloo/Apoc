@@ -16,7 +16,6 @@ import com.example.apoc.location.LocationTracker;
 public class MainActivity extends AppCompatActivity {
 
     private LocationTracker location;
-    private static final int REQUEST_CODE_PERMISSION_LOCATION = 1;
 
 
     @Override
