@@ -36,20 +36,20 @@ public class LocationTracker implements LocationListener {
         context = cnt;
         info = new LocationInfo();
         isTracking = false;
-        startTracking();
+//        startTracking();
     }
 
     /**
      * checks is there is a permission for location, if not, requests.
      * else, start tracking.
      */
-    public void startTracking() {
+    public boolean startTracking() {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // ask for permission
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
             Log.d("Error", "Can't get location permissions");
-            return;
+            return false;
         }
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -59,6 +59,7 @@ public class LocationTracker implements LocationListener {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this, Looper.getMainLooper());
 //        broadCast(TRACK_START, null);
         isTracking = true;
+        return true;
     }
 
     /**
