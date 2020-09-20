@@ -8,21 +8,40 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * class represents a logger
+ */
 class Log {
     ArrayList<Message> messages;
 
+    /**
+     * constructor
+     */
     public Log() {
         messages = new ArrayList<>();
     }
 
+    /**
+     * insert a new message
+     * @param msg the message
+     * @return true is succeeded, false otherwise
+     */
     public boolean insert(Message msg) {
         return messages.add(msg);
     }
 
+    /**
+     * remove a message
+     * @param msg
+     * @return
+     */
     public boolean remove(Message msg) {
         return messages.remove(msg);
     }
 
+    /**
+     * sort the messages by date
+     */
     public void sort() {
         Collections.sort(messages, new Comparator<Message>() {
             @Override

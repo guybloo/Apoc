@@ -106,6 +106,7 @@ public class LocationTracker implements LocationListener {
                         .setPositiveButton("Got it", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
+                                ((Activity) context).finish();
                             }
                         })
                         .create().show();
