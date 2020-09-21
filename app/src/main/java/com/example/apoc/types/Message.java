@@ -1,4 +1,4 @@
-package com.example.apoc.log;
+package com.example.apoc.types;
 
 import java.sql.Time;
 import java.util.Date;

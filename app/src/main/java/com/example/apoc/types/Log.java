@@ -1,8 +1,4 @@
-package com.example.apoc.log;
-
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
+package com.example.apoc.types;
 
 import java.util.ArrayList;
 import java.util.Collections;

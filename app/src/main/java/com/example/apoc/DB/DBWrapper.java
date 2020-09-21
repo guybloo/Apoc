@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.apoc.users.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.reflect.TypeToken;
@@ -16,8 +15,6 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.os.Build.ID;
 
 public class DBWrapper {
 //    protected static DBWrapper wrapper = null;

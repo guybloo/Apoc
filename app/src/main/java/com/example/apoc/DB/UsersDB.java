@@ -1,7 +1,7 @@
 package com.example.apoc.DB;
 
 import com.example.apoc.location.LocationInfo;
-import com.example.apoc.users.User;
+import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

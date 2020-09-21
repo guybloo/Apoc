@@ -3,23 +3,17 @@ package com.example.apoc;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.GroupsDB;
+import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
-import com.example.apoc.users.Group;
-import com.example.apoc.users.User;
-
-import java.util.ArrayList;
+import com.example.apoc.types.Group;
+import com.example.apoc.types.Item;
+import com.example.apoc.types.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
         GroupsDB groupsDB = new GroupsDB();
         groupsDB.addItem(new Group("maya's team", guy.getEmail(), null,null ));
         users.addItem(guy);
+
+        ItemsDB items = new ItemsDB();
+        items.addItem(new Item("water"));
+
+        users.getAllItems();
 
     }
 

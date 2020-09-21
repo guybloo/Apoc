@@ -1,4 +1,4 @@
-package com.example.apoc.users;
+package com.example.apoc.types;
 
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.location.LocationInfo;

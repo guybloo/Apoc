@@ -1,8 +1,6 @@
 package com.example.apoc.DB;
 
-import com.example.apoc.location.LocationInfo;
-import com.example.apoc.users.Group;
-import com.example.apoc.users.User;
+import com.example.apoc.types.Group;
 
 import java.util.ArrayList;
 import java.util.HashMap;

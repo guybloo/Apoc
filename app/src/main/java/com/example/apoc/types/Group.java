@@ -1,4 +1,4 @@
-package com.example.apoc.users;
+package com.example.apoc.types;
 
 import com.example.apoc.DB.DBItem;
 
@@ -10,9 +10,9 @@ public class Group implements DBItem {
     private String groupName;
     private String leader;
     private ArrayList<User> groupies;
-    private ArrayList fears;
+    private ArrayList<Fears> fears;
 
-    public Group(String name, String leader, ArrayList<User> newGroupies, ArrayList fears)
+    public Group(String name, String leader, ArrayList<User> newGroupies, ArrayList<Fears> fears)
     {
         this.groupName = name;
         this.leader = leader;
@@ -50,7 +50,7 @@ public class Group implements DBItem {
         return groupies.size();
     }
 
-    public ArrayList getFears() {
+    public ArrayList<Fears> getFears() {
         return fears;
     }
 
