@@ -67,6 +67,9 @@ public class LocationTracker implements LocationListener {
      */
     public void stopTracking() {
         locationManager.removeUpdates(this);
+
+
+
 //        broadCast(TRACK_STOP, null);
         isTracking = false;
     }
