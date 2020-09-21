@@ -27,16 +27,16 @@ public class MainActivity extends AppCompatActivity {
 
         location = new LocationTracker(this);
 
-        User guy = new User("gg","gv","030","ff",new LocationInfo(),null,null);
-        UsersDB users = new UsersDB();
-        GroupsDB groupsDB = new GroupsDB();
-        groupsDB.addItem(new Group("maya's team", guy.getEmail(), null,null ));
-        users.addItem(guy);
-
-        ItemsDB items = new ItemsDB();
-        items.addItem(new Item("water"));
-
-        users.getAllItems();
+//        User guy = new User("gg","gv","030","ff",new LocationInfo(),null,null);
+//        UsersDB users = new UsersDB();
+//        GroupsDB groupsDB = new GroupsDB();
+//        groupsDB.addItem(new Group("maya's team", guy.getEmail(), null,null ));
+//        users.addItem(guy);
+//
+//        ItemsDB items = new ItemsDB();
+//        items.addItem(new Item("water"));
+//
+//        users.getAllItems();
 
     }
 
