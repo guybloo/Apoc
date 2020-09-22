@@ -4,7 +4,11 @@ package com.example.apoc;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.ItemsDB;
@@ -17,7 +21,11 @@ import com.example.apoc.types.User;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final String ID = "id";
     private LocationTracker location;
+    private final int RegisterCode = 1;
+    private String userID;
+    private SharedPreferences sp;
 
 
     @Override
@@ -27,22 +35,60 @@ public class MainActivity extends AppCompatActivity {
 
         location = new LocationTracker(this);
 
-//        User guy = new User("gg","gv","030","ff",new LocationInfo(),null,null);
-//        UsersDB users = new UsersDB();
-//        GroupsDB groupsDB = new GroupsDB();
-//        groupsDB.addItem(new Group("maya's team", guy.getEmail(), null,null ));
-//        users.addItem(guy);
-//
-//        ItemsDB items = new ItemsDB();
-//        items.addItem(new Item("water"));
-//
-//        users.getAllItems();
+        getPreferences();
+        if(userID.equals("")){
+            Intent RegisterIntent = new Intent(this, Registration.class);
+            startActivityForResult(RegisterIntent, RegisterCode);
 
+        }
+        else{
+            // open menu
+        }
+
+
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (RegisterCode): {
+                if (resultCode == Activity.RESULT_OK) {
+                    userID = data.getStringExtra(Registration.RES_EMAIL);
+
+                    boolean isRegister = data.getBooleanExtra(Registration.RES_IS_REGISTER, true);
+                    if (isRegister) {
+
+                        //send to profile edit
+                        savePreferences();
+                    } else {
+                        // send to main menu
+                    }
+                }
+                break;
+            }
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
         location.onPermissionResult(requestCode, permission, grantResults);
+    }
+
+    private void savePreferences() {
+
+        SharedPreferences.Editor prefsEditor = sp.edit();
+        prefsEditor.putString(ID, userID);
+
+        prefsEditor.apply();
+    }
+
+    private void getPreferences() {
+
+        userID = sp.getString(ID, "");
+
     }
 
 }
