@@ -1,11 +1,15 @@
 package com.example.apoc.DB;
 
 import com.example.apoc.location.LocationInfo;
+import com.example.apoc.types.HelpMethods;
 import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.apoc.types.HelpMethods.fromGson;
+import static com.example.apoc.types.HelpMethods.toGson;
 
 public class UsersDB extends DBWrapper {
     protected static String DOC_NAME = "users";
@@ -16,6 +20,7 @@ public class UsersDB extends DBWrapper {
     protected static String LOCATION = "location";
     protected static String ABILITIES = "abilities";
     protected static String FEARS = "fears";
+    protected static String ITEMS = "items";
 
     @Override
     void updateItem(DBItem item) {
@@ -30,18 +35,21 @@ public class UsersDB extends DBWrapper {
         newItem.put(LOCATION, toGson(user.getStatus()));
         newItem.put(ABILITIES, toGson(user.getStatus()));
         newItem.put(FEARS, toGson(user.getStatus()));
+        newItem.put(ITEMS, toGson(user.getItems()));
 
         db.collection(DOC_NAME).document(String.valueOf(item.getId())).set(newItem);
     }
 
     @Override
     protected DBItem parseItem(Map<String, Object> item) {
-        return new User((String) item.get(NICK_NAME),
+        User user =  new User((String) item.get(NICK_NAME),
                 (String) item.get(EMAIL),
                 (String) item.get(PHONE),
                 (String) item.get(STATUS),
                 fromGson((String) item.get(LOCATION),LocationInfo.class),
                 fromGson((String) item.get(ABILITIES),ArrayList.class),
                 fromGson((String) item.get(FEARS),ArrayList.class));
+        user.setItems(fromGson((String) item.get(ITEMS),Map.class));
+        return user;
     }
 }

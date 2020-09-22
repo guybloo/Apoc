@@ -3,14 +3,14 @@ package com.example.apoc.types;
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.location.LocationInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class User implements DBItem
+public class User implements DBItem, Serializable
 {
-    // todo those 3 need to be in the main activity
-    static final String ALPHA = "alpha";
-    static final String BETA = "beta";
-    static final String LONE_WOLF = "lone_wolf";
+
 
     private String nickName;
     private String email;
@@ -20,9 +20,10 @@ public class User implements DBItem
     private LocationInfo locationInfo;
 
     private ArrayList abilities;
-    private ArrayList fears;
+    private ArrayList<Fears> fears;
+    private Map<String, Double> items;
 
-    public User(String newNickName, String newEmail , String newPhone, String newStatus, LocationInfo location, ArrayList abili, ArrayList fear)
+    public User(String newNickName, String newEmail , String newPhone, String newStatus, LocationInfo location, ArrayList abili, ArrayList<Fears> fear)
     {
         this.nickName = newNickName;
         this.email = newEmail;
@@ -31,6 +32,19 @@ public class User implements DBItem
         this.locationInfo = location;
         this.abilities = abili;
         this.fears = fear;
+        items = new HashMap<>();
+    }
+
+    public User(String newEmail)
+    {
+        this.nickName = "";
+        this.email = newEmail;
+        this.phone = "";
+        this.status = "";
+        this.locationInfo = null;
+        this.abilities = new ArrayList();
+        this.fears = new ArrayList<>();
+        items = new HashMap<>();
     }
 
 
@@ -64,6 +78,14 @@ public class User implements DBItem
 
     public ArrayList getFears() {
         return fears;
+    }
+
+    public void setItems(Map<String, Double> items) {
+        this.items = items;
+    }
+
+    public Map<String, Double> getItems() {
+        return items;
     }
 }
 

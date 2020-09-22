@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private String userID;
     private SharedPreferences sp;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +47,13 @@ public class MainActivity extends AppCompatActivity {
             // open menu
         }
 
+        UsersDB udb = new UsersDB();
+        udb.getAllItems();
+        User us = new User("gb");
 
-        RequestsDB lgdb = new RequestsDB();
-        lgdb.addItem(new JoinRequest("maya","guy", true));
-
-
-
-
+        Intent intent = new Intent(this, ProfileEdit.class);
+        intent.putExtra(ProfileEdit.USER_DATA, us);
+        startActivity(intent);
     }
 
     @Override
@@ -95,7 +94,5 @@ public class MainActivity extends AppCompatActivity {
     private void getPreferences() {
 
         userID = sp.getString(ID, "");
-
     }
-
 }

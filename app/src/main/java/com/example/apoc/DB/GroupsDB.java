@@ -1,10 +1,14 @@
 package com.example.apoc.DB;
 
 import com.example.apoc.types.Group;
+import com.example.apoc.types.HelpMethods;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.apoc.types.HelpMethods.fromGson;
+import static com.example.apoc.types.HelpMethods.toGson;
 
 public class GroupsDB extends DBWrapper {
     protected static String DOC_NAME = "groups";

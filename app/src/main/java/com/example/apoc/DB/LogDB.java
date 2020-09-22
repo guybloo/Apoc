@@ -3,12 +3,17 @@ package com.example.apoc.DB;
 import android.os.Messenger;
 
 import com.example.apoc.types.Fears;
+import com.example.apoc.types.HelpMethods;
 import com.example.apoc.types.Item;
 import com.example.apoc.types.Message;
+import com.google.rpc.Help;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.apoc.types.HelpMethods.fromGson;
+import static com.example.apoc.types.HelpMethods.toGson;
 
 public class LogDB extends DBWrapper {
     protected static String DOC_NAME = "log";

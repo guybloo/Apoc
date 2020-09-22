@@ -105,15 +105,5 @@ public class DBWrapper {
                 });
     }
 
-    protected String toGson(Object object){
-        Gson gson = new Gson();
-        String json = gson.toJson(object);
-        return json;
-    }
 
-    protected <T> T fromGson(String line, Class<T> cls){
-        Gson gson = new Gson();
-        Type type = new TypeToken<T>() {}.getType();
-        return gson.fromJson(line, type);
-    }
 }
