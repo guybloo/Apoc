@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         location = new LocationTracker(this);
-
+        sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         getPreferences();
         if(userID.equals("")){
             Intent RegisterIntent = new Intent(this, Registration.class);
