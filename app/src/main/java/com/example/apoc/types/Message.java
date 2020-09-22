@@ -1,12 +1,14 @@
 package com.example.apoc.types;
 
+import com.example.apoc.DB.DBItem;
+
 import java.sql.Time;
 import java.util.Date;
 
 /**
  * class represents a message object
  */
-class Message {
+public class Message implements DBItem {
     private String content;
     private String writer;
     private Date date;
@@ -22,6 +24,13 @@ class Message {
         content = msgContent;
         writer = msgWriter;
         date = msgDate;
+    }
+
+    public Message(String msgContent, String msgWriter)
+    {
+        content = msgContent;
+        writer = msgWriter;
+        date = new Date();
     }
 
     /**
@@ -41,5 +50,10 @@ class Message {
 
     public String getWriter() {
         return writer;
+    }
+
+    @Override
+    public String getId() {
+        return writer + "_" + date.toString();
     }
 }

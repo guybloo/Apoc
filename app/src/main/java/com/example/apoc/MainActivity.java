@@ -12,11 +12,15 @@ import android.preference.PreferenceManager;
 
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.ItemsDB;
+import com.example.apoc.DB.LogDB;
+import com.example.apoc.DB.RequestsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
 import com.example.apoc.types.Group;
 import com.example.apoc.types.Item;
+import com.example.apoc.types.JoinRequest;
+import com.example.apoc.types.Message;
 import com.example.apoc.types.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,11 +43,14 @@ public class MainActivity extends AppCompatActivity {
         if(userID.equals("")){
             Intent RegisterIntent = new Intent(this, Registration.class);
             startActivityForResult(RegisterIntent, RegisterCode);
-
         }
         else{
             // open menu
         }
+
+
+        RequestsDB lgdb = new RequestsDB();
+        lgdb.addItem(new JoinRequest("maya","guy", true));
 
 
 
