@@ -67,7 +67,7 @@ public class DBWrapper {
         return items.keySet().toArray()[position].toString();
     }
 
-    void updateItem(DBItem item) {
+    public void updateItem(DBItem item) {
     }
 
 

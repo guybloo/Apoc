@@ -120,5 +120,9 @@ public class User implements DBItem, Serializable
     public void setAbilities(ArrayList abilities) {
         this.abilities = abilities;
     }
+
+    public ItemCount getItemFromPosition(int position){
+        return items.get(position);
+    }
 }
 

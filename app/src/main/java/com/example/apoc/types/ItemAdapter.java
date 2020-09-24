@@ -1,6 +1,5 @@
-package com.example.apoc.ItemsEdit;
+package com.example.apoc.types;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apoc.R;
-import com.example.apoc.types.Item;
-import com.example.apoc.types.ItemCount;
 
 import java.util.ArrayList;
 

@@ -24,7 +24,7 @@ public class UsersDB extends DBWrapper {
     protected static String ITEMS = "items";
 
     @Override
-    void updateItem(DBItem item) {
+    public void updateItem(DBItem item) {
         User user = (User)item;
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, user.getId());
