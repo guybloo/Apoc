@@ -7,16 +7,24 @@
     android:orientation="vertical"
     tools:context=".ProfileEdit">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit Profile"/>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/pickImg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="pick image"/>
 
     <TextView
         android:id="@+id/email"
@@ -116,13 +124,14 @@
             android:text="group player"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/status_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Leader"/>
+            android:text="Other"/>
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/status_in_group"
         android:layout_width="wrap_content"
@@ -130,6 +139,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other"/>
+            android:text="Leader"/>
     </LinearLayout>
+    <Button
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

@@ -48,8 +48,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         UsersDB udb = new UsersDB();
-        udb.getAllItems();
-        User us = new User("gb");
+//        udb.getAllItems();
+        User us = new User("new user");
+        udb.addItem(us);
+
+        GroupsDB gdb = new GroupsDB();
+        Group g = new Group("gumaya", "mayaguy", null,null);
+        gdb.addItem(g);
 
         Intent intent = new Intent(this, ProfileEdit.class);
         intent.putExtra(ProfileEdit.USER_DATA, us);

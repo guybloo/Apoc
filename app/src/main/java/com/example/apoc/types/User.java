@@ -16,14 +16,15 @@ public class User implements DBItem, Serializable
     private String email;
     private String phone;
     private String status;
+    private String imageUrl;
 
     private LocationInfo locationInfo;
 
     private ArrayList abilities;
     private ArrayList<Fears> fears;
-    private Map<String, Double> items;
+    private ArrayList<ItemCount> items;
 
-    public User(String newNickName, String newEmail , String newPhone, String newStatus, LocationInfo location, ArrayList abili, ArrayList<Fears> fear)
+    public User(String newNickName, String newEmail , String newPhone, String newStatus, String imageUrl, LocationInfo location, ArrayList abili, ArrayList<Fears> fear)
     {
         this.nickName = newNickName;
         this.email = newEmail;
@@ -32,7 +33,7 @@ public class User implements DBItem, Serializable
         this.locationInfo = location;
         this.abilities = abili;
         this.fears = fear;
-        items = new HashMap<>();
+        items = new ArrayList<>();
     }
 
     public User(String newEmail)
@@ -40,11 +41,11 @@ public class User implements DBItem, Serializable
         this.nickName = "";
         this.email = newEmail;
         this.phone = "";
-        this.status = "";
+        this.status = UserStatus.undefined.name();
         this.locationInfo = null;
         this.abilities = new ArrayList();
         this.fears = new ArrayList<>();
-        items = new HashMap<>();
+        items = new ArrayList<>();
     }
 
 
@@ -80,12 +81,44 @@ public class User implements DBItem, Serializable
         return fears;
     }
 
-    public void setItems(Map<String, Double> items) {
+    public void setItems(ArrayList<ItemCount> items) {
         this.items = items;
     }
 
-    public Map<String, Double> getItems() {
+    public ArrayList<ItemCount> getItems() {
         return items;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setLocationInfo(LocationInfo locationInfo) {
+        this.locationInfo = locationInfo;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void setFears(ArrayList<Fears> fears) {
+        this.fears = fears;
+    }
+
+    public void setAbilities(ArrayList abilities) {
+        this.abilities = abilities;
     }
 }
 

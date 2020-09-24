@@ -17,6 +17,7 @@ public class UsersDB extends DBWrapper {
     protected static String EMAIL = "email";
     protected static String PHONE = "phone";
     protected static String STATUS = "status";
+    protected static String IMAGE = "image_url";
     protected static String LOCATION = "location";
     protected static String ABILITIES = "abilities";
     protected static String FEARS = "fears";
@@ -31,6 +32,7 @@ public class UsersDB extends DBWrapper {
         newItem.put(EMAIL, user.getEmail());
         newItem.put(PHONE, user.getPhone());
         newItem.put(STATUS, user.getStatus());
+        newItem.put(IMAGE, user.getImageUrl());
 
         newItem.put(LOCATION, toGson(user.getStatus()));
         newItem.put(ABILITIES, toGson(user.getStatus()));
@@ -46,10 +48,11 @@ public class UsersDB extends DBWrapper {
                 (String) item.get(EMAIL),
                 (String) item.get(PHONE),
                 (String) item.get(STATUS),
+                (String) item.get(IMAGE),
                 fromGson((String) item.get(LOCATION),LocationInfo.class),
                 fromGson((String) item.get(ABILITIES),ArrayList.class),
                 fromGson((String) item.get(FEARS),ArrayList.class));
-        user.setItems(fromGson((String) item.get(ITEMS),Map.class));
+        user.setItems(fromGson((String) item.get(ITEMS),ArrayList.class));
         return user;
     }
 }

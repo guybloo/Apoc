@@ -1,6 +1,6 @@
 package com.example.apoc.types;
 
-enum UserStatus {
+public enum UserStatus {
     alpha,
     beta,
     loneWolf,
