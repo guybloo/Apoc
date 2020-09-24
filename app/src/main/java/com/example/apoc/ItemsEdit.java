@@ -5,6 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.UsersDB;
@@ -16,6 +19,9 @@ import java.util.ArrayList;
 
 public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemClickListener {
 
+    private final String PRIVATE_TITLE = "Items edit";
+    private final String GROUP_TITLE = "Group items";
+
     private ItemAdapter adapter;
     private User user;
     private Boolean isGroup;
@@ -25,6 +31,14 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_edit);
 
+        if (isGroup){
+            ((TextView) findViewById(R.id.items_edit_title)).setText(GROUP_TITLE);
+            ((Button)findViewById(R.id.increase)).setVisibility(View.GONE);
+            ((Button)findViewById(R.id.decrease)).setVisibility(View.GONE);
+        }
+        else {
+            ((TextView) findViewById(R.id.items_edit_title)).setText(PRIVATE_TITLE);
+        }
         // get input params
 
         recyclerViewConfig();
@@ -62,6 +76,5 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
         UsersDB udb = new UsersDB();
         udb.updateItem(user);
-
     }
 }
