@@ -21,9 +21,11 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
     private final String PRIVATE_TITLE = "Items edit";
     private final String GROUP_TITLE = "Group items";
+    public static final String USERS = "users";
 
     private ItemAdapter adapter;
     private User user;
+    private ArrayList<User> users;
     private Boolean isGroup;
 
     @Override
@@ -38,6 +40,7 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
         }
         else {
             ((TextView) findViewById(R.id.items_edit_title)).setText(PRIVATE_TITLE);
+
         }
         // get input params
 

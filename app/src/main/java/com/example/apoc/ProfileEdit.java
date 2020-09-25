@@ -3,6 +3,7 @@ package com.example.apoc;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -18,7 +19,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
@@ -50,13 +53,16 @@ public class ProfileEdit extends AppCompatActivity {
 
     private LinearLayout statusInGroupLayout;
     private LocationInfo newLocation;
+    private Uri imageUri;
 
     private User user;
+    private Context cnt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
+        cnt = this;
         imagesDB = new ImagesDB();
 
         Intent intent = getIntent();
@@ -93,10 +99,23 @@ public class ProfileEdit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // add waiting indication
-                LocationTracker location = new LocationTracker(getApplicationContext());
-                location.startTracking();
-                while(location.getInfo().getAccuracy() > LOCATION_ACCURACY){};
-                newLocation = location.getInfo();
+                final LocationTracker location = new LocationTracker(cnt);
+                location.setLocationUpdateListener(new LocationTracker.OnLocationUpdateListener() {
+                    @Override
+                    public void onLocationUpdate() {
+                        if(location.getInfo().getAccuracy() <= LOCATION_ACCURACY){
+                            newLocation = location.getInfo();
+                            location.stopTracking();
+                            Toast.makeText(cnt,"Location Updated",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                if(location.startTracking()) {
+                    newLocation = location.getInfo();
+                }
+                else{
+                    // todo notify location didnt work
+                }
             }
         });
 
@@ -138,6 +157,8 @@ public class ProfileEdit extends AppCompatActivity {
     }
 
     private void saveProfile(){
+        UsersDB udb = new UsersDB();
+
         if(!status.isChecked()){
             user.setStatus(UserStatus.loneWolf.name());
         }
@@ -154,6 +175,11 @@ public class ProfileEdit extends AppCompatActivity {
         user.setPhone(phone.getText().toString());
         user.setLocationInfo(newLocation);
 
+        imagesDB.Upload(imageUri, user, this);
+
+        udb.updateItem(user);
+        Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
+
     }
 
     private void openFileChooser() {
@@ -169,8 +195,7 @@ public class ProfileEdit extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             Uri ourImageUri = data.getData();
-
-            imagesDB.Upload(ourImageUri, user);
+            imageUri = ourImageUri;
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver() , ourImageUri);

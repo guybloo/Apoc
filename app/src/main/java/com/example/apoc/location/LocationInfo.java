@@ -7,6 +7,12 @@ public class LocationInfo implements Serializable {
     private double latitude;
     private float accuracy;
 
+    public LocationInfo(){
+        longitude = 0;
+        latitude = 0;
+        accuracy = 100;
+    }
+
     public void setParams(double longi, double lati, float accu) {
         longitude = longi;
         latitude = lati;

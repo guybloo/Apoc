@@ -13,9 +13,9 @@ public class HelpMethods {
         return json;
     }
 
-    public static  <T> T fromGson(String line, Class<T> cls){
+    public static  <T> T fromGson(String line, final Class<T> cls){
         Gson gson = new Gson();
-        Type type = new TypeToken<T>() {}.getType();
-        return gson.fromJson(line, type);
+//        Type type = new TypeToken<T>() {}.getType();
+        return gson.fromJson(line, cls);
     }
 }

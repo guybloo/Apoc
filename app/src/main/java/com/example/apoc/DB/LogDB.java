@@ -22,7 +22,7 @@ public class LogDB extends DBWrapper {
     protected static String DATE = "date";
 
     @Override
-    void updateItem(DBItem updateItem) {
+    public void updateItem(DBItem updateItem) {
         Message item = (Message)updateItem;
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());

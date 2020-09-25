@@ -34,9 +34,9 @@ public class UsersDB extends DBWrapper {
         newItem.put(STATUS, user.getStatus());
         newItem.put(IMAGE, user.getImageUrl());
 
-        newItem.put(LOCATION, toGson(user.getStatus()));
-        newItem.put(ABILITIES, toGson(user.getStatus()));
-        newItem.put(FEARS, toGson(user.getStatus()));
+        newItem.put(LOCATION, toGson(user.getLocationInfo()));
+        newItem.put(ABILITIES, toGson(user.getAbilities()));
+        newItem.put(FEARS, toGson(user.getFears()));
         newItem.put(ITEMS, toGson(user.getItems()));
 
         db.collection(DOC_NAME).document(String.valueOf(item.getId())).set(newItem);

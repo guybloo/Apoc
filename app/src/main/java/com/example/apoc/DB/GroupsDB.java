@@ -19,7 +19,7 @@ public class GroupsDB extends DBWrapper {
 
 
     @Override
-    void updateItem(DBItem updateItem) {
+    public void updateItem(DBItem updateItem) {
         Group item = (Group)updateItem;
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());

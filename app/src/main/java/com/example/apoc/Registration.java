@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.apoc.DB.UsersDB;
+import com.example.apoc.types.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,6 +30,7 @@ public class Registration extends AppCompatActivity {
     private final String PASS = "Please enter password!";
 
     public static final String RES_EMAIL = "email";
+    public static final String RES_USER = "user";
     public static final String RES_IS_REGISTER = "is_reg";
 
 
@@ -95,6 +98,8 @@ public class Registration extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), String.format(SUCCESS, REG), Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
+                            User user = new User(email);
+                            (new UsersDB()).addItem(user);
                             returnResult(true);
                         } else {
                             Toast.makeText(getApplicationContext(), String.format(FAIL, REG), Toast.LENGTH_LONG).show();

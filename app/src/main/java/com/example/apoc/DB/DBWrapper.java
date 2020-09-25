@@ -19,7 +19,7 @@ import java.util.Map;
 public class DBWrapper {
 //    protected static DBWrapper wrapper = null;
 
-    protected static String DOC_NAME = "objects";
+    protected static String DOC_NAME = "users";
     protected static String ID = "id";
 
     protected FirebaseFirestore db;
@@ -34,16 +34,22 @@ public class DBWrapper {
     }
 
     public interface OnDataChangeListener {
-        void onDataChange();
+        void onGetAll();
+        void onGetSpecific();
     }
 
-    void setDataChangeListener(OnDataChangeListener eventListener) {
+    public void setDataChangeListener(OnDataChangeListener eventListener) {
         listener = eventListener;
     }
 
-    protected void notifyChange() {
+    protected void notifyGetAll() {
         if (listener != null) {
-            listener.onDataChange();
+            listener.onGetAll();
+        }
+    }
+    protected void notifyGetSpecific() {
+        if (listener != null) {
+            listener.onGetSpecific();
         }
     }
 
@@ -54,9 +60,28 @@ public class DBWrapper {
 //        return wrapper;
 //    }
 
-    public Object getItemById(String id) {
+    public void loadItemByIdFromDB(String id) {
+        db.collection(DOC_NAME).whereEqualTo(ID, id)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> item = document.getData();
+                                items.put(String.valueOf(item.get(ID)), parseItem(item));
+                            }
+                            notifyGetSpecific();
+                            android.util.Log.println(Log.INFO, "list size", String.valueOf(items.size()));
+                        }
+                    }
+                });
+
+    }
+    public DBItem getItemById(String id){
         return items.get(id);
     }
+
 
     public void addItem(DBItem item) {
         items.put(item.getId(), item);
@@ -98,7 +123,7 @@ public class DBWrapper {
                                 Map<String, Object> item = document.getData();
                                 items.put(String.valueOf(item.get(ID)), parseItem(item));
                             }
-                            notifyChange();
+                            notifyGetAll();
                             android.util.Log.println(Log.INFO, "list size", String.valueOf(items.size()));
                         }
                     }

@@ -13,7 +13,7 @@ public class ItemsDB extends DBWrapper {
     protected static String NAME = "name";
 
     @Override
-    void updateItem(DBItem updateItem) {
+    public void updateItem(DBItem updateItem) {
         Item item = (Item)updateItem;
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());

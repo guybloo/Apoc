@@ -42,7 +42,7 @@ public class User implements DBItem, Serializable
         this.email = newEmail;
         this.phone = "";
         this.status = UserStatus.undefined.name();
-        this.locationInfo = null;
+        this.locationInfo = new LocationInfo();
         this.abilities = new ArrayList();
         this.fears = new ArrayList<>();
         items = new ArrayList<>();

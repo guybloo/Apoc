@@ -15,7 +15,7 @@ public class RequestsDB extends DBWrapper {
     protected static String GROUP_JOIN = "is_group_join";
 
     @Override
-    void updateItem(DBItem updateItem) {
+    public void updateItem(DBItem updateItem) {
         JoinRequest item = (JoinRequest) updateItem;
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());

@@ -17,6 +17,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.example.apoc.DB.DBWrapper;
+
 
 public class LocationTracker implements LocationListener {
     private static final String MSG = "Location services are MANDATORY. Without permission some features won't work.";
@@ -28,6 +30,8 @@ public class LocationTracker implements LocationListener {
     private LocationInfo info;
     private boolean isTracking;
 
+    private OnLocationUpdateListener listener;
+
     /**
      * constructor for location manager
      * @param cnt application context
@@ -37,6 +41,20 @@ public class LocationTracker implements LocationListener {
         info = new LocationInfo();
         isTracking = false;
 //        startTracking();
+    }
+
+    public interface OnLocationUpdateListener {
+        void onLocationUpdate();
+    }
+
+    public void setLocationUpdateListener(OnLocationUpdateListener eventListener) {
+        listener = eventListener;
+    }
+
+    protected void notifyUpdate() {
+        if (listener != null) {
+            listener.onLocationUpdate();
+        }
     }
 
     /**
@@ -68,18 +86,9 @@ public class LocationTracker implements LocationListener {
     public void stopTracking() {
         locationManager.removeUpdates(this);
 
-
-
-//        broadCast(TRACK_STOP, null);
         isTracking = false;
     }
 
-//    private void broadCast(String msg, LocationInfo data) {
-//        Intent intent = new Intent();
-//        intent.setAction(msg);
-//        intent.putExtra(INTENT_DATA, data);
-//        context.sendBroadcast(intent);
-//    }
 
     /**
      * function which called evey location update, updates the location
@@ -91,7 +100,7 @@ public class LocationTracker implements LocationListener {
                 (location.getLatitude() == info.getLatitude()) &&
                 (location.getAccuracy() == info.getAccuracy()))) {
             info.setParams(location.getLongitude(), location.getLatitude(), location.getAccuracy());
-//            broadCast(TRACK_UPDATE, info);
+            notifyUpdate();
         }
     }
 
