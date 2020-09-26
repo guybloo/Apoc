@@ -2,9 +2,10 @@ package com.example.apoc.types;
 
 import com.example.apoc.DB.DBItem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Group implements DBItem {
+public class Group implements DBItem, Serializable {
 
     // todo we need to save the name of the leader? other things about the group like fears?
     private String groupName;

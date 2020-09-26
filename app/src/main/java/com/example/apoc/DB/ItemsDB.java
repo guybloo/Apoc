@@ -9,8 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ItemsDB extends DBWrapper {
-    protected static String DOC_NAME = "items";
     protected static String NAME = "name";
+
+    public ItemsDB(){
+        super();
+        docName = "items";
+    }
 
     @Override
     public void updateItem(DBItem updateItem) {
@@ -25,7 +29,7 @@ public class ItemsDB extends DBWrapper {
         newItem.put(Fears.War.name(), item.getAmount(Fears.War));
         newItem.put(Fears.Zombies.name(), item.getAmount(Fears.Zombies));
 
-        db.collection(DOC_NAME).document(String.valueOf(item.getId())).set(newItem);
+        db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
     @Override

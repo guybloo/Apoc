@@ -83,7 +83,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
     public void onBindViewHolder(@NonNull ItemsEditViewHolder holder, int position) {
         ItemCount currentItem = itemsList.get(position);
         holder.title.setText(currentItem.getName());
-        holder.amount.setText(currentItem.getAmount());
+        holder.amount.setText(String.valueOf(currentItem.getAmount()));
     }
 
     @Override

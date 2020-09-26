@@ -124,5 +124,12 @@ public class User implements DBItem, Serializable
     public ItemCount getItemFromPosition(int position){
         return items.get(position);
     }
+
+    public void addItem(ItemCount item){
+        items.add(item);
+    }
+    public void addItemsList(ArrayList<ItemCount> itemList){
+        items.addAll(itemList);
+    }
 }
 

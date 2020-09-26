@@ -2,10 +2,11 @@ package com.example.apoc.types;
 
 import com.example.apoc.DB.DBItem;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Item implements DBItem {
+public class Item implements DBItem, Serializable {
     private String name;
     private Map<Fears, Double> amount;
 

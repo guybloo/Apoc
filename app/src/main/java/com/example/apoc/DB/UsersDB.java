@@ -2,17 +2,21 @@ package com.example.apoc.DB;
 
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.types.HelpMethods;
+import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+//import static com.example.apoc.types.HelpMethods.ListfromGson;
+import static com.example.apoc.types.HelpMethods.ListFromGson;
+import static com.example.apoc.types.HelpMethods.ListToGson;
 import static com.example.apoc.types.HelpMethods.fromGson;
 import static com.example.apoc.types.HelpMethods.toGson;
 
 public class UsersDB extends DBWrapper {
-    protected static String DOC_NAME = "users";
     protected static String NICK_NAME = "nick_name";
     protected static String EMAIL = "email";
     protected static String PHONE = "phone";
@@ -22,6 +26,11 @@ public class UsersDB extends DBWrapper {
     protected static String ABILITIES = "abilities";
     protected static String FEARS = "fears";
     protected static String ITEMS = "items";
+
+    public UsersDB(){
+        super();
+        docName = "users";
+    }
 
     @Override
     public void updateItem(DBItem item) {
@@ -37,9 +46,9 @@ public class UsersDB extends DBWrapper {
         newItem.put(LOCATION, toGson(user.getLocationInfo()));
         newItem.put(ABILITIES, toGson(user.getAbilities()));
         newItem.put(FEARS, toGson(user.getFears()));
-        newItem.put(ITEMS, toGson(user.getItems()));
+        newItem.put(ITEMS, ListToGson(user.getItems()));
 
-        db.collection(DOC_NAME).document(String.valueOf(item.getId())).set(newItem);
+        db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
     @Override
@@ -52,7 +61,10 @@ public class UsersDB extends DBWrapper {
                 fromGson((String) item.get(LOCATION),LocationInfo.class),
                 fromGson((String) item.get(ABILITIES),ArrayList.class),
                 fromGson((String) item.get(FEARS),ArrayList.class));
-        user.setItems(fromGson((String) item.get(ITEMS),ArrayList.class));
+//        for(Object tempItem : fromGson((String) item.get(ITEMS), ArrayList.class)){
+//            user.addItem((ItemCount)tempItem);
+//        }
+        user.addItemsList(ListFromGson((String) item.get(ITEMS),ItemCount.class));
         return user;
     }
 }

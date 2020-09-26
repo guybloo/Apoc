@@ -1,5 +1,6 @@
 package com.example.apoc.Storage;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.example.apoc.R;
 import com.example.apoc.types.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,10 +29,22 @@ public class ImagesDB {
     }
 
     public void Upload(final Uri uri, final User user, final Context context) {
-//        Uri file = Uri.fromFile(new File(url));
-//        StorageReference storageRef = ;
+        if(uri == null){
+            Toast.makeText(context,"Image doesnt exist", Toast.LENGTH_SHORT).show();
+            return;
+        }
         final String path = "images/" + uri.getLastPathSegment();
-        UploadTask uploadTask = storageRef.child(path).putFile(uri);
+//        UploadTask uploadTask = storageRef.child(path).putFile(uri);
+        StorageReference imageRef = storageRef.child(path);
+        UploadTask uploadTask = imageRef.putFile(uri);
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+        {
+            @Override
+            public void onSuccess(Uri downloadUrl)
+            {
+                user.setImageUrl(downloadUrl.toString());
+            }
+        });
 
 // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -42,35 +56,12 @@ public class ImagesDB {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-//                user.setImageUrl(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
-                user.setImageUrl(path);
                 Toast.makeText(context,"Image uploaded", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void showImage(String path, ImageView imageView, Context context) {
-        Glide.with(context).load("gs://apoc-4f783.appspot.com/images/image:81").into(imageView);
+        Glide.with(context).load(path).into(imageView);
     }
-
-//    public void Download(){
-//        File localFile = File.createTempFile("images", "jpg");
-//        riversRef.getFile(localFile)
-//                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        // Successfully downloaded data to local file
-//                        // ...
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle failed download
-//                // ...
-//            }
-//        });
-//    }
-
 }

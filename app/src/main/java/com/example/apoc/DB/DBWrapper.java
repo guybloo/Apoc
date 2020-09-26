@@ -6,20 +6,17 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DBWrapper {
 //    protected static DBWrapper wrapper = null;
 
-    protected static String DOC_NAME = "users";
+    protected String docName;
     protected static String ID = "id";
 
     protected FirebaseFirestore db;
@@ -61,7 +58,7 @@ public class DBWrapper {
 //    }
 
     public void loadItemByIdFromDB(String id) {
-        db.collection(DOC_NAME).whereEqualTo(ID, id)
+        db.collection(docName).whereEqualTo(ID, id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -101,7 +98,7 @@ public class DBWrapper {
     }
 
     public void removeItem(String id) {
-        db.collection(DOC_NAME).document(id).delete();
+        db.collection(docName).document(id).delete();
         items.remove(id);
     }
 
@@ -113,7 +110,7 @@ public class DBWrapper {
     }
 
     public void getAllItems() {
-        db.collection(DOC_NAME)
+        db.collection(docName)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

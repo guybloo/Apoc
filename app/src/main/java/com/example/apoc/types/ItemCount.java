@@ -1,6 +1,8 @@
 package com.example.apoc.types;
 
-public class ItemCount {
+import java.io.Serializable;
+
+public class ItemCount implements Serializable {
     private String name;
     private int amount;
     public ItemCount(String name, int amount){

@@ -2,13 +2,14 @@ package com.example.apoc.types;
 
 import com.example.apoc.DB.DBItem;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 
 /**
  * class represents a message object
  */
-public class Message implements DBItem {
+public class Message implements DBItem, Serializable {
     private String content;
     private String writer;
     private Date date;

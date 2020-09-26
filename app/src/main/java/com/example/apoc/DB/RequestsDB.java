@@ -9,11 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestsDB extends DBWrapper {
-    protected static String DOC_NAME = "requests";
     protected static String APPLIER = "applier";
     protected static String RECIPIENT = "recipient";
     protected static String GROUP_JOIN = "is_group_join";
 
+    public RequestsDB(){
+        super();
+        docName = "requests";
+    }
     @Override
     public void updateItem(DBItem updateItem) {
         JoinRequest item = (JoinRequest) updateItem;
@@ -23,7 +26,7 @@ public class RequestsDB extends DBWrapper {
         newItem.put(RECIPIENT, item.getRecipient());
         newItem.put(GROUP_JOIN, item.isGroupJoin());
 
-        db.collection(DOC_NAME).document(String.valueOf(item.getId())).set(newItem);
+        db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
     @Override

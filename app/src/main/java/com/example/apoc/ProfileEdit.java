@@ -180,6 +180,7 @@ public class ProfileEdit extends AppCompatActivity {
         udb.updateItem(user);
         Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
 
+        finish();
     }
 
     private void openFileChooser() {

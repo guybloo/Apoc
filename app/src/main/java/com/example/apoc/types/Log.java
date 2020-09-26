@@ -1,5 +1,6 @@
 package com.example.apoc.types;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,7 +8,7 @@ import java.util.Comparator;
 /**
  * class represents a logger
  */
-class Log {
+public class Log implements Serializable {
     ArrayList<Message> messages;
 
     /**
@@ -19,6 +20,7 @@ class Log {
 
     /**
      * insert a new message
+     *
      * @param msg the message
      * @return true is succeeded, false otherwise
      */
@@ -28,6 +30,7 @@ class Log {
 
     /**
      * remove a message
+     *
      * @param msg
      * @return
      */

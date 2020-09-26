@@ -16,11 +16,14 @@ import static com.example.apoc.types.HelpMethods.fromGson;
 import static com.example.apoc.types.HelpMethods.toGson;
 
 public class LogDB extends DBWrapper {
-    protected static String DOC_NAME = "log";
     protected static String CONTENT = "content";
     protected static String WRITER = "writer";
     protected static String DATE = "date";
 
+    public LogDB(){
+        super();
+        docName = "log";
+    }
     @Override
     public void updateItem(DBItem updateItem) {
         Message item = (Message)updateItem;
@@ -30,7 +33,7 @@ public class LogDB extends DBWrapper {
         newItem.put(CONTENT, item.getContent());
         newItem.put(DATE, toGson(item.getDate()));
 
-        db.collection(DOC_NAME).document(String.valueOf(item.getId())).set(newItem);
+        db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
     @Override

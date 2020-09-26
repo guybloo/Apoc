@@ -11,12 +11,15 @@ import static com.example.apoc.types.HelpMethods.fromGson;
 import static com.example.apoc.types.HelpMethods.toGson;
 
 public class GroupsDB extends DBWrapper {
-    protected static String DOC_NAME = "groups";
     protected static String NAME = "name";
     protected static String LEADER = "leader";
     protected static String GROUPIES = "groupies";
     protected static String FEARS = "fears";
 
+    public GroupsDB(){
+        super();
+        docName = "groups";
+    }
 
     @Override
     public void updateItem(DBItem updateItem) {
@@ -28,7 +31,7 @@ public class GroupsDB extends DBWrapper {
         newItem.put(GROUPIES, toGson(item.getGroupies()));
         newItem.put(FEARS, toGson(item.getFears()));
 
-        db.collection(DOC_NAME).document(String.valueOf(item.getId())).set(newItem);
+        db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
     @Override
