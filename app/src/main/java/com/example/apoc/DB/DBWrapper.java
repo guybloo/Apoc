@@ -58,6 +58,7 @@ public class DBWrapper {
 //    }
 
     public void loadItemByIdFromDB(String id) {
+        items.clear();
         db.collection(docName).whereEqualTo(ID, id)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -110,6 +111,7 @@ public class DBWrapper {
     }
 
     public void getAllItems() {
+        items.clear();
         db.collection(docName)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

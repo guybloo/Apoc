@@ -1,10 +1,14 @@
 package com.example.apoc.types;
 
+import android.content.res.Resources;
+
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class HelpMethods {
@@ -42,4 +46,22 @@ public class HelpMethods {
         return newList;
     }
 
+    public static int pxToDp(int px)
+    {
+        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
+    }
+
+    // between 0 - 100
+    public static int getWidth(int width){
+        return getPrecent(width, Resources.getSystem().getDisplayMetrics().widthPixels);
+
+    }
+    public static int getHeight(int height){
+        return getPrecent(height, Resources.getSystem().getDisplayMetrics().heightPixels);
+    }
+    private static int getPrecent(int precent, int size){
+        float calc = ((float)precent ) / 100;
+        calc *= size;
+        return pxToDp((int)calc);
+    }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewHolder> {
     private ArrayList<ItemCount> itemsList;
     private ItemAdapter.OnItemClickListener myListener;
+    private boolean isGroup;
 
     public interface OnItemClickListener {
         void onItemIncrease(int position);
@@ -66,8 +67,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
         }
     }
 
-    public ItemAdapter(ArrayList<ItemCount> list) {
+    public ItemAdapter(ArrayList<ItemCount> list, boolean isGroup) {
         itemsList = list;
+        this.isGroup = isGroup;
     }
 
     @NonNull
@@ -84,6 +86,10 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
         ItemCount currentItem = itemsList.get(position);
         holder.title.setText(currentItem.getName());
         holder.amount.setText(String.valueOf(currentItem.getAmount()));
+        if(isGroup){
+            holder.increase.setVisibility(View.GONE);
+            holder.decrease.setVisibility(View.GONE);
+        }
     }
 
     @Override

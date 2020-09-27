@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.example.apoc.DB.UsersDB;
 import com.example.apoc.R;
 import com.example.apoc.types.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,6 +44,7 @@ public class ImagesDB {
             public void onSuccess(Uri downloadUrl)
             {
                 user.setImageUrl(downloadUrl.toString());
+                (new UsersDB()).updateItem(user);
             }
         });
 
@@ -61,7 +63,7 @@ public class ImagesDB {
         });
     }
 
-    public void showImage(String path, ImageView imageView, Context context) {
+    public static void showImage(String path, ImageView imageView, Context context) {
         Glide.with(context).load(path).into(imageView);
     }
 }

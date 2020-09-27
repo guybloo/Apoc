@@ -32,4 +32,8 @@ public class ItemCount implements Serializable {
     public void decrease(){
         amount--;
     }
+    public void sum(double amount){
+        this.amount += amount;
+    }
+
 }

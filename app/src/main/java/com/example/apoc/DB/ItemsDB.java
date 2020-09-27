@@ -1,12 +1,21 @@
 package com.example.apoc.DB;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.apoc.types.Fears;
 import com.example.apoc.types.Group;
 import com.example.apoc.types.Item;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class ItemsDB extends DBWrapper {
     protected static String NAME = "name";
@@ -43,5 +52,30 @@ public class ItemsDB extends DBWrapper {
         amount.put(Fears.Pandemic,(Double) item.get(Fears.Pandemic.name()));
 
         return new Item((String) item.get(NAME),amount);
+    }
+
+    public void getItemsByFears(final ArrayList<Fears> fears){
+        items.clear();
+        db.collection(docName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> item = document.getData();
+                                Item tempItem = (Item)parseItem(item);
+                                for(Fears fear : fears){
+                                    if(tempItem.getAmount(fear) > 0){
+                                        items.put(String.valueOf(item.get(ID)), tempItem);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            notifyGetSpecific();
+                        }
+                    }
+                });
     }
 }

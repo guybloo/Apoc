@@ -12,8 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.apoc.DB.DBWrapper;
+import com.example.apoc.DB.GroupsDB;
+import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
+import com.example.apoc.types.Group;
+import com.example.apoc.types.Item;
 import com.example.apoc.types.ItemAdapter;
 import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.User;
@@ -29,7 +33,7 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
     private ItemAdapter adapter;
     private User user;
-    private ArrayList<User> users;
+    private Group group;
     private Boolean isGroup;
 
     @Override
@@ -41,8 +45,7 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
         if (isGroup){
             ((TextView) findViewById(R.id.items_edit_title)).setText(GROUP_TITLE);
-            ((Button)findViewById(R.id.increase)).setVisibility(View.GONE);
-            ((Button)findViewById(R.id.decrease)).setVisibility(View.GONE);
+            group = (Group)intent.getSerializableExtra(USERS);
         }
         else {
             ((TextView) findViewById(R.id.items_edit_title)).setText(PRIVATE_TITLE);
@@ -62,7 +65,31 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
     private void recyclerViewConfig() {
         RecyclerView recyclerView = findViewById(R.id.items_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ItemAdapter(user.getItems());
+        if(isGroup) {
+            final ItemsDB idb = new ItemsDB();
+            idb.getItemsByFears(group.getFears());
+            idb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                @Override
+                public void onGetAll() {
+
+                }
+
+                @Override
+                public void onGetSpecific() {
+                    ArrayList<ItemCount> items = new ArrayList<>();
+
+                    for(String key: idb.getItems().keySet()){
+                        ItemCount tempItem = new ItemCount(key);
+                        for(User user: group.getGroupies()){
+
+                        }
+                    }
+
+                }
+            });
+        }else {
+            adapter = new ItemAdapter(user.getItems(), isGroup);
+        }
         adapter.setOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }

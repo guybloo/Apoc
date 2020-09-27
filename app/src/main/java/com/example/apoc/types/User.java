@@ -34,6 +34,7 @@ public class User implements DBItem, Serializable
         this.abilities = abili;
         this.fears = fear;
         items = new ArrayList<>();
+        this.imageUrl = imageUrl;
     }
 
     public User(String newEmail)
@@ -41,6 +42,7 @@ public class User implements DBItem, Serializable
         this.nickName = "";
         this.email = newEmail;
         this.phone = "";
+        imageUrl = "";
         this.status = UserStatus.undefined.name();
         this.locationInfo = new LocationInfo();
         this.abilities = new ArrayList();
