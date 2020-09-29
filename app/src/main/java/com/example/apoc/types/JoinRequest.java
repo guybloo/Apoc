@@ -9,7 +9,7 @@ public class JoinRequest implements DBItem, Serializable {
     private String recipient;
     private boolean groupJoin; // true if joining to a group. false if building a new group
 
-    public JoinRequest(String applier, String recipient, boolean groupJoin){
+    public JoinRequest(String  applier, String recipient, boolean groupJoin){
         this.applier = applier;
         this.recipient = recipient;
         this.groupJoin = groupJoin;

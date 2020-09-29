@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.example.apoc.ItemsEdit;
+import com.example.apoc.JoinRequests;
 import com.example.apoc.PartnersFind;
 import com.example.apoc.ProfileEdit;
 import com.example.apoc.Registration;
@@ -15,6 +16,7 @@ public class Navigation {
     public static final int PROFILE_EDIT_CODE = 2;
     public static final int ITEMS_EDIT_CODE = 3;
     public static final int PARTNERS_FIND_EDIT_CODE = 4;
+    public static final int JOIN_REQUESTS_EDIT_CODE = 4;
 
     public static void openRegistration(Context context) {
         Intent RegisterIntent = new Intent(context, Registration.class);
@@ -38,5 +40,11 @@ public class Navigation {
         Intent intent = new Intent(context, PartnersFind.class);
         intent.putExtra(PartnersFind.USER, user);
         ((Activity) context).startActivityForResult(intent, PARTNERS_FIND_EDIT_CODE);
+    }
+
+    public static void openJoinRequests(Context context, User user){
+        Intent intent = new Intent(context, JoinRequests.class);
+        intent.putExtra(JoinRequests.USER, user);
+        ((Activity) context).startActivityForResult(intent, JOIN_REQUESTS_EDIT_CODE);
     }
 }

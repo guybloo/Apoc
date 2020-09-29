@@ -1,9 +1,20 @@
 package com.example.apoc.DB;
 
+import androidx.annotation.NonNull;
+
+import com.example.apoc.types.Fears;
+import com.example.apoc.types.HelpMethods;
+import com.example.apoc.types.Item;
 import com.example.apoc.types.JoinRequest;
 import com.example.apoc.types.Message;
+import com.example.apoc.types.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +34,7 @@ public class RequestsDB extends DBWrapper {
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());
         newItem.put(APPLIER, item.getApplier());
-        newItem.put(RECIPIENT, item.getRecipient());
+        newItem.put(RECIPIENT,item.getRecipient());
         newItem.put(GROUP_JOIN, item.isGroupJoin());
 
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
@@ -31,6 +42,30 @@ public class RequestsDB extends DBWrapper {
 
     @Override
     protected DBItem parseItem(Map<String, Object> item) {
-        return new JoinRequest((String) item.get(APPLIER), (String) item.get(RECIPIENT), Boolean.parseBoolean((String) item.get(GROUP_JOIN)));
+        return new JoinRequest(
+                (String)item.get(APPLIER),
+                (String)item.get(RECIPIENT),
+                (Boolean)item.get(GROUP_JOIN));
+    }
+
+    public void getItemsByRecipient(final User user){
+        items.clear();
+        db.collection(docName).whereEqualTo(RECIPIENT,user.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> item = document.getData();
+                                JoinRequest tempItem = (JoinRequest) parseItem(item);
+
+                                items.put(tempItem.getId(),tempItem);
+                            }
+
+                            notifyGetSpecific();
+                        }
+                    }
+                });
     }
 }
