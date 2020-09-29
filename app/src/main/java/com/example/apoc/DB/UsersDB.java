@@ -61,9 +61,7 @@ public class UsersDB extends DBWrapper {
                 fromGson((String) item.get(LOCATION),LocationInfo.class),
                 fromGson((String) item.get(ABILITIES),ArrayList.class),
                 fromGson((String) item.get(FEARS),ArrayList.class));
-//        for(Object tempItem : fromGson((String) item.get(ITEMS), ArrayList.class)){
-//            user.addItem((ItemCount)tempItem);
-//        }
+
         user.addItemsList(ListFromGson((String) item.get(ITEMS),ItemCount.class));
         return user;
     }

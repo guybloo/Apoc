@@ -52,16 +52,25 @@ public class HelpMethods {
     }
 
     // between 0 - 100
-    public static int getWidth(int width){
+    public static int getWidthInScreen(int width){
         return getPrecent(width, Resources.getSystem().getDisplayMetrics().widthPixels);
 
     }
-    public static int getHeight(int height){
+    public static int getHeightInScreen(int height){
         return getPrecent(height, Resources.getSystem().getDisplayMetrics().heightPixels);
     }
+    public static int getWidth(int width, int max){
+        return getPrecent(width, max);
+
+    }
+    public static int getHeight(int height, int max){
+        return getPrecent(height, max);
+    }
+
     private static int getPrecent(int precent, int size){
         float calc = ((float)precent ) / 100;
         calc *= size;
-        return pxToDp((int)calc);
+        return (int)calc;
+//        return pxToDp((int)calc);
     }
 }

@@ -49,11 +49,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
 
+//        FirebaseAuth.getInstance().signOut();
+
+
         location = new LocationTracker(this);
         sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null) {
+
             final UsersDB udb = new UsersDB();
 //            udb.getAllItems();
             udb.loadItemByIdFromDB(firebaseUser.getEmail());
@@ -66,55 +70,16 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onGetSpecific() {
-                    user = (User)udb.getItemById(firebaseUser.getEmail());
-                    Navigation.openProfileEdit(context,user);
-//                    user = (User) udb.getItemById(firebaseUser.getEmail());
-//                    Intent intent = new Intent(getApplicationContext(), PartnersFind.class);
-//                    intent.putExtra(PartnersFind.USER, user);
-//                    startActivityForResult(intent, PARTNERS_FIND_EDIT_CODE);
-//                    user = (User) udb.getItemById(firebaseUser.getEmail());
-//                    Intent intent = new Intent(getApplicationContext(), ProfileEdit.class);
-//                    intent.putExtra(ProfileEdit.USER_DATA, user);
-//                    startActivityForResult(intent, PROFILE_EDIT_CODE);
+                    user = (User) udb.getItemById(firebaseUser.getEmail());
+                    Navigation.openPartnersFind(context, user);
+
                 }
             });
 
-
         } else {
             Navigation.openRegistration(context);
-//            Intent RegisterIntent = new Intent(this, Registration.class);
-//            startActivityForResult(RegisterIntent, REGISTERATION_CODE);
+
         }
-
-
-//        Intent intent = new Intent(this, ItemsEdit.class);
-//        intent.putExtra(ItemsEdit.USERS, )
-//        intent.putExtra(ProfileEdit.USER_DATA, us);
-//        startActivity(intent);
-
-
-//        getPreferences();
-//        if(userID.equals("")){
-
-//            Intent RegisterIntent = new Intent(this, Registration.class);
-//            startActivityForResult(RegisterIntent, RegisterCode);
-//        }
-//        else{
-//            // open menu
-//        }
-
-//        UsersDB udb = new UsersDB();
-////        udb.getAllItems();
-//        User us = new User("new user");
-//        udb.addItem(us);
-//
-//        GroupsDB gdb = new GroupsDB();
-//        Group g = new Group("gumaya", "mayaguy", null,null);
-//        gdb.addItem(g);
-//
-//        Intent intent = new Intent(this, ProfileEdit.class);
-//        intent.putExtra(ProfileEdit.USER_DATA, us);
-//        startActivity(intent);
     }
 
     @Override
@@ -123,64 +88,46 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case (Navigation.REGISTERATION_CODE): {
                 if (resultCode == Activity.RESULT_OK) {
-                    userID = data.getStringExtra(Registration.RES_EMAIL);
+                    final UsersDB udb = new UsersDB();
+//            udb.getAllItems();
+                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    udb.loadItemByIdFromDB(firebaseUser.getEmail());
 
-                    boolean isRegister = data.getBooleanExtra(Registration.RES_IS_REGISTER, true);
-                    if (isRegister) {
+                    udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                        @Override
+                        public void onGetAll() {
 
-                        //send to profile edit
-                        savePreferences();
-                    } else {
-                        // send to main menu
-                    }
+                        }
+
+                        @Override
+                        public void onGetSpecific() {
+                            user = (User) udb.getItemById(firebaseUser.getEmail());
+                            Navigation.openProfileEdit(context, user);
+
+                        }
+                    });
+
+
+//                    userID = data.getStringExtra(Registration.RES_EMAIL);
+//
+//                    boolean isRegister = data.getBooleanExtra(Registration.RES_IS_REGISTER, true);
+//                    if (isRegister) {
+//
+//                        //send to profile edit
+//                        savePreferences();
+//                    } else {
+//                        // send to main menu
+//                    }
+//                }
+//                break;
                 }
-                break;
             }
             case (Navigation.PROFILE_EDIT_CODE): {
-                Navigation.openItemsEdit(this,false,user, null);
-//                final GroupsDB udb = new GroupsDB();
-//                udb.getAllItems();
-//                udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
-//                    @Override
-//                    public void onGetAll() {
-////                        Intent intent = new Intent(getApplicationContext(), ItemsEdit.class);
-////                        intent.putExtra(ItemsEdit.USERS, new ArrayList<DBItem>(udb.getItems().values()));
-////                        intent.putExtra(ItemsEdit.IS_GROUP, true);
-////                        startActivity(intent);
-//                    }
-//
-//                    @Override
-//                    public void onGetSpecific() {
-//
-//                    }
-//                });
-
-//                ImagesDB imdb = new ImagesDB();
-//                imdb.showImage(user.getImageUrl(), (ImageView) findViewById(R.id.temp_image), getApplicationContext());
-//                final ItemsDB itemDb = new ItemsDB();
-//                itemDb.getAllItems();
-//                itemDb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
-//                    @Override
-//                    public void onGetAll() {
-////                        for(DBItem i : itemDb.getItems().values()){
-////                            user.addItem(new ItemCount(((Item)i).getName()));
-////                        }
-////                        user.addItemsList(new ArrayList(itemDb.getItems().values()));
-//                        Intent intent = new Intent(getApplicationContext(), ItemsEdit.class);
-//                        intent.putExtra(ItemsEdit.USERS, user);
-//                        intent.putExtra(ItemsEdit.IS_GROUP, false);
-//                        startActivity(intent);
-//                    }
-//
-//                    @Override
-//                    public void onGetSpecific() {
-//
-//                    }
-//                });
+                Navigation.openPartnersFind( context, user);
 
             }
-            case(Navigation.ITEMS_EDIT_CODE):{
-                Navigation.openPartnersFind(this,user);
+            case (Navigation.PARTNERS_FIND_EDIT_CODE): {
+                Navigation.openPartnersFind(this, user);
             }
         }
     }

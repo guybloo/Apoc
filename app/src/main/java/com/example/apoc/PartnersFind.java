@@ -17,75 +17,94 @@ import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.location.LocationInfo;
+import com.example.apoc.types.HelpMethods;
 import com.example.apoc.types.User;
 import com.example.apoc.types.UserDisplay;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
 public class PartnersFind extends AppCompatActivity {
 
     public static final String USER = "user";
     public static final int MAX_DIST = 50000;
+    public static final int CENTER = 50;
 
     private User user;
-    private ArrayList<User> otherUsers;
-    private int distance;
+    private ArrayList<UserDisplay> userDisplays;
+    private double distance;
     private UsersDB udb;
     private RelativeLayout usersLayout;
+    private SeekBar seekbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_partners_find);
+        seekbar = findViewById(R.id.distance_seekbar);
+        seekbar.setEnabled(false);
         usersLayout = findViewById(R.id.users_layout);
         user = (User) getIntent().getSerializableExtra(USER);
 
-        showUsers();
-
-        otherUsers = new ArrayList<>();
+        userDisplays = new ArrayList<>();
         udb = new UsersDB();
-        showUsers();
-//        udb.getAllItems();
-//        udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
-//            @Override
-//            public void onGetAll() {
-//                updateUsers();
-//            }
-//
-//            @Override
-//            public void onGetSpecific() {
-//
-//            }
-//        });
-//
+        udb.getAllItems();
+        udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+            @Override
+            public void onGetAll() {
+                seekbar.setEnabled(true);
+            }
+
+            @Override
+            public void onGetSpecific() {
+
+            }
+        });
+        configSeekbar();
     }
 
     private void updateUsers() {
-        otherUsers.clear();
+        for(UserDisplay display : userDisplays){
+            display.removeView();
+        }
+        userDisplays.clear();
         ArrayList<DBItem> allUsers = new ArrayList<>(udb.getItems().values());
         for (DBItem temp : allUsers) {
-            if (!user.getId().equals(temp.getId()) &&
-                    (getDistance(user.getLocationInfo(), ((User) temp).getLocationInfo()) < distance)) {
-                otherUsers.add((User) temp);
+            float userDistance = getDistance(user.getLocationInfo(), ((User) temp).getLocationInfo());
+            if (!user.getId().equals(temp.getId()) && userDistance < distance) {
+                userDisplays.add(new UserDisplay((User) temp, user, userDistance, this));
             }
         }
         showUsers();
     }
 
 
+    private void showUsers() {
+        for (UserDisplay display : userDisplays) {
+            double random = ((new Random()).nextDouble() * 2 * Math.PI);
+            int radius = (int) (display.getDistance() / distance * 70) + 15;
+            int x = HelpMethods.getWidth(getXPos(radius,random,CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
+            int y =  HelpMethods.getHeight(getYPos(radius,random,CENTER), usersLayout.getHeight())- (display.getView().getHeight() / 2);
+            display.setParams(x,y);
+            display.addView(usersLayout);
 
-    private void showUsers(){
-        UserDisplay display = new UserDisplay(user,this);
-        display.setParams(100,500);
-        display.addView(usersLayout);//        usersLayout.addView(child,params);
-
+        }
     }
 
-    private void configSeekbar(){
-        ((SeekBar) findViewById(R.id.distance_seekbar)).setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    private int getXPos(int radius, double theta, int center) {
+        return (int) (radius * Math.cos(theta) + center);
+    }
+
+    private int getYPos(int radius, double theta, int center) {
+        return (int) (radius * Math.sin(theta) + center);
+    }
+
+    private void configSeekbar() {
+       seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                distance = (progress / 100) * MAX_DIST;
+                distance = ((double)progress / 100.0) * MAX_DIST;
                 updateUsers();
             }
 

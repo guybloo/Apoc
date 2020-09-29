@@ -1,7 +1,11 @@
 package com.example.apoc.types;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -9,28 +13,42 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.apoc.DB.RequestsDB;
 import com.example.apoc.R;
 import com.example.apoc.Storage.ImagesDB;
 
 public class UserDisplay {
+    private String SEND_REQUEST = "Send request";
+    private String CLOSE = "Close";
+    private String SENT = "Request sent";
+
     private User user;
+    private User caller;
     private RelativeLayout.LayoutParams params;
     private View view;
     private RelativeLayout parent;
     private Context context;
+    private float distance;
+    private AlertDialog.Builder openDetails;
+    private AlertDialog dialog;
 
-    public UserDisplay(final User user, final Context context){
+
+    public UserDisplay(final User user, User caller, float distance, final Context context){
         this.context = context;
         this.user = user;
+        this.caller = caller;
+        this.distance = distance;
         params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view = ((Activity)context).getLayoutInflater().inflate(R.layout.user_display, null);
+
+        setUserDetails();
 
         ImageView image = view.findViewById(R.id.user_display_image);
         ImagesDB.showImage(user.getImageUrl(),image,context);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, user.getEmail(),Toast.LENGTH_SHORT).show();
+                dialog.show();
             }
         });
     }
@@ -61,5 +79,35 @@ public class UserDisplay {
     public void removeView(){
         ((ViewGroup) parent).removeView(view);
         parent = null;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setUserDetails ()
+    {
+        final RequestsDB requestsDB = new RequestsDB();
+        openDetails = new AlertDialog.Builder(context);
+        View detailsView = ((Activity)context).getLayoutInflater().inflate(R.layout.user_details_display, null);
+        ((TextView)detailsView.findViewById(R.id.user_details_nickname)).setText(user.getNickName());
+        ImagesDB.showImage(user.getImageUrl(),(ImageView)detailsView.findViewById(R.id.user_details_display_image),context);
+//        openDetails.setMessage("Are You Sure to delete?");
+        openDetails.setView(detailsView).setPositiveButton(SEND_REQUEST, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                JoinRequest joinRequest = new JoinRequest(caller.getId(), user.getId(), caller.getStatus().equals(UserStatus.beta.name()));
+                requestsDB.updateItem(joinRequest);
+                Toast.makeText(context, SENT, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        openDetails.setNegativeButton(CLOSE, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //perform any action
+            }
+        });
+        dialog = openDetails.create();
     }
 }
