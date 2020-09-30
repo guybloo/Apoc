@@ -1,13 +1,12 @@
 package com.example.apoc.DB;
 
 import com.example.apoc.location.LocationInfo;
-import com.example.apoc.types.HelpMethods;
+import com.example.apoc.types.Fears;
 import com.example.apoc.types.ItemCount;
+import com.example.apoc.types.Skills;
 import com.example.apoc.types.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 //import static com.example.apoc.types.HelpMethods.ListfromGson;
@@ -23,7 +22,7 @@ public class UsersDB extends DBWrapper {
     protected static String STATUS = "status";
     protected static String IMAGE = "image_url";
     protected static String LOCATION = "location";
-    protected static String ABILITIES = "abilities";
+    protected static String SKILLS = "skills";
     protected static String FEARS = "fears";
     protected static String ITEMS = "items";
 
@@ -44,8 +43,8 @@ public class UsersDB extends DBWrapper {
         newItem.put(IMAGE, user.getImageUrl());
 
         newItem.put(LOCATION, toGson(user.getLocationInfo()));
-        newItem.put(ABILITIES, toGson(user.getAbilities()));
-        newItem.put(FEARS, toGson(user.getFears()));
+        newItem.put(SKILLS, ListToGson(user.getSkills()));
+        newItem.put(FEARS, ListToGson(user.getFears()));
         newItem.put(ITEMS, ListToGson(user.getItems()));
 
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
@@ -59,8 +58,8 @@ public class UsersDB extends DBWrapper {
                 (String) item.get(STATUS),
                 (String) item.get(IMAGE),
                 fromGson((String) item.get(LOCATION),LocationInfo.class),
-                fromGson((String) item.get(ABILITIES),ArrayList.class),
-                fromGson((String) item.get(FEARS),ArrayList.class));
+                ListFromGson((String) item.get(SKILLS), Skills.class),
+                ListFromGson((String) item.get(FEARS), Fears.class));
 
         user.addItemsList(ListFromGson((String) item.get(ITEMS),ItemCount.class));
         return user;

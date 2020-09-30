@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
+import com.example.apoc.types.GridDisplay;
 import com.example.apoc.types.User;
 import com.example.apoc.types.UserStatus;
 //import com.squareup.picasso.Picasso;
@@ -48,6 +50,7 @@ public class ProfileEdit extends AppCompatActivity {
     private Button location;
     private SwitchCompat status;
     private SwitchCompat statusInGroup;
+    private GridLayout gridLayouts;
 
     private Button save;
 
@@ -75,6 +78,9 @@ public class ProfileEdit extends AppCompatActivity {
     }
 
     private void initializeUI() {
+        gridLayouts = findViewById(R.id.profile_edit_grid);
+        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, gridLayouts, true, 4);
+
         image = findViewById(R.id.image);
         pickImg = findViewById(R.id.pickImg);
 

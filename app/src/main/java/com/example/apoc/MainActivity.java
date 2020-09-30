@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onGetSpecific() {
                     user = (User) udb.getItemById(firebaseUser.getEmail());
-                    Navigation.openJoinRequests(context, user);
+                    Navigation.openProfileEdit(context, user);
 
                 }
             });
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onGetSpecific() {
                             user = (User) udb.getItemById(firebaseUser.getEmail());
-                            Navigation.openJoinRequests(context, user);
+                            Navigation.openProfileEdit(context, user);
 
                         }
                     });

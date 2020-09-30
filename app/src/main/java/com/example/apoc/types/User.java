@@ -5,11 +5,8 @@ import com.example.apoc.location.LocationInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class User implements DBItem, Serializable
-{
+public class User implements DBItem, Serializable {
 
 
     private String nickName;
@@ -20,32 +17,30 @@ public class User implements DBItem, Serializable
 
     private LocationInfo locationInfo;
 
-    private ArrayList abilities;
+    private ArrayList<Skills> skills;
     private ArrayList<Fears> fears;
     private ArrayList<ItemCount> items;
 
-    public User(String newNickName, String newEmail , String newPhone, String newStatus, String imageUrl, LocationInfo location, ArrayList abili, ArrayList<Fears> fear)
-    {
+    public User(String newNickName, String newEmail, String newPhone, String newStatus, String imageUrl, LocationInfo location, ArrayList<Skills> skills, ArrayList<Fears> fear) {
         this.nickName = newNickName;
         this.email = newEmail;
         this.phone = newPhone;
         this.status = newStatus;
         this.locationInfo = location;
-        this.abilities = abili;
+        this.skills = skills;
         this.fears = fear;
         items = new ArrayList<>();
         this.imageUrl = imageUrl;
     }
 
-    public User(String newEmail)
-    {
+    public User(String newEmail) {
         this.nickName = "";
         this.email = newEmail;
         this.phone = "";
         imageUrl = "";
         this.status = UserStatus.undefined.name();
         this.locationInfo = new LocationInfo();
-        this.abilities = new ArrayList();
+        this.skills = new ArrayList<>();
         this.fears = new ArrayList<>();
         items = new ArrayList<>();
     }
@@ -67,7 +62,7 @@ public class User implements DBItem, Serializable
         return status;
     }
 
-    public String getId(){
+    public String getId() {
         return email;
     }
 
@@ -75,11 +70,11 @@ public class User implements DBItem, Serializable
         return locationInfo;
     }
 
-    public ArrayList getAbilities() {
-        return abilities;
+    public ArrayList<Skills> getSkills() {
+        return skills;
     }
 
-    public ArrayList getFears() {
+    public ArrayList<Fears> getFears() {
         return fears;
     }
 
@@ -119,19 +114,42 @@ public class User implements DBItem, Serializable
         this.fears = fears;
     }
 
-    public void setAbilities(ArrayList abilities) {
-        this.abilities = abilities;
+    public void setSkills(ArrayList skills) {
+        this.skills = skills;
     }
 
-    public ItemCount getItemFromPosition(int position){
+    public ItemCount getItemFromPosition(int position) {
         return items.get(position);
     }
 
-    public void addItem(ItemCount item){
+    public void addItem(ItemCount item) {
         items.add(item);
     }
-    public void addItemsList(ArrayList<ItemCount> itemList){
+
+    public void addItemsList(ArrayList<ItemCount> itemList) {
         items.addAll(itemList);
+    }
+
+    public void removeFear(Fears fear) {
+
+        fears.remove(fear);
+    }
+
+    public void addFear(Fears fear) {
+        if (!fears.contains(fear)) {
+            fears.add(fear);
+        }
+    }
+
+    public void addSkill(Skills skill) {
+        if (!skills.contains(skill)) {
+            skills.add(skill);
+        }
+    }
+
+    public void removeSkill(Skills skill) {
+
+        fears.remove(skill);
     }
 }
 
