@@ -79,7 +79,7 @@ public class ProfileEdit extends AppCompatActivity {
 
     private void initializeUI() {
         gridLayouts = findViewById(R.id.profile_edit_grid);
-        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, gridLayouts, true, 4);
+        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, gridLayouts, false, 4);
 
         image = findViewById(R.id.image);
         pickImg = findViewById(R.id.pickImg);

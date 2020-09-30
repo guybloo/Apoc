@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageView;
+
+import com.example.apoc.Storage.ImagesDB;
 
 import java.util.ArrayList;
 
@@ -26,8 +29,24 @@ public class GridDisplay {
         {
             createButtons();
         }
+        else{
+            createViews();
+        }
     }
 
+    private void createViews(){
+        for(final Fears fear : user.getFears()){
+            ImageView imageView = new ImageView(context);
+            // add logos
+            gridLayout.addView(imageView);
+        }
+
+        for(final Skills skill : user.getSkills()){
+            ImageView imageView = new ImageView(context);
+            // add logos
+            gridLayout.addView(imageView);
+        }
+    }
     private void createButtons(){
         for(final Fears fear : Fears.values()){
             Button btn = new Button(context);
