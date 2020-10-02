@@ -29,6 +29,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"/>
     </ScrollView>
+    <Button
+        android:id="@+id/group_leave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="leave group"/>
 
 
 </LinearLayout>

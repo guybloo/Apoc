@@ -5,12 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.GridLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.types.Group;
 import com.example.apoc.types.GroupUserDisplay;
+import com.example.apoc.types.Log;
+import com.example.apoc.types.Message;
 import com.example.apoc.types.User;
 
 import java.util.ArrayList;
@@ -22,6 +27,7 @@ public class GroupPage extends AppCompatActivity {
     private Group group;
     private UsersDB usersDB;
     private GroupsDB groupsDB;
+    private Log log;
     private ArrayList<GroupUserDisplay> userDisplays;
 
     @Override
@@ -29,6 +35,7 @@ public class GroupPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_page);
 
+        log = new Log();
         user = (User) getIntent().getSerializableExtra(USER);
         userDisplays = new ArrayList<>();
         usersDB = new UsersDB();
@@ -48,6 +55,7 @@ public class GroupPage extends AppCompatActivity {
                     public void onGetSpecific() {
                         group = (Group) groupsDB.getItems().get(user.getId());
                         displayUsers(5);
+                        displayLog();
                     }
                 });
 
@@ -64,6 +72,7 @@ public class GroupPage extends AppCompatActivity {
         GridLayout grid = findViewById(R.id.groupies_info);
         grid.setColumnCount(columns);
         for(String id : group.getGroupies()){
+            log.loadByUserId(id);
             if(!id.equals(user.getId())) {
                 User groupie = (User) usersDB.getItemById(id);
                 final GroupUserDisplay userDisplay = new GroupUserDisplay(user, groupie, group, this);
@@ -78,6 +87,19 @@ public class GroupPage extends AppCompatActivity {
                     }
                 });
             }
+        }
+    }
+
+    private void displayLog(){
+        for(int i = 0; i < 10; i++){
+            log.insert(new Message(String.valueOf(i), user.getId()));
+        }
+        LinearLayout layout = findViewById(R.id.group_log);
+        log.sort();
+        for(DBItem message: log.getMessages()) {
+            TextView text = new TextView(this);
+            text.setText(((Message)message).getContent() + "\n" + ((Message)message).getFormatDate() + "\n" + "____________");
+            layout.addView(text);
         }
     }
 }

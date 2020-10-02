@@ -45,6 +45,10 @@ public class Message implements DBItem, Serializable {
         return date;
     }
 
+    public String getFormatDate(){
+        return date.toString();
+    }
+
     public String getContent() {
         return content;
     }
