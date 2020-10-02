@@ -2,16 +2,10 @@ package com.example.apoc;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
@@ -19,10 +13,9 @@ import com.example.apoc.DB.UsersDB;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.types.HelpMethods;
 import com.example.apoc.types.User;
-import com.example.apoc.types.UserDisplay;
+import com.example.apoc.types.RequestUserDisplay;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 
 public class PartnersFind extends AppCompatActivity {
@@ -32,7 +25,7 @@ public class PartnersFind extends AppCompatActivity {
     public static final int CENTER = 50;
 
     private User user;
-    private ArrayList<UserDisplay> userDisplays;
+    private ArrayList<RequestUserDisplay> requestUserDisplays;
     private double distance;
     private UsersDB udb;
     private RelativeLayout usersLayout;
@@ -47,7 +40,7 @@ public class PartnersFind extends AppCompatActivity {
         usersLayout = findViewById(R.id.users_layout);
         user = (User) getIntent().getSerializableExtra(USER);
 
-        userDisplays = new ArrayList<>();
+        requestUserDisplays = new ArrayList<>();
         udb = new UsersDB();
         udb.getAllItems();
         udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
@@ -65,15 +58,15 @@ public class PartnersFind extends AppCompatActivity {
     }
 
     private void updateUsers() {
-        for(UserDisplay display : userDisplays){
+        for(RequestUserDisplay display : requestUserDisplays){
             display.removeView();
         }
-        userDisplays.clear();
+        requestUserDisplays.clear();
         ArrayList<DBItem> allUsers = new ArrayList<>(udb.getItems().values());
         for (DBItem temp : allUsers) {
             float userDistance = getDistance(user.getLocationInfo(), ((User) temp).getLocationInfo());
             if (!user.getId().equals(temp.getId()) && userDistance < distance) {
-                userDisplays.add(new UserDisplay((User) temp, user, userDistance, this));
+                requestUserDisplays.add(new RequestUserDisplay((User) temp, user, userDistance, this));
             }
         }
         showUsers();
@@ -81,7 +74,7 @@ public class PartnersFind extends AppCompatActivity {
 
 
     private void showUsers() {
-        for (UserDisplay display : userDisplays) {
+        for (RequestUserDisplay display : requestUserDisplays) {
             double random = ((new Random()).nextDouble() * 2 * Math.PI);
             int radius = (int) (display.getDistance() / distance * 70) + 15;
             int x = HelpMethods.getWidth(getXPos(radius,random,CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);

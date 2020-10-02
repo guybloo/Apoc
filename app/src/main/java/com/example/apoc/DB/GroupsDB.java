@@ -1,12 +1,23 @@
 package com.example.apoc.DB;
 
+import androidx.annotation.NonNull;
+
+import com.example.apoc.types.Fears;
 import com.example.apoc.types.Group;
 import com.example.apoc.types.HelpMethods;
+import com.example.apoc.types.Item;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.apoc.types.HelpMethods.ListFromGson;
+import static com.example.apoc.types.HelpMethods.ListToGson;
 import static com.example.apoc.types.HelpMethods.fromGson;
 import static com.example.apoc.types.HelpMethods.toGson;
 
@@ -27,9 +38,9 @@ public class GroupsDB extends DBWrapper {
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());
         newItem.put(NAME, item.getGroupName());
-        newItem.put(LEADER, toGson(item.getLeader()));
-        newItem.put(GROUPIES, toGson(item.getGroupies()));
-        newItem.put(FEARS, toGson(item.getFears()));
+        newItem.put(LEADER, item.getLeader());
+        newItem.put(GROUPIES, item.getGroupies());
+        newItem.put(FEARS, ListToGson(item.getFears()));
 
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
@@ -38,7 +49,28 @@ public class GroupsDB extends DBWrapper {
     protected DBItem parseItem(Map<String, Object> item) {
         return new Group((String) item.get(NAME),
                 (String) item.get(LEADER),
-                fromGson((String) item.get(GROUPIES),ArrayList.class),
-                fromGson((String) item.get(FEARS),ArrayList.class));
+//                ListFromGson((String) item.get(GROUPIES),String.class),
+                new ArrayList<String>(((ArrayList)item.get(GROUPIES))),
+                ListFromGson((String) item.get(FEARS), Fears.class));
+    }
+
+    public void getGroupByUser(final String userId){
+        items.clear();
+        db.collection(docName).whereArrayContains(GroupsDB.GROUPIES, userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> item = document.getData();
+                                Group tempGroup = (Group) parseItem(item);
+                                items.put(userId,tempGroup);
+                            }
+
+                            notifyGetSpecific();
+                        }
+                    }
+                });
     }
 }

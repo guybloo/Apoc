@@ -31,8 +31,6 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
         setContentView(R.layout.activity_join_requsets);
         user = (User)getIntent().getSerializableExtra(USER);
 
-
-
         recyclerViewConfig();
     }
 

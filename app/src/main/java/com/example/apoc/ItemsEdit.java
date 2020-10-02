@@ -80,9 +80,9 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
                     for(String key: idb.getItems().keySet()){
                         ItemCount tempItem = new ItemCount(key);
-                        for(User user: group.getGroupies()){
-
-                        }
+//                        for(User user: group.getGroupies()){
+//
+//                        }
                     }
 
                 }

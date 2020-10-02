@@ -17,7 +17,7 @@ import com.example.apoc.DB.RequestsDB;
 import com.example.apoc.R;
 import com.example.apoc.Storage.ImagesDB;
 
-public class UserDisplay {
+public class RequestUserDisplay {
     private String SEND_REQUEST = "Send request";
     private String CLOSE = "Close";
     private String SENT = "Request sent";
@@ -33,7 +33,7 @@ public class UserDisplay {
     private AlertDialog dialog;
 
 
-    public UserDisplay(final User user, User caller, float distance, final Context context){
+    public RequestUserDisplay(final User user, User caller, float distance, final Context context){
         this.context = context;
         this.user = user;
         this.caller = caller;
@@ -93,6 +93,7 @@ public class UserDisplay {
         ((TextView)detailsView.findViewById(R.id.user_details_nickname)).setText(user.getNickName());
         ImagesDB.showImage(user.getImageUrl(),(ImageView)detailsView.findViewById(R.id.user_details_display_image),context);
 //        openDetails.setMessage("Are You Sure to delete?");
+        //todo add fears and skills
         openDetails.setView(detailsView).setPositiveButton(SEND_REQUEST, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

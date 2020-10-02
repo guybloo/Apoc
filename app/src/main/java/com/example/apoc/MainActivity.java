@@ -20,6 +20,8 @@ import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.location.LocationTracker;
+import com.example.apoc.types.Fears;
+import com.example.apoc.types.Group;
 import com.example.apoc.types.Item;
 import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.Navigation;
@@ -59,12 +61,24 @@ public class MainActivity extends AppCompatActivity {
         if (firebaseUser != null) {
 
             final UsersDB udb = new UsersDB();
-//            udb.getAllItems();
-            udb.loadItemByIdFromDB(firebaseUser.getEmail());
+            udb.getAllItems();
+//            udb.loadItemByIdFromDB(firebaseUser.getEmail());
 
             udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
                 @Override
                 public void onGetAll() {
+                    user = (User)udb.getItemById(firebaseUser.getEmail());
+                    Navigation.openGroupPage(context, user);
+//                    ArrayList<Fears> fears = new ArrayList<>();
+//                    fears.add(Fears.Hurricane);
+//                    fears.add(Fears.Zombies);
+//                    Group group = new Group("we", user.getId(),fears);
+//                    for(DBItem item : new ArrayList<>(udb.getItems().values())){
+//                        group.addMember((User)item);
+//                    }
+//                    GroupsDB db = new GroupsDB();
+//                    db.addItem(group);
+
 
                 }
 

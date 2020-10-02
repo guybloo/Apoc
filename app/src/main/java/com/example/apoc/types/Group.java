@@ -10,24 +10,31 @@ public class Group implements DBItem, Serializable {
     // todo we need to save the name of the leader? other things about the group like fears?
     private String groupName;
     private String leader;
-    private ArrayList<User> groupies;
+    private ArrayList<String> groupies;
     private ArrayList<Fears> fears;
 
-    public Group(String name, String leader, ArrayList<User> newGroupies, ArrayList<Fears> fears)
+    public Group(String name, String leader, ArrayList<String> newGroupies, ArrayList<Fears> fears)
     {
         this.groupName = name;
         this.leader = leader;
         this.groupies = newGroupies;
         this.fears = fears;
     }
+    public Group(String name, String leader, ArrayList<Fears> fears)
+    {
+        this.groupName = name;
+        this.leader = leader;
+        this.groupies = new ArrayList<>();
+        this.fears = fears;
+    }
 
     public void addMember (User newUser)
     {
-        groupies.add(newUser);
+        groupies.add(newUser.getId());
     }
     public void removeMember (User user)
     {
-        groupies.remove(user);
+        groupies.remove(user.getId());
     }
 
     public String getGroupName()
@@ -43,7 +50,7 @@ public class Group implements DBItem, Serializable {
         return leader;
     }
 
-    public ArrayList<User> getGroupies() {
+    public ArrayList<String> getGroupies() {
         return groupies;
     }
 
