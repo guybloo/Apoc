@@ -25,6 +25,7 @@ public class UsersDB extends DBWrapper {
     protected static String SKILLS = "skills";
     protected static String FEARS = "fears";
     protected static String ITEMS = "items";
+    protected static String IS_GROUPED = "is_grouped";
 
     public UsersDB(){
         super();
@@ -46,6 +47,7 @@ public class UsersDB extends DBWrapper {
         newItem.put(SKILLS, ListToGson(user.getSkills()));
         newItem.put(FEARS, ListToGson(user.getFears()));
         newItem.put(ITEMS, ListToGson(user.getItems()));
+        newItem.put(IS_GROUPED, user.getIsGrouped());
 
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
@@ -59,7 +61,8 @@ public class UsersDB extends DBWrapper {
                 (String) item.get(IMAGE),
                 fromGson((String) item.get(LOCATION),LocationInfo.class),
                 ListFromGson((String) item.get(SKILLS), Skills.class),
-                ListFromGson((String) item.get(FEARS), Fears.class));
+                ListFromGson((String) item.get(FEARS), Fears.class),
+                (Boolean) item.get(IS_GROUPED));
 
         user.addItemsList(ListFromGson((String) item.get(ITEMS),ItemCount.class));
         return user;

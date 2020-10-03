@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GroupPage"
     android:orientation="vertical">
+    <TextView
+        android:id="@+id/group_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="group page"
+        />
+
     <GridLayout
         android:id="@+id/groupies_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/group_name"/>
+
     <Button
         android:id="@+id/group_equipment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="equipment"/>
+        android:text="equipment"
+        app:layout_constraintTop_toBottomOf="@id/groupies_info"/>
     <Button
         android:id="@+id/group_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="map"/>
+        android:enabled="false"
+        android:text="map"
+        app:layout_constraintTop_toBottomOf="@id/group_equipment"/>
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/group_map"
+        app:layout_constraintBottom_toTopOf="@id/group_leave"
+        tools:ignore="MissingConstraints">
         <LinearLayout
             android:id="@+id/group_log"
             android:layout_width="match_parent"
@@ -33,7 +49,8 @@
         android:id="@+id/group_leave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="leave group"/>
+        android:text="leave group"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

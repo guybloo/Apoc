@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.apoc.GroupMap;
 import com.example.apoc.GroupPage;
 import com.example.apoc.ItemsEdit;
 import com.example.apoc.JoinRequests;
 import com.example.apoc.PartnersFind;
 import com.example.apoc.ProfileEdit;
 import com.example.apoc.Registration;
+
+import java.util.ArrayList;
 
 public class Navigation {
 
@@ -19,6 +22,7 @@ public class Navigation {
     public static final int PARTNERS_FIND_EDIT_CODE = 4;
     public static final int JOIN_REQUESTS_EDIT_CODE = 5;
     public static final int GROUP_PAGE_EDIT_CODE = 6;
+    public static final int GROUP_MAP_EDIT_CODE = 7;
 
     public static void openRegistration(Context context) {
         Intent RegisterIntent = new Intent(context, Registration.class);
@@ -53,5 +57,12 @@ public class Navigation {
         Intent intent = new Intent(context, GroupPage.class);
         intent.putExtra(GroupPage.USER, user);
         ((Activity) context).startActivityForResult(intent, GROUP_PAGE_EDIT_CODE);
+    }
+
+    public static void openGroupMap(Context context, ArrayList<User> users, User user){
+        Intent intent = new Intent(context, GroupMap.class);
+        intent.putExtra(GroupMap.GROUPIES, users);
+        intent.putExtra(GroupMap.USER, user);
+        ((Activity) context).startActivityForResult(intent, GROUP_MAP_EDIT_CODE);
     }
 }

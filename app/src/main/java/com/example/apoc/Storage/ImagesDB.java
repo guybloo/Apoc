@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.R;
 import com.example.apoc.types.User;
@@ -65,5 +66,8 @@ public class ImagesDB {
 
     public static void showImage(String path, ImageView imageView, Context context) {
         Glide.with(context).load(path).into(imageView);
+    }
+    public static void showCircleImage(String path, ImageView imageView, Context context) {
+        Glide.with(context).load(path).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
 }

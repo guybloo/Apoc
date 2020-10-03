@@ -14,6 +14,7 @@ public class User implements DBItem, Serializable {
     private String phone;
     private String status;
     private String imageUrl;
+    private boolean isGrouped;
 
     private LocationInfo locationInfo;
 
@@ -21,7 +22,7 @@ public class User implements DBItem, Serializable {
     private ArrayList<Fears> fears;
     private ArrayList<ItemCount> items;
 
-    public User(String newNickName, String newEmail, String newPhone, String newStatus, String imageUrl, LocationInfo location, ArrayList<Skills> skills, ArrayList<Fears> fear) {
+    public User(String newNickName, String newEmail, String newPhone, String newStatus, String imageUrl, LocationInfo location, ArrayList<Skills> skills, ArrayList<Fears> fear, boolean isGrouped) {
         this.nickName = newNickName;
         this.email = newEmail;
         this.phone = newPhone;
@@ -31,6 +32,7 @@ public class User implements DBItem, Serializable {
         this.fears = fear;
         items = new ArrayList<>();
         this.imageUrl = imageUrl;
+        this.isGrouped = isGrouped;
     }
 
     public User(String newEmail) {
@@ -43,6 +45,7 @@ public class User implements DBItem, Serializable {
         this.skills = new ArrayList<>();
         this.fears = new ArrayList<>();
         items = new ArrayList<>();
+        isGrouped = false;
     }
 
 
@@ -64,6 +67,14 @@ public class User implements DBItem, Serializable {
 
     public String getId() {
         return email;
+    }
+
+    public boolean getIsGrouped(){
+        return isGrouped;
+    }
+
+    public void setIsGrouped(boolean isGrouped){
+        this.isGrouped = isGrouped;
     }
 
     public LocationInfo getLocationInfo() {
@@ -117,6 +128,7 @@ public class User implements DBItem, Serializable {
     public void setSkills(ArrayList skills) {
         this.skills = skills;
     }
+
 
     public ItemCount getItemFromPosition(int position) {
         return items.get(position);

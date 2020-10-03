@@ -44,7 +44,7 @@ public class RequestUserDisplay {
         setUserDetails();
 
         ImageView image = view.findViewById(R.id.user_display_image);
-        ImagesDB.showImage(user.getImageUrl(),image,context);
+        ImagesDB.showCircleImage(user.getImageUrl(),image,context);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +91,7 @@ public class RequestUserDisplay {
         openDetails = new AlertDialog.Builder(context);
         View detailsView = ((Activity)context).getLayoutInflater().inflate(R.layout.user_details_display, null);
         ((TextView)detailsView.findViewById(R.id.user_details_nickname)).setText(user.getNickName());
-        ImagesDB.showImage(user.getImageUrl(),(ImageView)detailsView.findViewById(R.id.user_details_display_image),context);
+        ImagesDB.showCircleImage(user.getImageUrl(),(ImageView)detailsView.findViewById(R.id.user_details_display_image),context);
 //        openDetails.setMessage("Are You Sure to delete?");
         //todo add fears and skills
         openDetails.setView(detailsView).setPositiveButton(SEND_REQUEST, new DialogInterface.OnClickListener() {

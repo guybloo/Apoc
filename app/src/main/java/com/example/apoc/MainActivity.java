@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onGetAll() {
                     user = (User)udb.getItemById(firebaseUser.getEmail());
+//                    Navigation.openPartnersFind(context, user);
                     Navigation.openGroupPage(context, user);
 //                    ArrayList<Fears> fears = new ArrayList<>();
 //                    fears.add(Fears.Hurricane);

@@ -24,12 +24,14 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
     public static final String USER = "user";
     private User user;
     private RequestAdapter adapter;
+    private RequestsDB requestsDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_requsets);
         user = (User)getIntent().getSerializableExtra(USER);
+        requestsDB = new RequestsDB();
 
         recyclerViewConfig();
     }
@@ -38,7 +40,6 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
         final RecyclerView recyclerView = findViewById(R.id.requests_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         final RequestAdapter.OnItemClickListener listener = this;
-        final RequestsDB requestsDB = new RequestsDB();
         requestsDB.getItemsByRecipient(user);
         requestsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
                 @Override
@@ -57,6 +58,7 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                             for(DBItem item : new ArrayList<DBItem>(requestsDB.getItems().values())){
                                 list.add((User) udb.getItemById(((JoinRequest) item).getApplier()));
                             }
+                            // todo connect between users and requests to that we can delete it
                             adapter = new RequestAdapter(list);
                             adapter.setOnItemClickListener(listener);
                             recyclerView.setAdapter(adapter);
@@ -74,7 +76,7 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
 
     @Override
     public void onRequestApprove(int position) {
-
+        // todo update user and group when approved
     }
 
     @Override

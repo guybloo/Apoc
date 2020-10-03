@@ -43,7 +43,7 @@ public class GroupUserDisplay {
         setUserDetails();
 
         ImageView image = view.findViewById(R.id.user_display_image);
-        ImagesDB.showImage(otherUser.getImageUrl(),image,context);
+        ImagesDB.showCircleImage(otherUser.getImageUrl(),image,context);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

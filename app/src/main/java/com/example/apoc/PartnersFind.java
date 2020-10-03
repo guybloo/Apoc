@@ -65,7 +65,7 @@ public class PartnersFind extends AppCompatActivity {
         ArrayList<DBItem> allUsers = new ArrayList<>(udb.getItems().values());
         for (DBItem temp : allUsers) {
             float userDistance = getDistance(user.getLocationInfo(), ((User) temp).getLocationInfo());
-            if (!user.getId().equals(temp.getId()) && userDistance < distance) {
+            if (!user.getId().equals(temp.getId()) && userDistance < distance && !((User)temp).getIsGrouped()) {
                 requestUserDisplays.add(new RequestUserDisplay((User) temp, user, userDistance, this));
             }
         }

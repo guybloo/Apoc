@@ -16,6 +16,8 @@ import java.util.Comparator;
 public class Log implements Serializable {
      private ArrayList<Message> messages;
     private LogDB logDB;
+    private int counter;
+    private OnLogLoadedListener listener;
 
     /**
      * constructor
@@ -23,6 +25,7 @@ public class Log implements Serializable {
     public Log() {
         messages = new ArrayList<>();
         logDB = new LogDB();
+        counter = 0;
         logDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
             @Override
             public void onGetAll() {
@@ -34,12 +37,31 @@ public class Log implements Serializable {
                 for(DBItem item : logDB.getItems().values()){
                     messages.add((Message)item);
                 }
+                counter--;
+                if(counter == 0){
+                    notifyLoaded();
+                }
             }
         });
     }
 
+    public interface OnLogLoadedListener {
+        void onLoaded();
+    }
+
+    public void setLogLoadedListener(OnLogLoadedListener eventListener) {
+        listener = eventListener;
+    }
+
+    protected void notifyLoaded() {
+        if (listener != null) {
+            listener.onLoaded();
+        }
+    }
+
     public void loadByUserId(String id){
         logDB.getMessagesByUser(id);
+        counter++;
     }
 
     /**
