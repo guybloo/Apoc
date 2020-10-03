@@ -1,6 +1,10 @@
 package com.example.apoc.types;
 
+import android.service.autofill.AutofillService;
+
 import com.example.apoc.DB.DBItem;
+import com.example.apoc.DB.GroupsDB;
+import com.example.apoc.DB.UsersDB;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,10 +35,20 @@ public class Group implements DBItem, Serializable {
     public void addMember (User newUser)
     {
         groupies.add(newUser.getId());
+        newUser.setIsGrouped(true);
+        updateUserAndGroup(newUser);
+
+
     }
     public void removeMember (User user)
     {
         groupies.remove(user.getId());
+        user.setIsGrouped(false);
+        updateUserAndGroup(user);
+    }
+    private void updateUserAndGroup(User user){
+        (new GroupsDB()).updateItem(this);
+        (new UsersDB()).updateItem(user);
     }
 
     public String getGroupName()

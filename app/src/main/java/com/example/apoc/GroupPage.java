@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,6 +39,9 @@ public class GroupPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_page);
 
+        final Button leave = findViewById(R.id.group_leave);
+        leave.setEnabled(false);
+
         final Context context = this;
         groupies = new ArrayList<>();
         log = new Log();
@@ -59,6 +63,10 @@ public class GroupPage extends AppCompatActivity {
                     @Override
                     public void onGetSpecific() {
                         group = (Group) groupsDB.getItems().get(user.getId());
+                        leave.setEnabled(true);
+                        if(group.getLeader().equals(user.getId())){
+                            leave.setVisibility(View.GONE);
+                        }
                         displayUsers(5);
                     }
                 });
@@ -88,6 +96,14 @@ public class GroupPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Navigation.openItemsEdit(context,true, user, group, groupies);
+            }
+        });
+
+        leave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                group.removeMember(user);
+                finish();
             }
         });
     }
