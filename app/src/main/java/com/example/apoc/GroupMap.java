@@ -105,45 +105,5 @@ public class GroupMap extends FragmentActivity implements OnMapReadyCallback {
 
                     }
                 });
-
-
     }
-
-//    private void setIconToPosition(User user, MarkerOptions options){
-//        Glide.with(this)
-//                .asBitmap()
-//                .load(user.getImageUrl())
-//                .into(object :CustomTarget<Bitmap> () {
-//            override fun onLoadCleared(placeholder: Drawable?) {
-//            }
-//
-//            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-//                markerOptions?.icon(BitmapDescriptorFactory.fromBitmap(resource))
-//            }
-//
-//        })
-//    }
-
-//    private void setIconToPosition(){
-//        Glide.with(getBaseActivity())
-//                .load(place.getIconUrl())
-//                .asBitmap()
-//                .dontTransform()
-//                .into(new SimpleTarget<Bitmap>() {
-//                    @Override
-//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-//                        final float scale = getContext().getResources().getDisplayMetrics().density;
-//                        int pixels = (int) (50 * scale + 0.5f);
-//                        Bitmap bitmap = Bitmap.createScaledBitmap(resource, pixels, pixels, true);
-//                        markerImageView.setImageBitmap(bitmap);
-//                        addMarker(place.getLatLng());
-//                    }
-//
-//                    @Override
-//                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-//                        markerImageView.setImageResource(R.drawable.ic_marker_default_logo);
-//                        addMarker(place.getLatLng());
-//                    }
-//                });
-//    }
 }

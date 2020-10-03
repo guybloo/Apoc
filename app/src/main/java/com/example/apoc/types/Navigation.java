@@ -35,10 +35,11 @@ public class Navigation {
         ((Activity) context).startActivityForResult(intent, PROFILE_EDIT_CODE);
     }
 
-    public static void openItemsEdit(Context context, boolean isGroup, User user, Group group) {
+    public static void openItemsEdit(Context context, boolean isGroup, User user, Group group, ArrayList<User> groupies) {
         Intent intent = new Intent(context, ItemsEdit.class);
         intent.putExtra(ItemsEdit.USERS, isGroup ? group : user);
         intent.putExtra(ItemsEdit.IS_GROUP, isGroup);
+        intent.putExtra(ItemsEdit.GROUPIES, groupies);
         ((Activity) context).startActivityForResult(intent, ITEMS_EDIT_CODE);
     }
 

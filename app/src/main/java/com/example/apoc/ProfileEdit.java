@@ -22,16 +22,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.apoc.DB.DBItem;
+import com.example.apoc.DB.DBWrapper;
+import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
 import com.example.apoc.types.GridDisplay;
+import com.example.apoc.types.Item;
+import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.User;
 import com.example.apoc.types.UserStatus;
 //import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class ProfileEdit extends AppCompatActivity {
@@ -79,7 +85,7 @@ public class ProfileEdit extends AppCompatActivity {
 
     private void initializeUI() {
         gridLayouts = findViewById(R.id.profile_edit_grid);
-        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, gridLayouts, false, 4);
+        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, gridLayouts, true, 4);
 
         image = findViewById(R.id.image);
         pickImg = findViewById(R.id.pickImg);
@@ -182,11 +188,38 @@ public class ProfileEdit extends AppCompatActivity {
         user.setLocationInfo(newLocation);
 
         imagesDB.Upload(imageUri, user, this);
-
-        udb.updateItem(user);
+        updateItems(udb); // at end updates users db
         Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
 
         finish();
+    }
+
+    private void updateItems(final UsersDB udb){
+        final ItemsDB itemsDB = new ItemsDB();
+        itemsDB.getItemsByFears(user.getFears());
+        itemsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+            @Override
+            public void onGetAll() {
+            }
+
+            @Override
+            public void onGetSpecific() {
+                ArrayList<ItemCount> newItems = new ArrayList<>();
+
+                for(DBItem item : itemsDB.getItems().values()){
+                    for(ItemCount itemCount : user.getItems()){
+                        if(item.getId().equals(itemCount.getName())){
+                            newItems.add(itemCount);
+                            break;
+                        }
+                    }
+                    newItems.add(new ItemCount(item.getId()));
+
+                }
+                user.setItems(newItems);
+                udb.updateItem(user);
+            }
+        });
     }
 
     private void openFileChooser() {

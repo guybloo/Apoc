@@ -81,19 +81,25 @@ public class GroupPage extends AppCompatActivity {
         findViewById(R.id.group_map).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.openGroupMap(context,groupies, user);
+                Navigation.openGroupMap(context, groupies, user);
+            }
+        });
+        findViewById(R.id.group_equipment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.openItemsEdit(context,true, user, group, groupies);
             }
         });
     }
 
-    private void displayUsers(int columns){
+    private void displayUsers(int columns) {
         GridLayout grid = findViewById(R.id.groupies_info);
         grid.setColumnCount(columns);
-        for(String id : group.getGroupies()){
+        for (String id : group.getGroupies()) {
             log.loadByUserId(id);
             User groupie = (User) usersDB.getItemById(id);
             groupies.add(groupie);
-            if(!groupie.getId().equals(user.getId())) {
+            if (!groupie.getId().equals(user.getId())) {
                 final GroupUserDisplay userDisplay = new GroupUserDisplay(user, groupie, group, this);
                 userDisplays.add(userDisplay);
                 userDisplay.addView(grid);
@@ -109,15 +115,15 @@ public class GroupPage extends AppCompatActivity {
         }
     }
 
-    private void displayLog(){
+    private void displayLog() {
 //        for(int i = 0; i < 10; i++){
 //            log.insert(new Message(String.valueOf(i), user.getId()));
 //        }
         LinearLayout layout = findViewById(R.id.group_log);
         log.sort();
-        for(DBItem message: log.getMessages()) {
+        for (DBItem message : log.getMessages()) {
             TextView text = new TextView(this);
-            text.setText(((Message)message).getContent() + "\n" + ((Message)message).getFormatDate() + "\n" + "____________");
+            text.setText(((Message) message).getContent() + "\n" + ((Message) message).getFormatDate() + "\n" + "____________");
             layout.addView(text);
         }
     }

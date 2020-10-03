@@ -30,6 +30,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,9 +69,23 @@ public class MainActivity extends AppCompatActivity {
             udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
                 @Override
                 public void onGetAll() {
+//                    HashMap<Fears, Double> vals = new HashMap<>();
+//                    for(Fears fears : Fears.values()){
+//                        vals.put(fears,1.0);
+//                    }
+//                    ItemsDB idb = new ItemsDB();
+//                    for( int i = 0; i < 10; i++)
+//                    {
+//                        Item item = new Item(String.valueOf(i),vals);
+//                        idb.addItem(item);
+//                    }
                     user = (User)udb.getItemById(firebaseUser.getEmail());
 //                    Navigation.openPartnersFind(context, user);
+//                    Navigation.openProfileEdit(context,user);
+//                    Navigation.openItemsEdit(context,false, user,null,null);
+
                     Navigation.openGroupPage(context, user);
+
 //                    ArrayList<Fears> fears = new ArrayList<>();
 //                    fears.add(Fears.Hurricane);
 //                    fears.add(Fears.Zombies);

@@ -20,14 +20,14 @@ import java.util.concurrent.CompletableFuture;
 public class ItemsDB extends DBWrapper {
     protected static String NAME = "name";
 
-    public ItemsDB(){
+    public ItemsDB() {
         super();
         docName = "items";
     }
 
     @Override
     public void updateItem(DBItem updateItem) {
-        Item item = (Item)updateItem;
+        Item item = (Item) updateItem;
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());
         newItem.put(NAME, item.getName());
@@ -44,17 +44,17 @@ public class ItemsDB extends DBWrapper {
     @Override
     protected DBItem parseItem(Map<String, Object> item) {
         Map<Fears, Double> amount = new HashMap<>();
-        amount.put(Fears.Radioactive,(Double) item.get(Fears.Radioactive.name()));
-        amount.put(Fears.Zombies,(Double) item.get(Fears.Zombies.name()));
-        amount.put(Fears.War,(Double) item.get(Fears.War.name()));
-        amount.put(Fears.Hurricane,(Double) item.get(Fears.Hurricane.name()));
-        amount.put(Fears.Flood,(Double) item.get(Fears.Flood.name()));
-        amount.put(Fears.Pandemic,(Double) item.get(Fears.Pandemic.name()));
+        amount.put(Fears.Radioactive, (double) item.get(Fears.Radioactive.name()));
+        amount.put(Fears.Zombies, (double)item.get(Fears.Zombies.name()));
+        amount.put(Fears.War, (double)item.get(Fears.War.name()));
+        amount.put(Fears.Hurricane, (double)item.get(Fears.Hurricane.name()));
+        amount.put(Fears.Flood, (double)  item.get(Fears.Flood.name()));
+        amount.put(Fears.Pandemic, (double) item.get(Fears.Pandemic.name()));
 
-        return new Item((String) item.get(NAME),amount);
+        return new Item((String) item.get(NAME), amount);
     }
 
-    public void getItemsByFears(final ArrayList<Fears> fears){
+    public void getItemsByFears(final ArrayList<Fears> fears) {
         items.clear();
         db.collection(docName)
                 .get()
@@ -64,9 +64,9 @@ public class ItemsDB extends DBWrapper {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> item = document.getData();
-                                Item tempItem = (Item)parseItem(item);
-                                for(Fears fear : fears){
-                                    if(tempItem.getAmount(fear) > 0){
+                                Item tempItem = (Item) parseItem(item);
+                                for (Fears fear : fears) {
+                                    if (tempItem.getAmount(fear) > 0) {
                                         items.put(String.valueOf(item.get(ID)), tempItem);
                                         break;
                                     }
@@ -78,4 +78,25 @@ public class ItemsDB extends DBWrapper {
                     }
                 });
     }
+//
+//    public void getItemsByFear(final Fears fear) {
+////        final ArrayList<Item> tempItems = new ArrayList<>();
+//        db.collection(docName).whereGreaterThan(fear.name(), 0)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Map<String, Object> item = document.getData();
+//                                Item tempItem = (Item) parseItem(item);
+////                                tempItems.add(tempItem);
+//                                items.put(tempItem.getId(),tempItem);
+//                            }
+//
+//                            notifyGetSpecific();
+//                        }
+//                    }
+//                });
+//    }
 }

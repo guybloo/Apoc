@@ -23,6 +23,7 @@ import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemClickListener {
 
@@ -30,30 +31,32 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
     private final String GROUP_TITLE = "Group items";
     public static final String USERS = "users";
     public static final String IS_GROUP = "is_group";
+    public static final String GROUPIES = "groupies";
 
     private ItemAdapter adapter;
     private User user;
     private Group group;
     private Boolean isGroup;
+    ArrayList<User> groupies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_edit);
         Intent intent = getIntent();
-        isGroup = intent.getBooleanExtra(IS_GROUP,true);
+        isGroup = intent.getBooleanExtra(IS_GROUP, true);
 
-        if (isGroup){
+        if (isGroup) {
             ((TextView) findViewById(R.id.items_edit_title)).setText(GROUP_TITLE);
-            group = (Group)intent.getSerializableExtra(USERS);
-        }
-        else {
+            group = (Group) intent.getSerializableExtra(USERS);
+            groupies = (ArrayList<User>) intent.getSerializableExtra(GROUPIES);
+        } else {
             ((TextView) findViewById(R.id.items_edit_title)).setText(PRIVATE_TITLE);
-            user =(User)intent.getSerializableExtra(USERS);
+            user = (User) intent.getSerializableExtra(USERS);
 
         }
 
-        ((Button)findViewById(R.id.items_edit_save)).setOnClickListener(new View.OnClickListener() {
+        ((Button) findViewById(R.id.items_edit_save)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 saveItems();
@@ -63,9 +66,10 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
     }
 
     private void recyclerViewConfig() {
-        RecyclerView recyclerView = findViewById(R.id.items_recycler);
+        final ItemAdapter.OnItemClickListener itemClickListener = this;
+        final RecyclerView recyclerView = findViewById(R.id.items_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        if(isGroup) {
+        if (isGroup) {
             final ItemsDB idb = new ItemsDB();
             idb.getItemsByFears(group.getFears());
             idb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
@@ -76,22 +80,31 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
                 @Override
                 public void onGetSpecific() {
-                    ArrayList<ItemCount> items = new ArrayList<>();
+                    HashMap<String, ItemCount> items = new HashMap<>();
 
-                    for(String key: idb.getItems().keySet()){
+                    for (String key : idb.getItems().keySet()) {
                         ItemCount tempItem = new ItemCount(key);
-//                        for(User user: group.getGroupies()){
-//
-//                        }
+                        items.put(tempItem.getName(), tempItem);
                     }
+                    for (User user : groupies) {
+                        for(ItemCount itemCount : user.getItems()){
+                            if(items.containsKey(itemCount.getName())) {
+                                items.get(itemCount.getName()).sum(itemCount.getAmount());
+                            }
+                        }
+                    }
+                    adapter = new ItemAdapter(new ArrayList<ItemCount>(items.values()), isGroup);
+                    adapter.setOnItemClickListener(itemClickListener);
+                    recyclerView.setAdapter(adapter);
 
                 }
             });
-        }else {
+        } else {
             adapter = new ItemAdapter(user.getItems(), isGroup);
+            adapter.setOnItemClickListener(this);
+            recyclerView.setAdapter(adapter);
         }
-        adapter.setOnItemClickListener(this);
-        recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -103,10 +116,9 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
     @Override
     public void onItemDecrease(int position) {
         ItemCount item = user.getItemFromPosition(position);
-        if(item.getAmount()<=0){
-           item.setAmount(0);
-        }
-        else{
+        if (item.getAmount() <= 0) {
+            item.setAmount(0);
+        } else {
             item.decrease();
         }
         adapter.notifyDataSetChanged();
@@ -119,7 +131,7 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
     }
 
-    private void saveItems(){
+    private void saveItems() {
         UsersDB udb = new UsersDB();
         udb.updateItem(user);
 
