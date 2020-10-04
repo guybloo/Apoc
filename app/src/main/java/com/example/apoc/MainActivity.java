@@ -9,29 +9,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.widget.ImageView;
 
-import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
-import com.example.apoc.DB.GroupsDB;
-import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
-import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.location.LocationTracker;
-import com.example.apoc.types.Fears;
-import com.example.apoc.types.Group;
-import com.example.apoc.types.Item;
-import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.Navigation;
 import com.example.apoc.types.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,114 +39,43 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
 
-//        FirebaseAuth.getInstance().signOut();
-
-
         location = new LocationTracker(this);
         sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+
+        openPage();
+    }
+
+    private void openPage(){
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null) {
 
             final UsersDB udb = new UsersDB();
-            udb.getAllItems();
-//            udb.loadItemByIdFromDB(firebaseUser.getEmail());
+//            udb.getAllItems();
+            udb.loadItemByIdFromDB(firebaseUser.getEmail());
 
             udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
                 @Override
                 public void onGetAll() {
-//                    HashMap<Fears, Double> vals = new HashMap<>();
-//                    for(Fears fears : Fears.values()){
-//                        vals.put(fears,1.0);
-//                    }
-//                    ItemsDB idb = new ItemsDB();
-//                    for( int i = 0; i < 10; i++)
-//                    {
-//                        Item item = new Item(String.valueOf(i),vals);
-//                        idb.addItem(item);
-//                    }
-                    user = (User)udb.getItemById(firebaseUser.getEmail());
-//                    Navigation.openPartnersFind(context, user);
-//                    Navigation.openProfileEdit(context,user);
-//                    Navigation.openItemsEdit(context,false, user,null,null);
-
-                    Navigation.openGroupPage(context, user);
-
-//                    ArrayList<Fears> fears = new ArrayList<>();
-//                    fears.add(Fears.Hurricane);
-//                    fears.add(Fears.Zombies);
-//                    Group group = new Group("we", user.getId(),fears);
-//                    for(DBItem item : new ArrayList<>(udb.getItems().values())){
-//                        group.addMember((User)item);
-//                    }
-//                    GroupsDB db = new GroupsDB();
-//                    db.addItem(group);
-
-
                 }
 
                 @Override
                 public void onGetSpecific() {
-                    user = (User) udb.getItemById(firebaseUser.getEmail());
-                    Navigation.openProfileEdit(context, user);
+                    user = (User)udb.getItemById(firebaseUser.getEmail());
+                    Navigation.openMenu(context, user);
 
                 }
             });
 
         } else {
             Navigation.openRegistration(context);
-
         }
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (Navigation.REGISTERATION_CODE): {
-                if (resultCode == Activity.RESULT_OK) {
-                    final UsersDB udb = new UsersDB();
-//            udb.getAllItems();
-                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                    udb.loadItemByIdFromDB(firebaseUser.getEmail());
 
-                    udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
-                        @Override
-                        public void onGetAll() {
-
-                        }
-
-                        @Override
-                        public void onGetSpecific() {
-                            user = (User) udb.getItemById(firebaseUser.getEmail());
-                            Navigation.openProfileEdit(context, user);
-
-                        }
-                    });
-
-
-//                    userID = data.getStringExtra(Registration.RES_EMAIL);
-//
-//                    boolean isRegister = data.getBooleanExtra(Registration.RES_IS_REGISTER, true);
-//                    if (isRegister) {
-//
-//                        //send to profile edit
-//                        savePreferences();
-//                    } else {
-//                        // send to main menu
-//                    }
-//                }
-//                break;
-                }
-            }
-            case (Navigation.PROFILE_EDIT_CODE): {
-                Navigation.openPartnersFind( context, user);
-
-            }
-            case (Navigation.PARTNERS_FIND_EDIT_CODE): {
-                Navigation.openPartnersFind(this, user);
-            }
-        }
+        openPage();
     }
 
     @Override

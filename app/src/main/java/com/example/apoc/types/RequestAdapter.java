@@ -99,4 +99,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.JoinRequ
         return itemsList.size();
     }
 
+    public User getUserByPosition(int position){
+        return itemsList.get(position);
+    }
+
 }

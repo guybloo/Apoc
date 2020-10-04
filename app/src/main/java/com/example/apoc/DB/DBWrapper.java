@@ -57,7 +57,7 @@ public class DBWrapper {
 //        return wrapper;
 //    }
 
-    public void loadItemByIdFromDB(String id) {
+    public void loadItemByIdFromDB(final String id) {
         items.clear();
         db.collection(docName).whereEqualTo(ID, id)
                 .get()
@@ -67,7 +67,7 @@ public class DBWrapper {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> item = document.getData();
-                                items.put(String.valueOf(item.get(ID)), parseItem(item));
+                                items.put(id, parseItem(item));
                             }
                             notifyGetSpecific();
                             android.util.Log.println(Log.INFO, "list size", String.valueOf(items.size()));

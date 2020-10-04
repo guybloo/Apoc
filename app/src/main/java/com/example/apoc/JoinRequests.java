@@ -8,9 +8,11 @@ import android.os.Bundle;
 
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
+import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.RequestsDB;
 import com.example.apoc.DB.UsersDB;
+import com.example.apoc.types.Group;
 import com.example.apoc.types.ItemAdapter;
 import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.JoinRequest;
@@ -69,18 +71,33 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
 
                         }
                     });
-
                 }
             });
     }
 
     @Override
     public void onRequestApprove(int position) {
-        // todo update user and group when approved
+        final User reqUser = adapter.getUserByPosition(position);
+        final GroupsDB groupsDB = new GroupsDB();
+        groupsDB.getGroupByUser(user.getId());
+        groupsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+            @Override
+            public void onGetAll() {
+
+            }
+
+            @Override
+            public void onGetSpecific() {
+                Group group = (Group)groupsDB.getItems().get(user.getId());
+                assert group != null;
+                group.addMember(reqUser);
+            }
+        });
     }
 
     @Override
     public void onRequestDelete(int position) {
-
+        final User reqUser = adapter.getUserByPosition(position);
+        requestsDB.removeItem((new JoinRequest(reqUser.getId(),user.getId(),false)).getId());
     }
 }

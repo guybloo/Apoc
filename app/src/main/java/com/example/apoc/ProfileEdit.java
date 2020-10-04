@@ -11,6 +11,7 @@ import android.location.Location;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -22,14 +23,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
+import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
+import com.example.apoc.types.Fears;
 import com.example.apoc.types.GridDisplay;
+import com.example.apoc.types.Group;
 import com.example.apoc.types.Item;
 import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.User;
@@ -43,6 +48,8 @@ import java.util.ArrayList;
 public class ProfileEdit extends AppCompatActivity {
 
     public static final String USER_DATA = "user";
+    public final String STATUS_UNCHANGED = "You must choose your status to proceed!";
+    public final String LOCATION_UNDEFINED = "You must set your location to proceed!";
     private static final int PICK_IMAGE_REQUEST = 1;
     private final int LOCATION_ACCURACY = 20;
 
@@ -67,6 +74,7 @@ public class ProfileEdit extends AppCompatActivity {
     private User user;
     private Context cnt;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +96,10 @@ public class ProfileEdit extends AppCompatActivity {
         GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, gridLayouts, true, 4);
 
         image = findViewById(R.id.image);
+
+        if(!user.getImageUrl().equals("")){
+            ImagesDB.showCircleImage(user.getImageUrl(),image,this);
+        }
         pickImg = findViewById(R.id.pickImg);
 
         pickImg.setOnClickListener(new View.OnClickListener() {
@@ -169,29 +181,63 @@ public class ProfileEdit extends AppCompatActivity {
     }
 
     private void saveProfile(){
-        UsersDB udb = new UsersDB();
 
-        if(!status.isChecked()){
-            user.setStatus(UserStatus.loneWolf.name());
-        }
-        else{
-            if(statusInGroup.isChecked()){
-                user.setStatus(UserStatus.alpha.name());
+        UsersDB udb = new UsersDB();
+        final GroupsDB groupsDB = new GroupsDB();
+
+            if (!status.isChecked()) {
+                user.setStatus(UserStatus.loneWolf.name());
+            } else {
+                if (statusInGroup.isChecked()) {
+                    user.setStatus(UserStatus.alpha.name());
+
+                    groupsDB.getGroupByUser(user.getId());
+                    groupsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                        @Override
+                        public void onGetAll() {
+
+                        }
+
+                        @Override
+                        public void onGetSpecific() {
+                            Group group = (Group)groupsDB.getItemById(user.getId());
+                            if(group == null){
+                                group = new Group(user.getNickName(), user.getId(), user.getFears());
+                                groupsDB.addItem(group);
+                                group.addMember(user);
+                            }
+                            else {
+                                group.setFears(user.getFears());
+                                groupsDB.updateItem(group);
+                            }
+                        }
+                    });
+                } else {
+                    user.setStatus(UserStatus.beta.name());
+                }
             }
-            else {
-                user.setStatus(UserStatus.beta.name());
-            }
-        }
+
 
         user.setNickName(nickname.getText().toString());
         user.setPhone(phone.getText().toString());
-        user.setLocationInfo(newLocation);
+        if(newLocation!=null) {
+            user.setLocationInfo(newLocation);
+        }
+
+        if(user.getLocationInfo() == null){
+            Toast.makeText(cnt,LOCATION_UNDEFINED,Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(user.getStatus().equals(UserStatus.undefined.name()))
+        {
+            Toast.makeText(cnt,STATUS_UNCHANGED,Toast.LENGTH_LONG).show();
+            return;
+        }
 
         imagesDB.Upload(imageUri, user, this);
         updateItems(udb); // at end updates users db
         Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
 
-        finish();
     }
 
     private void updateItems(final UsersDB udb){
@@ -218,6 +264,7 @@ public class ProfileEdit extends AppCompatActivity {
                 }
                 user.setItems(newItems);
                 udb.updateItem(user);
+                finish();
             }
         });
     }
@@ -239,29 +286,14 @@ public class ProfileEdit extends AppCompatActivity {
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver() , ourImageUri);
-                image.setImageBitmap(bitmap);
+                ImagesDB.showCircleBitmapImage(bitmap,image,this);
+//                image.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 //            Picasso.with(this).load(ourImageUri).into(image);
         }
-    }
-
-    public String getPathFromURI(Uri ContentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver()
-                .query(ContentUri, proj, null, null, null);
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-
-            res = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-            cursor.close();
-        }
-
-        return res;
     }
 
 }

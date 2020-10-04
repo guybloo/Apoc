@@ -163,5 +163,15 @@ public class User implements DBItem, Serializable {
 
         fears.remove(skill);
     }
+
+    public void copyUserDetails(User other){
+        this.nickName = other.getNickName();
+        this.phone = other.getPhone();
+        this.imageUrl = other.getImageUrl();
+        this.fears = other.getFears();
+        this.skills = other.getSkills();
+        this.items = other.getItems();
+        this.locationInfo = other.locationInfo;
+    }
 }
 

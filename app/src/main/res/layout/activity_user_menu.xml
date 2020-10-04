@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserMenu"
+    android:orientation="vertical">
+    <GridLayout
+        android:id="@+id/menu_user_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/menu_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/menu_edit_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="profile edit"/>
+    <Button
+        android:id="@+id/menu_equipment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="equipment"/>
+    <Button
+        android:id="@+id/menu_partners_find"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="patrners find"/>
+    <Button
+        android:id="@+id/menu_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="group page"/>
+    <Button
+        android:id="@+id/menu_sos_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sos"/>
+    <Button
+        android:id="@+id/menu_log_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="log out"/>
+
+
+</LinearLayout>

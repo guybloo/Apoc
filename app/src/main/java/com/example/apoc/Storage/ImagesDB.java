@@ -2,6 +2,7 @@ package com.example.apoc.Storage;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -69,5 +70,8 @@ public class ImagesDB {
     }
     public static void showCircleImage(String path, ImageView imageView, Context context) {
         Glide.with(context).load(path).apply(RequestOptions.circleCropTransform()).into(imageView);
+    }
+    public static void showCircleBitmapImage(Bitmap image, ImageView imageView, Context context) {
+        Glide.with(context).load(image).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
 }

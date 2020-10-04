@@ -3,7 +3,6 @@ package com.example.apoc.types;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -11,9 +10,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.apoc.DB.RequestsDB;
 import com.example.apoc.R;
 import com.example.apoc.Storage.ImagesDB;
 
@@ -40,16 +37,23 @@ public class GroupUserDisplay {
         params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view = ((Activity)context).getLayoutInflater().inflate(R.layout.user_display, null);
 
-        setUserDetails();
+        updateUserDetails();
 
         ImageView image = view.findViewById(R.id.user_display_image);
-        ImagesDB.showCircleImage(otherUser.getImageUrl(),image,context);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.show();
             }
         });
+    }
+
+
+    public void setImageSize(int size){
+        ImageView image = view.findViewById(R.id.user_display_image);
+
+       image.getLayoutParams().height = size;
+       image.getLayoutParams().width = size;
     }
 
     public interface onDeleteListener {
@@ -89,8 +93,9 @@ public class GroupUserDisplay {
     }
 
 
-    public void setUserDetails ()
+    public void updateUserDetails()
     {
+        ImagesDB.showCircleImage(otherUser.getImageUrl(),(ImageView)view.findViewById(R.id.user_display_image),context);
         openDetails = new AlertDialog.Builder(context);
         View detailsView = ((Activity)context).getLayoutInflater().inflate(R.layout.request_view, null);
         detailsView.findViewById(R.id.request_approve).setVisibility(View.GONE);
@@ -113,7 +118,7 @@ public class GroupUserDisplay {
         ((TextView)detailsView.findViewById(R.id.request_phone)).setText(otherUser.getPhone());
         ((TextView)detailsView.findViewById(R.id.request_email)).setText(otherUser.getEmail());
 
-        ImagesDB.showImage(otherUser.getImageUrl(),(ImageView)detailsView.findViewById(R.id.request_image),context);
+        ImagesDB.showCircleImage(otherUser.getImageUrl(),(ImageView)detailsView.findViewById(R.id.request_image),context);
 //        openDetails.setMessage("Are You Sure to delete?");
         openDetails.setView(detailsView);
         dialog = openDetails.create();

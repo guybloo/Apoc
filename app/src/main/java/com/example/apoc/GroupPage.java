@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 public class GroupPage extends AppCompatActivity {
 
+    private final int IMAGE_SIZE = 100;
     public static String USER = "user";
     private User user;
     private Group group;
@@ -117,6 +118,7 @@ public class GroupPage extends AppCompatActivity {
             groupies.add(groupie);
             if (!groupie.getId().equals(user.getId())) {
                 final GroupUserDisplay userDisplay = new GroupUserDisplay(user, groupie, group, this);
+                userDisplay.setImageSize(IMAGE_SIZE);
                 userDisplays.add(userDisplay);
                 userDisplay.addView(grid);
                 userDisplay.setOnDeleteListener(new GroupUserDisplay.onDeleteListener() {

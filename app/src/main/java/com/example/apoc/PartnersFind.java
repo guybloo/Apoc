@@ -14,6 +14,7 @@ import com.example.apoc.location.LocationInfo;
 import com.example.apoc.types.HelpMethods;
 import com.example.apoc.types.User;
 import com.example.apoc.types.RequestUserDisplay;
+import com.example.apoc.types.UserStatus;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -40,6 +41,8 @@ public class PartnersFind extends AppCompatActivity {
         usersLayout = findViewById(R.id.users_layout);
         user = (User) getIntent().getSerializableExtra(USER);
 
+
+
         requestUserDisplays = new ArrayList<>();
         udb = new UsersDB();
         udb.getAllItems();
@@ -58,14 +61,20 @@ public class PartnersFind extends AppCompatActivity {
     }
 
     private void updateUsers() {
-        for(RequestUserDisplay display : requestUserDisplays){
+        for (RequestUserDisplay display : requestUserDisplays) {
             display.removeView();
         }
         requestUserDisplays.clear();
         ArrayList<DBItem> allUsers = new ArrayList<>(udb.getItems().values());
+        String userStatus;
+        if (user.getStatus().equals(UserStatus.alpha.name())) {
+            userStatus = UserStatus.beta.name();
+        } else {
+            userStatus = UserStatus.alpha.name();
+        }
         for (DBItem temp : allUsers) {
             float userDistance = getDistance(user.getLocationInfo(), ((User) temp).getLocationInfo());
-            if (!user.getId().equals(temp.getId()) && userDistance < distance && !((User)temp).getIsGrouped()) {
+            if (!user.getId().equals(temp.getId()) && userDistance < distance && !((User) temp).getIsGrouped() && ((User) temp).getStatus().equals(userStatus)) {
                 requestUserDisplays.add(new RequestUserDisplay((User) temp, user, userDistance, this));
             }
         }
@@ -77,11 +86,10 @@ public class PartnersFind extends AppCompatActivity {
         for (RequestUserDisplay display : requestUserDisplays) {
             double random = ((new Random()).nextDouble() * 2 * Math.PI);
             int radius = (int) (display.getDistance() / distance * 70) + 15;
-            int x = HelpMethods.getWidth(getXPos(radius,random,CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
-            int y =  HelpMethods.getHeight(getYPos(radius,random,CENTER), usersLayout.getHeight())- (display.getView().getHeight() / 2);
-            display.setParams(x,y);
+            int x = HelpMethods.getWidth(getXPos(radius, random, CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
+            int y = HelpMethods.getHeight(getYPos(radius, random, CENTER), usersLayout.getHeight()) - (display.getView().getHeight() / 2);
+            display.setParams(x, y);
             display.addView(usersLayout);
-
         }
     }
 
@@ -94,10 +102,10 @@ public class PartnersFind extends AppCompatActivity {
     }
 
     private void configSeekbar() {
-       seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                distance = ((double)progress / 100.0) * MAX_DIST;
+                distance = ((double) progress / 100.0) * MAX_DIST;
                 updateUsers();
             }
 

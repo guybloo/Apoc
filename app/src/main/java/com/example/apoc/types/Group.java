@@ -76,6 +76,10 @@ public class Group implements DBItem, Serializable {
         return fears;
     }
 
+    public void setFears(ArrayList<Fears> fears) {
+        this.fears = fears;
+    }
+
     @Override
     public String getId() {
         return leader;
