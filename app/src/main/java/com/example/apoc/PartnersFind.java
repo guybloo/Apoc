@@ -73,8 +73,12 @@ public class PartnersFind extends AppCompatActivity {
             userStatus = UserStatus.alpha.name();
         }
         for (DBItem temp : allUsers) {
-            float userDistance = getDistance(user.getLocationInfo(), ((User) temp).getLocationInfo());
-            if (!user.getId().equals(temp.getId()) && userDistance < distance && !((User) temp).getIsGrouped() && ((User) temp).getStatus().equals(userStatus)) {
+            User tempUser = (User)temp;
+            float userDistance = getDistance(user.getLocationInfo(), tempUser.getLocationInfo());
+            if (!user.getId().equals(temp.getId()) &&
+                    userDistance < distance &&
+                    tempUser.getStatus().equals(userStatus) &&
+                    !(tempUser.getIsGrouped() && tempUser.getStatus().equals(UserStatus.beta.name()))) {
                 requestUserDisplays.add(new RequestUserDisplay((User) temp, user, userDistance, this));
             }
         }
@@ -85,7 +89,7 @@ public class PartnersFind extends AppCompatActivity {
     private void showUsers() {
         for (RequestUserDisplay display : requestUserDisplays) {
             double random = ((new Random()).nextDouble() * 2 * Math.PI);
-            int radius = (int) (display.getDistance() / distance * 70) + 15;
+            int radius = (int) ((display.getDistance() / distance) * 80) + 10;
             int x = HelpMethods.getWidth(getXPos(radius, random, CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
             int y = HelpMethods.getHeight(getYPos(radius, random, CENTER), usersLayout.getHeight()) - (display.getView().getHeight() / 2);
             display.setParams(x, y);

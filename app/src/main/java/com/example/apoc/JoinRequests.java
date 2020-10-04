@@ -18,10 +18,11 @@ import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.JoinRequest;
 import com.example.apoc.types.RequestAdapter;
 import com.example.apoc.types.User;
+import com.example.apoc.types.UserStatus;
 
 import java.util.ArrayList;
 
-public class JoinRequests extends AppCompatActivity implements RequestAdapter.OnItemClickListener{
+public class JoinRequests extends AppCompatActivity implements RequestAdapter.OnItemClickListener {
 
     public static final String USER = "user";
     private User user;
@@ -32,7 +33,7 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_requsets);
-        user = (User)getIntent().getSerializableExtra(USER);
+        user = (User) getIntent().getSerializableExtra(USER);
         requestsDB = new RequestsDB();
 
         recyclerViewConfig();
@@ -44,42 +45,42 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
         final RequestAdapter.OnItemClickListener listener = this;
         requestsDB.getItemsByRecipient(user);
         requestsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
-                @Override
-                public void onGetAll() {
+            @Override
+            public void onGetAll() {
 
-                }
+            }
 
-                @Override
-                public void onGetSpecific() {
-                    final UsersDB udb = new UsersDB();
-                    udb.getAllItems();
-                    udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
-                        @Override
-                        public void onGetAll() {
-                            ArrayList<User> list = new ArrayList<>();
-                            for(DBItem item : new ArrayList<DBItem>(requestsDB.getItems().values())){
-                                list.add((User) udb.getItemById(((JoinRequest) item).getApplier()));
-                            }
-                            // todo connect between users and requests to that we can delete it
-                            adapter = new RequestAdapter(list);
-                            adapter.setOnItemClickListener(listener);
-                            recyclerView.setAdapter(adapter);
+            @Override
+            public void onGetSpecific() {
+                final UsersDB udb = new UsersDB();
+                udb.getAllItems();
+                udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                    @Override
+                    public void onGetAll() {
+                        ArrayList<User> list = new ArrayList<>();
+                        for (DBItem item : new ArrayList<DBItem>(requestsDB.getItems().values())) {
+                            list.add((User) udb.getItemById(((JoinRequest) item).getApplier()));
                         }
+                        // todo connect between users and requests to that we can delete it
+                        adapter = new RequestAdapter(list);
+                        adapter.setOnItemClickListener(listener);
+                        recyclerView.setAdapter(adapter);
+                    }
 
-                        @Override
-                        public void onGetSpecific() {
+                    @Override
+                    public void onGetSpecific() {
 
-                        }
-                    });
-                }
-            });
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void onRequestApprove(int position) {
         final User reqUser = adapter.getUserByPosition(position);
         final GroupsDB groupsDB = new GroupsDB();
-        groupsDB.getGroupByUser(user.getId());
+        groupsDB.getGroupByUser(reqUser.getId());
         groupsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
             @Override
             public void onGetAll() {
@@ -88,9 +89,14 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
 
             @Override
             public void onGetSpecific() {
-                Group group = (Group)groupsDB.getItems().get(user.getId());
-                assert group != null;
-                group.addMember(reqUser);
+                Group group = (Group) groupsDB.getItems().get(reqUser.getId());
+                if (group != null) {
+                    group.addMember(user);
+                    deleteRequest(reqUser, user);
+                    if (user.getStatus().equals(UserStatus.beta.name())) {
+                        finish();
+                    }
+                }
             }
         });
     }
@@ -98,6 +104,11 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
     @Override
     public void onRequestDelete(int position) {
         final User reqUser = adapter.getUserByPosition(position);
-        requestsDB.removeItem((new JoinRequest(reqUser.getId(),user.getId(),false)).getId());
+        deleteRequest(reqUser, user);
+    }
+
+    private void deleteRequest(User applier, User recipient) {
+        requestsDB.removeItem((new JoinRequest(applier.getId(), recipient.getId(), false)).getId());
+
     }
 }

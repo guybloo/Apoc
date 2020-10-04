@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.example.apoc.DB.DBWrapper;
@@ -44,11 +43,12 @@ public class UserMenu extends AppCompatActivity {
 
             @Override
             public void onGetSpecific() {
-                User newUser = (User)usersDB.getItemById(user.getId());
-                if(newUser != null){
+                User newUser = (User) usersDB.getItemById(user.getId());
+                if (newUser != null) {
                     user.copyUserDetails(newUser);
                     userDisplay.updateUserDetails();
                     ((TextView) findViewById(R.id.menu_nickname)).setText(user.getNickName());
+                    buttonsUpdate();
                 }
             }
         });
@@ -57,12 +57,9 @@ public class UserMenu extends AppCompatActivity {
         if (user.getStatus().equals(UserStatus.undefined.name())) {
             Navigation.openProfileEdit(this, user);
         }
-
     }
 
-
-
-    private void showDetails(){
+    private void showDetails() {
         userDisplay = new GroupUserDisplay(user, user, new Group("", "", user.getFears()), this);
         userDisplay.setImageSize(IMAGE_SIZE);
         userDisplay.addView((GridLayout) findViewById(R.id.menu_user_display));
@@ -71,10 +68,12 @@ public class UserMenu extends AppCompatActivity {
     }
 
     private void initializeUI() {
-        final Context context = this;
-
         showDetails();
+        initializeNavigation(this);
+        buttonsUpdate();
+    }
 
+    private void initializeNavigation(final Context context){
         ((Button) findViewById(R.id.menu_edit_profile)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +105,13 @@ public class UserMenu extends AppCompatActivity {
             }
         });
 
+        ((Button) findViewById(R.id.menu_requests)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.openJoinRequests(context, user);
+            }
+        });
+
         ((Button) findViewById(R.id.menu_log_out)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,14 +119,31 @@ public class UserMenu extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
-
-        if (user.getIsGrouped() || user.getStatus().equals(UserStatus.loneWolf.name())) {
+    private void buttonsUpdate(){
+        if ((user.getIsGrouped() && user.getStatus().equals(UserStatus.beta.name())) || user.getStatus().equals(UserStatus.loneWolf.name())) {
             findViewById(R.id.menu_partners_find).setVisibility(View.GONE);
+        }
+        else{
+            findViewById(R.id.menu_partners_find).setVisibility(View.VISIBLE);
+
         }
 
         if (!user.getIsGrouped() || user.getStatus().equals(UserStatus.loneWolf.name())) {
             findViewById(R.id.menu_group).setVisibility(View.GONE);
+        }
+        else{
+            findViewById(R.id.menu_group).setVisibility(View.VISIBLE);
+
+        }
+
+        if((user.getIsGrouped() && user.getStatus().equals(UserStatus.beta.name())) || user.getStatus().equals(UserStatus.loneWolf.name())){
+            findViewById(R.id.menu_requests).setVisibility(View.GONE);
+        }
+        else{
+            findViewById(R.id.menu_requests).setVisibility(View.VISIBLE);
+
         }
     }
 

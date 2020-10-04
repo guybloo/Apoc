@@ -36,6 +36,11 @@
         android:layout_height="wrap_content"
         android:text="group page"/>
     <Button
+        android:id="@+id/menu_requests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Requests"/>
+    <Button
         android:id="@+id/menu_sos_call"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
