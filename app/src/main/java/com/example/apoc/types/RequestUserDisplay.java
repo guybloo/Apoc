@@ -97,7 +97,7 @@ public class RequestUserDisplay {
         openDetails.setView(detailsView).setPositiveButton(SEND_REQUEST, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                JoinRequest joinRequest = new JoinRequest(caller.getId(), user.getId(), caller.getStatus().equals(UserStatus.beta.name()));
+                JoinRequest joinRequest = new JoinRequest(caller.getId(), user.getId(), caller.isBeta());
                 requestsDB.updateItem(joinRequest);
                 Toast.makeText(context, SENT, Toast.LENGTH_SHORT).show();
 

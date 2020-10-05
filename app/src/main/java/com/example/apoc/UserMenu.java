@@ -54,7 +54,7 @@ public class UserMenu extends AppCompatActivity {
         });
 
         initializeUI();
-        if (user.getStatus().equals(UserStatus.undefined.name())) {
+        if (user.isUndefined()) {
             Navigation.openProfileEdit(this, user);
         }
     }
@@ -122,7 +122,7 @@ public class UserMenu extends AppCompatActivity {
     }
 
     private void buttonsUpdate(){
-        if ((user.getIsGrouped() && user.getStatus().equals(UserStatus.beta.name())) || user.getStatus().equals(UserStatus.loneWolf.name())) {
+        if ((user.getIsGrouped() && user.isBeta()) || user.getStatus().equals(UserStatus.loneWolf.name())) {
             findViewById(R.id.menu_partners_find).setVisibility(View.GONE);
         }
         else{
@@ -130,7 +130,7 @@ public class UserMenu extends AppCompatActivity {
 
         }
 
-        if (!user.getIsGrouped() || user.getStatus().equals(UserStatus.loneWolf.name())) {
+        if (!user.getIsGrouped() || user.isLoneWolf()) {
             findViewById(R.id.menu_group).setVisibility(View.GONE);
         }
         else{
@@ -138,7 +138,7 @@ public class UserMenu extends AppCompatActivity {
 
         }
 
-        if((user.getIsGrouped() && user.getStatus().equals(UserStatus.beta.name())) || user.getStatus().equals(UserStatus.loneWolf.name())){
+        if((user.getIsGrouped() && user.isBeta()) || user.getStatus().equals(UserStatus.loneWolf.name())){
             findViewById(R.id.menu_requests).setVisibility(View.GONE);
         }
         else{

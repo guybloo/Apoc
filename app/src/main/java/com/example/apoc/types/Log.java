@@ -6,7 +6,6 @@ import com.example.apoc.DB.LogDB;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -34,11 +33,11 @@ public class Log implements Serializable {
 
             @Override
             public void onGetSpecific() {
-                for(DBItem item : logDB.getItems().values()){
-                    messages.add((Message)item);
-                }
                 counter--;
                 if(counter == 0){
+                    for(DBItem item : logDB.getItems().values()){
+                        messages.add((Message)item);
+                    }
                     notifyLoaded();
                 }
             }
@@ -60,7 +59,7 @@ public class Log implements Serializable {
     }
 
     public void loadByUserId(String id){
-        logDB.getMessagesByUser(id);
+        logDB.loadMessagesByUser(id);
         counter++;
     }
 

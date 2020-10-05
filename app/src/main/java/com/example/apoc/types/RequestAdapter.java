@@ -91,7 +91,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.JoinRequ
         holder.nickname.setText(currentItem.getNickName());
         holder.email.setText(currentItem.getEmail());
         holder.phone.setText(currentItem.getPhone());
-        ImagesDB.showImage(currentItem.getImageUrl(), holder.image,holder.image.getContext());
+        ImagesDB.showCircleImage(currentItem.getImageUrl(), holder.image,holder.image.getContext());
     }
 
     @Override

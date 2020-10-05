@@ -26,6 +26,43 @@ public class Item implements DBItem, Serializable {
         amount.put(Fears.Radioactive, 0.0);
     }
 
+    public Item(String line, String titles) {
+        String[] info = line.split(",");
+        String[] title = titles.split(",");
+
+        name = info[0];
+
+        this.amount = new HashMap<>();
+        for (int i = 1; i <= 6; i++) {
+            switch (title[i]) {
+                case ("Pandemic"): {
+                    amount.put(Fears.Pandemic, Double.parseDouble(info[i]));
+                    break;
+                }
+                case ("War"): {
+                    amount.put(Fears.War, Double.parseDouble(info[i]));
+                    break;
+                }
+                case ("Zombies"): {
+                    amount.put(Fears.Zombies, Double.parseDouble(info[i]));
+                    break;
+                }
+                case ("Radioactive"): {
+                    amount.put(Fears.Radioactive, Double.parseDouble(info[i]));
+                    break;
+                }
+                case ("Flood"): {
+                    amount.put(Fears.Flood, Double.parseDouble(info[i]));
+                    break;
+                }
+                case ("Hurricane"): {
+                    amount.put(Fears.Hurricane, Double.parseDouble(info[i]));
+                    break;
+                }
+            }
+        }
+    }
+
     public void setAmount(Fears fear, double amount) {
         this.amount.put(fear, amount);
     }

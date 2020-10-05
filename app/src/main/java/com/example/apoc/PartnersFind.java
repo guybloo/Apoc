@@ -67,7 +67,7 @@ public class PartnersFind extends AppCompatActivity {
         requestUserDisplays.clear();
         ArrayList<DBItem> allUsers = new ArrayList<>(udb.getItems().values());
         String userStatus;
-        if (user.getStatus().equals(UserStatus.alpha.name())) {
+        if (user.isAlpha()) {
             userStatus = UserStatus.beta.name();
         } else {
             userStatus = UserStatus.alpha.name();
@@ -78,7 +78,7 @@ public class PartnersFind extends AppCompatActivity {
             if (!user.getId().equals(temp.getId()) &&
                     userDistance < distance &&
                     tempUser.getStatus().equals(userStatus) &&
-                    !(tempUser.getIsGrouped() && tempUser.getStatus().equals(UserStatus.beta.name()))) {
+                    !(tempUser.getIsGrouped() && tempUser.isBeta())) {
                 requestUserDisplays.add(new RequestUserDisplay((User) temp, user, userDistance, this));
             }
         }

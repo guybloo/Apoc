@@ -12,12 +12,18 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.example.apoc.DB.DBWrapper;
+import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.location.LocationTracker;
+import com.example.apoc.types.Item;
 import com.example.apoc.types.Navigation;
 import com.example.apoc.types.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
         location = new LocationTracker(this);
         sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+
+//        try {
+//            loadItemsFromCSV();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         openPage();
     }
@@ -94,5 +106,20 @@ public class MainActivity extends AppCompatActivity {
     private void getPreferences() {
 
         userID = sp.getString(ID, "");
+    }
+
+    private void loadItemsFromCSV() throws IOException {
+
+        ItemsDB itemsDB = new ItemsDB();
+        BufferedReader datasetFile = new BufferedReader(new InputStreamReader(this.getResources().openRawResource(R.raw.items)));
+        String line;
+        String titles = datasetFile.readLine();
+        while ((line = datasetFile.readLine()) != null) {
+            if (line.equals(""))
+                continue;
+            Item item = new Item(line,titles);
+            itemsDB.addItem(item);
+
+        }
     }
 }

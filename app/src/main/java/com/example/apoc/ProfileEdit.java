@@ -148,9 +148,9 @@ public class ProfileEdit extends AppCompatActivity {
         statusInGroupLayout = findViewById(R.id.status_layout);
 
 //        statusInGroupLayout.setVisibility(View.INVISIBLE);
-        if(!user.getStatus().equals(UserStatus.undefined.name())){
-            status.setChecked(!user.getStatus().equals(UserStatus.loneWolf.name()));
-            statusInGroup.setChecked(user.getStatus().equals(UserStatus.alpha.name()));
+        if(!user.isUndefined()){
+            status.setChecked(!user.isLoneWolf());
+            statusInGroup.setChecked(user.isAlpha());
 
             status.setEnabled(false);
             statusInGroup.setEnabled(false);
@@ -228,7 +228,7 @@ public class ProfileEdit extends AppCompatActivity {
             Toast.makeText(cnt,LOCATION_UNDEFINED,Toast.LENGTH_LONG).show();
             return;
         }
-        if(user.getStatus().equals(UserStatus.undefined.name()))
+        if(user.isUndefined())
         {
             Toast.makeText(cnt,STATUS_UNCHANGED,Toast.LENGTH_LONG).show();
             return;
@@ -248,18 +248,24 @@ public class ProfileEdit extends AppCompatActivity {
             public void onGetAll() {
             }
 
+
             @Override
             public void onGetSpecific() {
                 ArrayList<ItemCount> newItems = new ArrayList<>();
 
                 for(DBItem item : itemsDB.getItems().values()){
+                    boolean added = false;
                     for(ItemCount itemCount : user.getItems()){
                         if(item.getId().equals(itemCount.getName())){
+                            itemCount.setMax(getMaxCountByFears((Item)item, user.getFears()));
                             newItems.add(itemCount);
+                            added = true;
                             break;
                         }
                     }
-                    newItems.add(new ItemCount(item.getId()));
+                    if(!added) {
+                        newItems.add(new ItemCount(item.getId()));
+                    }
 
                 }
                 user.setItems(newItems);
@@ -267,6 +273,16 @@ public class ProfileEdit extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private double getMaxCountByFears(Item item, ArrayList<Fears> fears){
+        double max = 0;
+        for(Fears fear : fears){
+            if(item.getAmount(fear) > max){
+                max = item.getAmount(fear);
+            }
+        }
+        return max;
     }
 
     private void openFileChooser() {

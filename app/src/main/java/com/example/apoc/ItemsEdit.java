@@ -14,16 +14,21 @@ import android.widget.TextView;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.ItemsDB;
+import com.example.apoc.DB.LogDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.types.Group;
 import com.example.apoc.types.Item;
 import com.example.apoc.types.ItemAdapter;
 import com.example.apoc.types.ItemCount;
+import com.example.apoc.types.Message;
 import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemClickListener {
 
@@ -32,6 +37,7 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
     public static final String USERS = "users";
     public static final String IS_GROUP = "is_group";
     public static final String GROUPIES = "groupies";
+    public final String CHANGED_MESSAGE = "objects has changed";
 
     private ItemAdapter adapter;
     private User user;
@@ -39,14 +45,18 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
     private Boolean isGroup;
     ArrayList<User> groupies;
 
+    private HashSet<ItemCount> changed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_edit);
         Intent intent = getIntent();
         isGroup = intent.getBooleanExtra(IS_GROUP, true);
+        changed = new HashSet<>();
 
         if (isGroup) {
+            findViewById(R.id.items_edit_save).setVisibility(View.GONE);
             ((TextView) findViewById(R.id.items_edit_title)).setText(GROUP_TITLE);
             group = (Group) intent.getSerializableExtra(USERS);
             groupies = (ArrayList<User>) intent.getSerializableExtra(GROUPIES);
@@ -111,29 +121,33 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
     public void onItemIncrease(int position) {
         user.getItemFromPosition(position).increase();
         adapter.notifyDataSetChanged();
+        changed.add(user.getItemFromPosition(position));
     }
 
     @Override
     public void onItemDecrease(int position) {
         ItemCount item = user.getItemFromPosition(position);
-        if (item.getAmount() <= 0) {
-            item.setAmount(0);
-        } else {
-            item.decrease();
-        }
+        item.decrease();
         adapter.notifyDataSetChanged();
+        changed.add(user.getItemFromPosition(position));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-
     }
 
     private void saveItems() {
         UsersDB udb = new UsersDB();
         udb.updateItem(user);
+
+        LogDB logDB = new LogDB();
+        String message = "";
+        for(ItemCount itemCount: changed){
+            message += itemCount.getName() + "_";
+        }
+        message+= CHANGED_MESSAGE;
+        logDB.addItem(new Message(message, user.getId()));
 
         finish();
     }

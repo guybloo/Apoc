@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
         public TextView amount;
         public Button increase;
         public Button decrease;
+        public ProgressBar progressBar;
 
         public ItemsEditViewHolder(@NonNull View itemView, final ItemAdapter.OnItemClickListener listener) {
             super(itemView);
@@ -40,6 +42,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
             amount = itemView.findViewById(R.id.item_amount);
             increase = itemView.findViewById(R.id.increase);
             decrease = itemView.findViewById(R.id.decrease);
+            progressBar = itemView.findViewById(R.id.progress);
 
             increase.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,6 +88,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
     public void onBindViewHolder(@NonNull ItemsEditViewHolder holder, int position) {
         ItemCount currentItem = itemsList.get(position);
         holder.title.setText(currentItem.getName());
+        holder.progressBar.setProgress((int)(currentItem.getPrecentage() * holder.progressBar.getMax()));
         holder.amount.setText(String.valueOf(currentItem.getAmount()));
         if(isGroup){
             holder.increase.setVisibility(View.GONE);

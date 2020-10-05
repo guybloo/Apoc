@@ -15,6 +15,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.rpc.Help;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,8 +49,8 @@ public class LogDB extends DBWrapper {
         return new Message((String) item.get(CONTENT),(String) item.get(WRITER),fromGson((String) item.get(DATE), Date.class));
     }
 
-    public void getMessagesByUser(final String userId){
-        items.clear();
+    public void loadMessagesByUser(final String userId){
+//        items.clear();
         db.collection(docName).whereEqualTo(WRITER,userId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -66,5 +67,16 @@ public class LogDB extends DBWrapper {
                         }
                     }
                 });
+    }
+
+    public ArrayList<Message> getMessagesByUser(String userId){
+        ArrayList<Message> messages = new ArrayList<>();
+        for(DBItem msg : items.values()){
+            Message tempMessage = (Message)msg;
+            if(tempMessage.getWriter().equals(userId)){
+                messages.add(tempMessage);
+            }
+        }
+        return messages;
     }
 }

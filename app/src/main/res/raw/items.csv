@@ -1,0 +1,41 @@
+﻿name,Flood,Hurricane,Pandemic,Radioactive,War,Zombies
+Water per day,4,2,7,7,5,3
+Food per day,4,2,7,7,5,3
+Flashlight,1,1,1,1,1,1
+Switchblade,1,1,0,0,1,1
+Battery radio,1,1,0,1,1,1
+First aid kit,1,1,1,1,1,1
+Set of batteris,3,1,1,1,3,4
+Whistle,1,1,0,1,1,1
+Dust mask,0,2,0,1,2,0
+Duct tape,2,2,0,2,2,4
+Toilet paper,8,4,8,8,5,3
+Garbage bags,5,5,5,4,0,2
+Wrench or pliers,1,1,0,0,1,1
+Can opener,1,1,1,1,1,1
+Maps,1,0,0,1,1,1
+Cell phone,1,1,1,1,1,1
+Soap and sanitizer,1,1,1,1,1,1
+Sleeping bag,1,1,0,1,1,1
+Extra clothing,1,1,1,1,1,1
+Matches,1,1,0,0,1,1
+Paper and pencils,1,1,1,1,1,1
+Books and games,1,3,3,1,1,0
+Cooking dishes,1,1,0,0,1,1
+Personal documents,1,1,1,1,1,1
+Sunscreen,1,0,0,1,1,1
+Rain poncho,1,1,0,1,1,0
+Body warmers,1,1,0,0,0,1
+Tent,1,0,0,0,0,1
+Light sticks,1,1,0,0,0,1
+Gloves,0,0,1,1,0,1
+Rope,1,1,0,0,1,1
+Shelter,1,1,0,1,1,1
+Car,0,1,1,1,1,1
+Gas,0,1,1,1,1,1
+Radiation detector,0,0,0,1,1,0
+Water Filtration Straw,1,1,0,1,1,1
+Inflatable boat,1,1,0,0,0,0
+Gun,1,1,1,0,1,1
+Bullets,1,1,1,0,1,1
+N95 mask,0,0,1,1,1,0

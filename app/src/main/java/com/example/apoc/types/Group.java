@@ -4,18 +4,22 @@ import android.service.autofill.AutofillService;
 
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.GroupsDB;
+import com.example.apoc.DB.LogDB;
 import com.example.apoc.DB.UsersDB;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Group implements DBItem, Serializable {
+    private String ADD_LOG = "%s has join to the group";
+    private String REMOVE_LOG = "%s has left the group";
 
-    // todo we need to save the name of the leader? other things about the group like fears?
+
     private String groupName;
     private String leader;
     private ArrayList<String> groupies;
     private ArrayList<Fears> fears;
+    private LogDB logDB;
 
     public Group(String name, String leader, ArrayList<String> newGroupies, ArrayList<Fears> fears)
     {
@@ -23,6 +27,7 @@ public class Group implements DBItem, Serializable {
         this.leader = leader;
         this.groupies = newGroupies;
         this.fears = fears;
+        logDB =  new LogDB();
     }
     public Group(String name, String leader, ArrayList<Fears> fears)
     {
@@ -30,6 +35,8 @@ public class Group implements DBItem, Serializable {
         this.leader = leader;
         this.groupies = new ArrayList<>();
         this.fears = fears;
+        logDB =  new LogDB();
+
     }
 
     public void addMember (User newUser)
@@ -37,18 +44,22 @@ public class Group implements DBItem, Serializable {
         groupies.add(newUser.getId());
         newUser.setIsGrouped(true);
         updateUserAndGroup(newUser);
-
-
+        addLog(newUser,ADD_LOG);
     }
     public void removeMember (User user)
     {
         groupies.remove(user.getId());
         user.setIsGrouped(false);
         updateUserAndGroup(user);
+        addLog(user,REMOVE_LOG);
     }
     private void updateUserAndGroup(User user){
         (new GroupsDB()).updateItem(this);
         (new UsersDB()).updateItem(user);
+    }
+
+    private void addLog(User user, String message){
+        logDB.addItem(new Message(String.format(message,user.getId()),getId()));
     }
 
     public String getGroupName()

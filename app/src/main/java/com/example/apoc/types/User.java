@@ -90,6 +90,7 @@ public class User implements DBItem, Serializable {
     }
 
     public void setItems(ArrayList<ItemCount> items) {
+        this.items.clear();
         this.items = items;
     }
 
@@ -172,6 +173,19 @@ public class User implements DBItem, Serializable {
         this.skills = other.getSkills();
         this.items = other.getItems();
         this.locationInfo = other.locationInfo;
+    }
+
+    public boolean isAlpha(){
+        return status.equals(UserStatus.alpha.name());
+    }
+    public boolean isBeta(){
+        return status.equals(UserStatus.beta.name());
+    }
+    public boolean isLoneWolf(){
+        return status.equals(UserStatus.loneWolf.name());
+    }
+    public boolean isUndefined(){
+        return status.equals(UserStatus.undefined.name());
     }
 }
 
