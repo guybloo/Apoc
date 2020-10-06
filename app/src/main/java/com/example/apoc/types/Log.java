@@ -88,13 +88,23 @@ public class Log implements Serializable {
     /**
      * sort the messages by date
      */
-    public void sort() {
-        Collections.sort(messages, new Comparator<Message>() {
-            @Override
-            public int compare(Message o1, Message o2) {
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
+    public void sort(boolean ascending) {
+        if(ascending) {
+            Collections.sort(messages, new Comparator<Message>() {
+                @Override
+                public int compare(Message o1, Message o2) {
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
+        }
+        else {
+            Collections.sort(messages, new Comparator<Message>() {
+                @Override
+                public int compare(Message o1, Message o2) {
+                    return o2.getDate().compareTo(o1.getDate());
+                }
+            });
+        }
     }
 
     public ArrayList<Message> getMessages() {

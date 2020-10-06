@@ -19,7 +19,6 @@ public class Group implements DBItem, Serializable {
     private String leader;
     private ArrayList<String> groupies;
     private ArrayList<Fears> fears;
-    private LogDB logDB;
 
     public Group(String name, String leader, ArrayList<String> newGroupies, ArrayList<Fears> fears)
     {
@@ -27,7 +26,6 @@ public class Group implements DBItem, Serializable {
         this.leader = leader;
         this.groupies = newGroupies;
         this.fears = fears;
-        logDB =  new LogDB();
     }
     public Group(String name, String leader, ArrayList<Fears> fears)
     {
@@ -35,7 +33,6 @@ public class Group implements DBItem, Serializable {
         this.leader = leader;
         this.groupies = new ArrayList<>();
         this.fears = fears;
-        logDB =  new LogDB();
 
     }
 
@@ -59,7 +56,7 @@ public class Group implements DBItem, Serializable {
     }
 
     private void addLog(User user, String message){
-        logDB.addItem(new Message(String.format(message,user.getId()),getId()));
+        (new LogDB()).addItem(new Message(String.format(message,user.getId()),getId()));
     }
 
     public String getGroupName()

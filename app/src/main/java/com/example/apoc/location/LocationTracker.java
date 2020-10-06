@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -21,6 +22,7 @@ import com.example.apoc.DB.DBWrapper;
 
 
 public class LocationTracker implements LocationListener {
+    public static int ACCURACY = 20;
     private static final String MSG = "Location services are MANDATORY. Without permission some features won't work.";
     private int CODE = 1;
 
@@ -62,10 +64,15 @@ public class LocationTracker implements LocationListener {
      * else, start tracking.
      */
     public boolean startTracking() {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // ask for permission
             ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, CODE);
+            Log.d("Error", "Can't get location permissions");
+            return false;
+        }
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // ask for permission
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, CODE);
             Log.d("Error", "Can't get location permissions");
             return false;
         }
@@ -76,6 +83,9 @@ public class LocationTracker implements LocationListener {
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this, Looper.getMainLooper());
 //        broadCast(TRACK_START, null);
+        boolean is_enable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+
         isTracking = true;
         return true;
     }
@@ -123,9 +133,10 @@ public class LocationTracker implements LocationListener {
                         })
                         .create().show();
             }
-        } else {
-            startTracking();
         }
+//        else {
+//            startTracking();
+//        }
     }
 
     @Override

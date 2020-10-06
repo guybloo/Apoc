@@ -33,10 +33,30 @@
         android:enabled="false"
         android:text="map"
         app:layout_constraintTop_toBottomOf="@id/group_equipment"/>
-    <ScrollView
+    <Button
+        android:id="@+id/group_sos_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sos"
+        app:layout_constraintTop_toBottomOf="@id/group_map"/>
+    <EditText
+        android:id="@+id/group_leader_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/group_sos_call"
+        app:layout_constraintRight_toLeftOf="@id/group_leader_message_update"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <Button
+        android:id="@+id/group_leader_message_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/group_map"
+        app:layout_constraintTop_toBottomOf="@id/group_sos_call"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="UPDATE"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/group_leader_message"
         app:layout_constraintBottom_toTopOf="@id/group_leave"
         tools:ignore="MissingConstraints">
         <LinearLayout

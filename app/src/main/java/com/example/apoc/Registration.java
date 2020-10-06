@@ -13,7 +13,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.apoc.DB.LogDB;
 import com.example.apoc.DB.UsersDB;
+import com.example.apoc.types.Message;
 import com.example.apoc.types.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +30,7 @@ public class Registration extends AppCompatActivity {
     private final String SIGN = "Sign in";
     private final String EMAIL = "Please enter email...";
     private final String PASS = "Please enter password!";
+    private final String REGISTER_LOG = "%s has registered and now has a chance to SURVIVE!";
 
     public static final String RES_EMAIL = "email";
     public static final String RES_USER = "user";
@@ -100,6 +103,7 @@ public class Registration extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             User user = new User(email);
                             (new UsersDB()).addItem(user);
+                            (new LogDB()).addItem(new Message(String.format(REGISTER_LOG,user.getId()),user.getId()));
                             returnResult(true);
                         } else {
                             Toast.makeText(getApplicationContext(), String.format(FAIL, REG), Toast.LENGTH_LONG).show();

@@ -3,7 +3,9 @@ package com.example.apoc;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         context = this;
 
         location = new LocationTracker(this);
+
+        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.SEND_SMS}, 0);
+
         sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
 //        try {

@@ -1,5 +1,6 @@
 package com.example.apoc;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -28,6 +29,7 @@ import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.ItemsDB;
+import com.example.apoc.DB.LogDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.location.LocationInfo;
@@ -37,6 +39,8 @@ import com.example.apoc.types.GridDisplay;
 import com.example.apoc.types.Group;
 import com.example.apoc.types.Item;
 import com.example.apoc.types.ItemCount;
+import com.example.apoc.types.Log;
+import com.example.apoc.types.Message;
 import com.example.apoc.types.User;
 import com.example.apoc.types.UserStatus;
 //import com.squareup.picasso.Picasso;
@@ -50,6 +54,7 @@ public class ProfileEdit extends AppCompatActivity {
     public static final String USER_DATA = "user";
     public final String STATUS_UNCHANGED = "You must choose your status to proceed!";
     public final String LOCATION_UNDEFINED = "You must set your location to proceed!";
+    public final String PROFILE_UPDATED_LOG = "%s info has been updated";
     private static final int PICK_IMAGE_REQUEST = 1;
     private final int LOCATION_ACCURACY = 20;
 
@@ -73,6 +78,7 @@ public class ProfileEdit extends AppCompatActivity {
 
     private User user;
     private Context cnt;
+    LocationTracker locationTracker;
 
 
     @Override
@@ -123,23 +129,25 @@ public class ProfileEdit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // add waiting indication
-                final LocationTracker location = new LocationTracker(cnt);
-                location.setLocationUpdateListener(new LocationTracker.OnLocationUpdateListener() {
+                locationTracker = new LocationTracker(cnt);
+
+                locationTracker.setLocationUpdateListener(new LocationTracker.OnLocationUpdateListener() {
                     @Override
                     public void onLocationUpdate() {
-                        if(location.getInfo().getAccuracy() <= LOCATION_ACCURACY){
-                            newLocation = location.getInfo();
-                            location.stopTracking();
+                        if(locationTracker.getInfo().getAccuracy() <= LocationTracker.ACCURACY){
+                            newLocation = locationTracker.getInfo();
+                            locationTracker.stopTracking();
                             Toast.makeText(cnt,"Location Updated",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-                if(location.startTracking()) {
-                    newLocation = location.getInfo();
-                }
-                else{
-                    // todo notify location didnt work
-                }
+//                if(location.startTracking()) {
+//                    newLocation = location.getInfo();
+//                }
+//                else{
+//                    // todo notify location didnt work
+//                }
+                locationTracker.startTracking();
             }
         });
 
@@ -270,6 +278,7 @@ public class ProfileEdit extends AppCompatActivity {
                 }
                 user.setItems(newItems);
                 udb.updateItem(user);
+                (new LogDB()).addItem(new Message(String.format(PROFILE_UPDATED_LOG,user.getId()),user.getId()));
                 finish();
             }
         });
@@ -312,4 +321,8 @@ public class ProfileEdit extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
+        locationTracker.onPermissionResult(requestCode, permission, grantResults);
+    }
 }

@@ -40,11 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Requests"/>
-    <Button
-        android:id="@+id/menu_sos_call"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="sos"/>
+
     <Button
         android:id="@+id/menu_log_out"
         android:layout_width="match_parent"
