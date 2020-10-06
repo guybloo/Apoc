@@ -28,30 +28,33 @@ public class LogDB extends DBWrapper {
     protected static String WRITER = "writer";
     protected static String DATE = "date";
 
-    public LogDB(){
+    public LogDB() {
         super();
         docName = "log";
     }
+
     @Override
     public void updateItem(DBItem updateItem) {
-        Message item = (Message)updateItem;
+        Message item = (Message) updateItem;
         Map<String, Object> newItem = new HashMap<>();
         newItem.put(ID, item.getId());
         newItem.put(WRITER, item.getWriter());
         newItem.put(CONTENT, item.getContent());
-        newItem.put(DATE, toGson(item.getDate()));
+        newItem.put(DATE, item.getDate().getTime());
 
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
     @Override
     protected DBItem parseItem(Map<String, Object> item) {
-        return new Message((String) item.get(CONTENT),(String) item.get(WRITER),fromGson((String) item.get(DATE), Date.class));
+        Date date = new Date();
+        date.setTime((long) item.get(DATE));
+        return new Message((String) item.get(CONTENT), (String) item.get(WRITER), date);
     }
 
-    public void loadMessagesByUser(final String userId){
+    public void loadMessagesByUser(final String userId) {
 //        items.clear();
-        db.collection(docName).whereEqualTo(WRITER,userId)
+        db.collection(docName).whereEqualTo(WRITER, userId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -60,7 +63,7 @@ public class LogDB extends DBWrapper {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> item = document.getData();
                                 Message temp = (Message) parseItem(item);
-                                items.put(temp.getId(),temp);
+                                items.put(temp.getId(), temp);
                             }
 
                             notifyGetSpecific();
@@ -69,11 +72,11 @@ public class LogDB extends DBWrapper {
                 });
     }
 
-    public ArrayList<Message> getMessagesByUser(String userId){
+    public ArrayList<Message> getMessagesByUser(String userId) {
         ArrayList<Message> messages = new ArrayList<>();
-        for(DBItem msg : items.values()){
-            Message tempMessage = (Message)msg;
-            if(tempMessage.getWriter().equals(userId)){
+        for (DBItem msg : items.values()) {
+            Message tempMessage = (Message) msg;
+            if (tempMessage.getWriter().equals(userId)) {
                 messages.add(tempMessage);
             }
         }

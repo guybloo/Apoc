@@ -40,6 +40,7 @@ public class GroupPage extends AppCompatActivity {
     private final int IMAGE_SIZE = 100;
     public static String USER = "user";
     private String MESSAGE_UPDATED = "Your message has been updated";
+    private String SOS_LOG = "%s called SOS";
     private String SMS_SENT = "SMS sent to %s";
     private User user;
     private Group group;
@@ -100,9 +101,12 @@ public class GroupPage extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     if (!leaderMessage.getText().toString().equals("")) {
-                                        log.insert(new Message(leaderMessage.getText().toString(), user.getId()));
+                                        Message message = new Message(leaderMessage.getText().toString(), user.getId());
+                                        log.insert(message);
                                         Toast.makeText(context, MESSAGE_UPDATED, Toast.LENGTH_SHORT).show();
                                         leaderMessage.setText("");
+                                        displayMessage(message,(LinearLayout)findViewById(R.id.group_log));
+
                                     }
                                 }
                             });
@@ -150,40 +154,9 @@ public class GroupPage extends AppCompatActivity {
         findViewById(R.id.group_sos_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final LocationTracker location = new LocationTracker(context);
-                location.startTracking();
-                location.setLocationUpdateListener(new LocationTracker.OnLocationUpdateListener() {
-                    @Override
-                    public void onLocationUpdate() {
-                        if (location.getInfo().getAccuracy() <= LocationTracker.ACCURACY) {
-                            LocationInfo newLocation = location.getInfo();
-                            location.stopTracking();
-                            for (User groupie : groupies) {
-//                                Intent intent = new Intent();
-//                                intent.putExtra(LocalSendSmsBroadcastReceiver.PHONE, groupie.getPhone());
-//                                intent.putExtra(LocalSendSmsBroadcastReceiver.CONTENT, String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()));
-//                                intent.setAction(SMS_ACTION);
-//                                sendBroadcast(intent);
-
-                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
-                                        ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-                                    android.util.Log.d("Error", "Can't get sms permissions");
-                                    return;
-                                }
-
-                                // Get the default instance of the SmsManager
-                                SmsManager smsManager = SmsManager.getDefault();
-                                smsManager.sendTextMessage(groupie.getPhone(),
-                                        null,
-                                        String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()),
-                                        null,
-                                        null);
-                                Toast.makeText(context, String.format(SMS_SENT,groupie.getPhone()),Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    }
-                });
+                sosSend(context);
+                Message message = new Message(String.format(SOS_LOG,user.getId()),user.getId());
+                log.insert(message);
             }
         });
     }
@@ -216,14 +189,19 @@ public class GroupPage extends AppCompatActivity {
         LinearLayout layout = findViewById(R.id.group_log);
         log.sort(false);
         for (DBItem message : log.getMessages()) {
-            TextView text = new TextView(this);
-            text.setText(((Message) message).getContent() + "\n" + ((Message) message).getFormatDate() + "\n" + "____________");
-            layout.addView(text);
+            displayMessage((Message)message, layout);
         }
     }
 
-    private void SosSend() {
-        final LocationTracker location = new LocationTracker(this);
+    private void displayMessage(Message message, LinearLayout layout){
+        TextView text = new TextView(this);
+        text.setText(message.getContent() + "\n" + message.getFormatDate() + "\n" + "____________");
+        layout.addView(text,0);
+    }
+
+    private void sosSend(final Context context) {
+        final LocationTracker location = new LocationTracker(context);
+        location.startTracking();
         location.setLocationUpdateListener(new LocationTracker.OnLocationUpdateListener() {
             @Override
             public void onLocationUpdate() {
@@ -231,11 +209,22 @@ public class GroupPage extends AppCompatActivity {
                     LocationInfo newLocation = location.getInfo();
                     location.stopTracking();
                     for (User groupie : groupies) {
-                        Intent intent = new Intent();
-                        intent.putExtra(LocalSendSmsBroadcastReceiver.PHONE, groupie.getPhone());
-                        intent.putExtra(LocalSendSmsBroadcastReceiver.CONTENT, String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()));
-                        intent.setAction(SMS_ACTION);
-                        sendBroadcast(intent);
+
+                        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
+                                ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                            android.util.Log.d("Error", "Can't get sms permissions");
+                            return;
+                        }
+
+                        // Get the default instance of the SmsManager
+                        SmsManager smsManager = SmsManager.getDefault();
+                        smsManager.sendTextMessage(groupie.getPhone(),
+                                null,
+                                String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()),
+                                null,
+                                null);
+                        Toast.makeText(context, String.format(SMS_SENT,groupie.getPhone()),Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
