@@ -1,11 +1,15 @@
 package com.example.apoc;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +49,7 @@ public class GroupPage extends AppCompatActivity {
     private ArrayList<GroupUserDisplay> userDisplays;
     private ArrayList<User> groupies;
 
-    private String SOS_MESSAGE = "%s is in danger! this is his location: \n https://www.google.com/maps/search/?api=1&query=%s,%s";
+    private String SOS_MESSAGE = "%s is in danger! this is his location: \n https://www.google.com/maps/search/?api=1&query=%s,%s \nThis message Was sent from APOC app";
     private LocalSendSmsBroadcastReceiver smsReceiver;
     private int SMS_CODE = 1;
 
@@ -155,12 +159,27 @@ public class GroupPage extends AppCompatActivity {
                             LocationInfo newLocation = location.getInfo();
                             location.stopTracking();
                             for (User groupie : groupies) {
-                                Intent intent = new Intent();
-                                intent.putExtra(LocalSendSmsBroadcastReceiver.PHONE, groupie.getPhone());
-                                intent.putExtra(LocalSendSmsBroadcastReceiver.CONTENT, String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()));
-                                intent.setAction(SMS_ACTION);
-                                sendBroadcast(intent);
+//                                Intent intent = new Intent();
+//                                intent.putExtra(LocalSendSmsBroadcastReceiver.PHONE, groupie.getPhone());
+//                                intent.putExtra(LocalSendSmsBroadcastReceiver.CONTENT, String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()));
+//                                intent.setAction(SMS_ACTION);
+//                                sendBroadcast(intent);
+
+                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED &&
+                                        ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+                                    android.util.Log.d("Error", "Can't get sms permissions");
+                                    return;
+                                }
+
+                                // Get the default instance of the SmsManager
+                                SmsManager smsManager = SmsManager.getDefault();
+                                smsManager.sendTextMessage(groupie.getPhone(),
+                                        null,
+                                        String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()),
+                                        null,
+                                        null);
                                 Toast.makeText(context, String.format(SMS_SENT,groupie.getPhone()),Toast.LENGTH_SHORT).show();
+
                             }
                         }
                     }

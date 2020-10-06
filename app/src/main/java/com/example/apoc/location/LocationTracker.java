@@ -81,6 +81,7 @@ public class LocationTracker implements LocationListener {
         assert locationManager != null;
 
 
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this, Looper.getMainLooper());
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this, Looper.getMainLooper());
 //        broadCast(TRACK_START, null);
         boolean is_enable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
