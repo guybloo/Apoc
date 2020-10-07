@@ -26,6 +26,8 @@
         android:layout_height="wrap_content" />
 
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/pickImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,15 +50,22 @@
         android:layout_height="wrap_content"/>
 
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/location"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="Set Location"/>
 
     <!-- Fears -->
-    <GridLayout
-        android:id="@+id/profile_edit_grid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <GridLayout
+            android:id="@+id/profile_edit_fears"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <GridLayout
+            android:id="@+id/profile_edit_skills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,6 +102,8 @@
             android:text="Leader"/>
     </LinearLayout>
     <Button
+        style="@style/transparentButton"
+        android:text="Save"
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

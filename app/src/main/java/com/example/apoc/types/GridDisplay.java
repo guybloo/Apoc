@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.apoc.Storage.ImagesDB;
 
@@ -13,18 +14,21 @@ import java.util.ArrayList;
 public class GridDisplay {
     private Context context;
     private User user;
-    private GridLayout gridLayout;
+    private GridLayout fearsLayout;
+    private GridLayout skillsLayout;
     private boolean isEdit;
     private int columns;
 
 
-    public GridDisplay(Context context, User user, GridLayout grid, boolean isEdit, int columns){
+    public GridDisplay(Context context, User user, GridLayout fears, GridLayout skills, boolean isEdit, int columns){
         this.context = context;
         this.user = user;
-        this.gridLayout = grid;
+        this.fearsLayout = fears;
+        this.skillsLayout = skills;
         this.isEdit = isEdit;
         this.columns = columns;
-        grid.setColumnCount(columns);
+        fearsLayout.setColumnCount(columns);
+        skills.setColumnCount(columns);
         if(isEdit)
         {
             createButtons();
@@ -36,15 +40,17 @@ public class GridDisplay {
 
     private void createViews(){
         for(final Fears fear : user.getFears()){
-            ImageView imageView = new ImageView(context);
+//            ImageView imageView = new ImageView(context);
             // add logos
-            gridLayout.addView(imageView);
+            TextView imageView = new TextView(context);
+            imageView.setText("hii!");
+            fearsLayout.addView(imageView);
         }
 
         for(final Skills skill : user.getSkills()){
             ImageView imageView = new ImageView(context);
             // add logos
-            gridLayout.addView(imageView);
+            skillsLayout.addView(imageView);
         }
     }
     private void createButtons(){
@@ -61,7 +67,7 @@ public class GridDisplay {
                     }
                 }
             });
-            gridLayout.addView(btn);
+            fearsLayout.addView(btn);
         }
 
         for(final Skills skill : Skills.values()){
@@ -77,7 +83,7 @@ public class GridDisplay {
                     }
                 }
             });
-            gridLayout.addView(btn);
+            skillsLayout.addView(btn);
         }
     }
 }

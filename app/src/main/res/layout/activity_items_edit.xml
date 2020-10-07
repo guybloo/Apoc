@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"/>
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/items_edit_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

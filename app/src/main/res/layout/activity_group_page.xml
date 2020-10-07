@@ -21,12 +21,16 @@
         app:layout_constraintTop_toBottomOf="@id/group_name"/>
 
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/group_equipment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="equipment"
         app:layout_constraintTop_toBottomOf="@id/groupies_info"/>
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/group_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +38,8 @@
         android:text="map"
         app:layout_constraintTop_toBottomOf="@id/group_equipment"/>
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/group_sos_call"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +53,8 @@
         app:layout_constraintRight_toLeftOf="@id/group_leader_message_update"
         app:layout_constraintLeft_toLeftOf="parent"/>
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/group_leader_message_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,6 +74,8 @@
             android:orientation="vertical"/>
     </ScrollView>
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/group_leave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

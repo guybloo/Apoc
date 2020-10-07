@@ -19,6 +19,12 @@ import com.example.apoc.types.UserStatus;
 import java.util.ArrayList;
 import java.util.Random;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import android.os.Bundle;
+import android.widget.ImageView;
+
 public class PartnersFind extends AppCompatActivity {
 
     public static final String USER = "user";
@@ -31,6 +37,9 @@ public class PartnersFind extends AppCompatActivity {
     private UsersDB udb;
     private RelativeLayout usersLayout;
     private SeekBar seekbar;
+
+    private Animation rotateAnimation;
+    private ImageView radar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +67,15 @@ public class PartnersFind extends AppCompatActivity {
             }
         });
         configSeekbar();
+
+        radar = findViewById(R.id.radar);
+        rotateAnimation();
+    }
+
+    public void rotateAnimation ()
+    {
+        rotateAnimation= AnimationUtils.loadAnimation(this,R.anim.rotate);
+        radar.startAnimation(rotateAnimation);
     }
 
     private void updateUsers() {

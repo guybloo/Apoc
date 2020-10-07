@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ import com.example.apoc.Storage.ImagesDB;
 public class RequestUserDisplay {
     private String SEND_REQUEST = "Send request";
     private String CLOSE = "Close";
-    private String SENT = "Request sent";
+    private String SENT = "Request sent to %s";
 
     private User user;
     private User caller;
@@ -90,6 +91,11 @@ public class RequestUserDisplay {
         final RequestsDB requestsDB = new RequestsDB();
         openDetails = new AlertDialog.Builder(context);
         View detailsView = ((Activity)context).getLayoutInflater().inflate(R.layout.user_details_display, null);
+
+        GridLayout fearsLayout = detailsView.findViewById(R.id.user_details_fears);
+        GridLayout skillsLayout = detailsView.findViewById(R.id.user_details_skills);
+        GridDisplay gridDisplay = new GridDisplay(context,user, fearsLayout, skillsLayout, false, 6);
+
         ((TextView)detailsView.findViewById(R.id.user_details_nickname)).setText(user.getNickName());
         ImagesDB.showCircleImage(user.getImageUrl(),(ImageView)detailsView.findViewById(R.id.user_details_display_image),context);
 //        openDetails.setMessage("Are You Sure to delete?");
@@ -99,7 +105,7 @@ public class RequestUserDisplay {
             public void onClick(DialogInterface dialog, int which) {
                 JoinRequest joinRequest = new JoinRequest(caller.getId(), user.getId(), caller.isBeta());
                 requestsDB.updateItem(joinRequest);
-                Toast.makeText(context, SENT, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, String.format(SENT,user.getId()), Toast.LENGTH_LONG).show();
 
             }
         });

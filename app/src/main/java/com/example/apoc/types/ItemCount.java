@@ -36,8 +36,9 @@ public class ItemCount implements Serializable {
             amount--;
         }
     }
-    public void sum(double amount){
+    public void sum(double amount, double max){
         this.amount += amount;
+        this.max += max;
     }
 
     public void setMax(double max) {
@@ -46,5 +47,9 @@ public class ItemCount implements Serializable {
 
     public double getPrecentage(){
         return amount / max;
+    }
+
+    public double getMax() {
+        return max;
     }
 }

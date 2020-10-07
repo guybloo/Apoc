@@ -68,7 +68,8 @@ public class ProfileEdit extends AppCompatActivity {
     private Button location;
     private SwitchCompat status;
     private SwitchCompat statusInGroup;
-    private GridLayout gridLayouts;
+    private GridLayout fearsLayouts;
+    private GridLayout skillsLayouts;
 
     private Button save;
 
@@ -98,8 +99,9 @@ public class ProfileEdit extends AppCompatActivity {
     }
 
     private void initializeUI() {
-        gridLayouts = findViewById(R.id.profile_edit_grid);
-        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, gridLayouts, true, 4);
+        fearsLayouts = findViewById(R.id.profile_edit_fears);
+        skillsLayouts = findViewById(R.id.profile_edit_skills);
+        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, fearsLayouts, skillsLayouts, true, 3);
 
         image = findViewById(R.id.image);
 
@@ -123,6 +125,8 @@ public class ProfileEdit extends AppCompatActivity {
 
         phone = findViewById(R.id.phone);
         phone.setText(user.getPhone());
+
+
 
         location = findViewById(R.id.location);
         location.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +159,6 @@ public class ProfileEdit extends AppCompatActivity {
         statusInGroup = findViewById(R.id.status_in_group);
         statusInGroupLayout = findViewById(R.id.status_layout);
 
-//        statusInGroupLayout.setVisibility(View.INVISIBLE);
         if(!user.isUndefined()){
             status.setChecked(!user.isLoneWolf());
             statusInGroup.setChecked(user.isAlpha());
@@ -163,6 +166,8 @@ public class ProfileEdit extends AppCompatActivity {
             status.setEnabled(false);
             statusInGroup.setEnabled(false);
         }
+//        statusInGroupLayout.setVisibility(View.INVISIBLE);
+
 
         status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

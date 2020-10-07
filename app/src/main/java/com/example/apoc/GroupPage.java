@@ -187,7 +187,7 @@ public class GroupPage extends AppCompatActivity {
 
     private void displayLog() {
         LinearLayout layout = findViewById(R.id.group_log);
-        log.sort(false);
+        log.sort(true);
         for (DBItem message : log.getMessages()) {
             displayMessage((Message)message, layout);
         }

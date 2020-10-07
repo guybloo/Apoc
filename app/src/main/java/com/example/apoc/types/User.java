@@ -39,13 +39,13 @@ public class User implements DBItem, Serializable {
         this.nickName = "";
         this.email = newEmail;
         this.phone = "";
-        imageUrl = "";
+        this.imageUrl = "";
         this.status = UserStatus.undefined.name();
         this.locationInfo = new LocationInfo();
         this.skills = new ArrayList<>();
         this.fears = new ArrayList<>();
         items = new ArrayList<>();
-        isGrouped = false;
+        this.isGrouped = false;
     }
 
 
@@ -166,13 +166,15 @@ public class User implements DBItem, Serializable {
     }
 
     public void copyUserDetails(User other){
-        this.nickName = other.getNickName();
-        this.phone = other.getPhone();
-        this.imageUrl = other.getImageUrl();
-        this.fears = other.getFears();
-        this.skills = other.getSkills();
-        this.items = other.getItems();
+        this.nickName = other.nickName;
+        this.phone = other.phone;
+        this.imageUrl = other.imageUrl;
+        this.fears = other.fears;
+        this.skills = other.skills;
+        this.items = other.items;
+        this.status = other.status;
         this.locationInfo = other.locationInfo;
+        this.isGrouped = other.isGrouped;
     }
 
     public boolean isAlpha(){

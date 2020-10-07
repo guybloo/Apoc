@@ -46,7 +46,7 @@ public class ImagesDB {
             public void onSuccess(Uri downloadUrl)
             {
                 user.setImageUrl(downloadUrl.toString());
-                (new UsersDB()).updateItem(user);
+                (new UsersDB()).updateField(user.getId(),UsersDB.IMAGE,downloadUrl.toString());
             }
         });
 

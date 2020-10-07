@@ -57,6 +57,12 @@ public class DBWrapper {
 //        return wrapper;
 //    }
 
+    public void updateField(String id, String field, Object value){
+        HashMap<String, Object> newfield = new HashMap<>();
+        newfield.put(field,value);
+        db.collection(docName).document(id).update(newfield);
+    }
+
     public void loadItemByIdFromDB(final String id) {
         items.clear();
         db.collection(docName).whereEqualTo(ID, id)

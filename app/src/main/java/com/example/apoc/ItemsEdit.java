@@ -99,7 +99,7 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
                     for (User user : groupies) {
                         for(ItemCount itemCount : user.getItems()){
                             if(items.containsKey(itemCount.getName())) {
-                                items.get(itemCount.getName()).sum(itemCount.getAmount());
+                                items.get(itemCount.getName()).sum(itemCount.getAmount(), itemCount.getMax());
                             }
                         }
                     }

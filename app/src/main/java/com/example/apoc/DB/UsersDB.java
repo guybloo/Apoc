@@ -16,16 +16,16 @@ import static com.example.apoc.types.HelpMethods.fromGson;
 import static com.example.apoc.types.HelpMethods.toGson;
 
 public class UsersDB extends DBWrapper {
-    protected static String NICK_NAME = "nick_name";
-    protected static String EMAIL = "email";
-    protected static String PHONE = "phone";
-    protected static String STATUS = "status";
-    protected static String IMAGE = "image_url";
-    protected static String LOCATION = "location";
-    protected static String SKILLS = "skills";
-    protected static String FEARS = "fears";
-    protected static String ITEMS = "items";
-    protected static String IS_GROUPED = "is_grouped";
+    public static String NICK_NAME = "nick_name";
+    public static String EMAIL = "email";
+    public static String PHONE = "phone";
+    public static String STATUS = "status";
+    public static String IMAGE = "image_url";
+    public static String LOCATION = "location";
+    public static String SKILLS = "skills";
+    public static String FEARS = "fears";
+    public static String ITEMS = "items";
+    public static String IS_GROUPED = "is_grouped";
 
     public UsersDB(){
         super();

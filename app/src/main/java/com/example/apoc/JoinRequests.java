@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 public class JoinRequests extends AppCompatActivity implements RequestAdapter.OnItemClickListener {
 
     public static final String USER = "user";
-    public final String JOIN_LOG = "%s joined to the group";
+    public final String NO_REQUESTS = "You don't have any requests";
     private User user;
     private RequestAdapter adapter;
     private RequestsDB requestsDB;
@@ -68,6 +69,9 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                             joinRequests.add((User) udb.getItemById(((JoinRequest) item).getApplier()));
                         }
                         // todo connect between users and requests to that we can delete it
+                        if(joinRequests.size() == 0){
+                            ((TextView)findViewById(R.id.requests_title)).setText(NO_REQUESTS);
+                        }
                         adapter = new RequestAdapter(joinRequests);
                         adapter.setOnItemClickListener(listener);
                         recyclerView.setAdapter(adapter);

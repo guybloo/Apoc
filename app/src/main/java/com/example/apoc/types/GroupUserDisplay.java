@@ -98,6 +98,11 @@ public class GroupUserDisplay {
         ImagesDB.showCircleImage(otherUser.getImageUrl(),(ImageView)view.findViewById(R.id.user_display_image),context);
         openDetails = new AlertDialog.Builder(context);
         View detailsView = ((Activity)context).getLayoutInflater().inflate(R.layout.request_view, null);
+
+        GridLayout fearsLayout = detailsView.findViewById(R.id.request_fears);
+        GridLayout skillsLayout = detailsView.findViewById(R.id.request_skills);
+        GridDisplay gridDisplay = new GridDisplay(context,user, fearsLayout, skillsLayout, false, 6);
+
         detailsView.findViewById(R.id.request_approve).setVisibility(View.GONE);
         if(!user.getId().equals(group.getId())){
             detailsView.findViewById(R.id.request_delete).setVisibility(View.GONE);

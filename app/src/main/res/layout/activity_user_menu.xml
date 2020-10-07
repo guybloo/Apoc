@@ -16,36 +16,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button
+        style="@style/transparentButton"
         android:id="@+id/menu_edit_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="profile edit"/>
     <Button
+        style="@style/transparentButton"
         android:id="@+id/menu_equipment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="equipment"/>
     <Button
+        style="@style/transparentButton"
         android:id="@+id/menu_partners_find"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="patrners find"/>
     <Button
+        style="@style/transparentButton"
+
         android:id="@+id/menu_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="group page"/>
     <Button
+        style="@style/transparentButton"
         android:id="@+id/menu_requests"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Requests"/>
 
     <Button
+        style="@style/transparentButton"
         android:id="@+id/menu_log_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="log out"/>
-
 
 </LinearLayout>
