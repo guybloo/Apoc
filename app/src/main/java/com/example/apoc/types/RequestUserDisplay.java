@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,6 +33,7 @@ public class RequestUserDisplay {
     private float distance;
     private AlertDialog.Builder openDetails;
     private AlertDialog dialog;
+    private ImageView image;
 
 
     public RequestUserDisplay(final User user, User caller, float distance, final Context context){
@@ -44,7 +46,7 @@ public class RequestUserDisplay {
 
         setUserDetails();
 
-        ImageView image = view.findViewById(R.id.user_display_image);
+        image = view.findViewById(R.id.user_display_image);
         ImagesDB.showCircleImage(user.getImageUrl(),image,context);
         image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,10 @@ public class RequestUserDisplay {
 
     public View getView() {
         return view;
+    }
+
+    public ImageView getImage() {
+        return image;
     }
 
     public User getUser() {
@@ -99,22 +105,22 @@ public class RequestUserDisplay {
         ((TextView)detailsView.findViewById(R.id.user_details_nickname)).setText(user.getNickName());
         ImagesDB.showCircleImage(user.getImageUrl(),(ImageView)detailsView.findViewById(R.id.user_details_display_image),context);
 //        openDetails.setMessage("Are You Sure to delete?");
-        //todo add fears and skills
-        openDetails.setView(detailsView).setPositiveButton(SEND_REQUEST, new DialogInterface.OnClickListener() {
+        ((Button)detailsView.findViewById(R.id.user_details_request)).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 JoinRequest joinRequest = new JoinRequest(caller.getId(), user.getId(), caller.isBeta());
                 requestsDB.updateItem(joinRequest);
                 Toast.makeText(context, String.format(SENT,user.getId()), Toast.LENGTH_LONG).show();
-
+                dialog.dismiss();
             }
         });
-        openDetails.setNegativeButton(CLOSE, new DialogInterface.OnClickListener() {
+        ((Button)detailsView.findViewById(R.id.user_details_close)).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //perform any action
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
+        openDetails.setView(detailsView);
         dialog = openDetails.create();
     }
 }

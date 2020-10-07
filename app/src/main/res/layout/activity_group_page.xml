@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="group page"
+        style="@style/PageTitle"
+        android:text="Group Info"
         />
 
     <GridLayout
@@ -38,33 +39,43 @@
         android:text="map"
         app:layout_constraintTop_toBottomOf="@id/group_equipment"/>
     <Button
-        style="@style/transparentButton"
 
+        style="@style/redButton"
         android:id="@+id/group_sos_call"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="30sp"
         android:text="sos"
         app:layout_constraintTop_toBottomOf="@id/group_map"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/group_leader_log"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/group_sos_call"
+        android:layoutDirection="ltr">
     <EditText
+        style="@style/EditTextStyle"
         android:id="@+id/group_leader_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/group_sos_call"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/group_leader_message_update"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
         style="@style/transparentButton"
-
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/group_leader_message_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/group_sos_call"
         app:layout_constraintRight_toRightOf="parent"
         android:text="UPDATE"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <ScrollView
+        android:paddingTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/group_leader_message"
+        app:layout_constraintTop_toBottomOf="@id/group_leader_log"
         app:layout_constraintBottom_toTopOf="@id/group_leave"
         tools:ignore="MissingConstraints">
         <LinearLayout
@@ -74,7 +85,7 @@
             android:orientation="vertical"/>
     </ScrollView>
     <Button
-        style="@style/transparentButton"
+        style="@style/redButton"
 
         android:id="@+id/group_leave"
         android:layout_width="match_parent"

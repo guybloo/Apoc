@@ -108,8 +108,12 @@ public class PartnersFind extends AppCompatActivity {
         for (RequestUserDisplay display : requestUserDisplays) {
             double random = ((new Random()).nextDouble() * 2 * Math.PI);
             int radius = (int) ((display.getDistance() / distance) * 80) + 10;
-            int x = HelpMethods.getWidth(getXPos(radius, random, CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
-            int y = HelpMethods.getHeight(getYPos(radius, random, CENTER), usersLayout.getHeight()) - (display.getView().getHeight() / 2);
+            int xCenter = usersLayout.getWidth() / 2;
+            int yCenter = usersLayout.getHeight() / 2;
+            int x = getXPos(radius,random,xCenter) - (display.getImage().getLayoutParams().width / 2);
+            int y = getXPos(radius,random,yCenter) - (display.getImage().getLayoutParams().height / 2);
+//            int x = HelpMethods.getWidth(getXPos(radius, random, CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
+//            int y = HelpMethods.getHeight(getYPos(radius, random, CENTER), usersLayout.getHeight()) - (display.getView().getHeight() / 2);
             display.setParams(x, y);
             display.addView(usersLayout);
         }

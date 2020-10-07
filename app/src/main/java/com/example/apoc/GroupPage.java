@@ -10,7 +10,9 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -37,7 +39,7 @@ import java.util.ArrayList;
 public class GroupPage extends AppCompatActivity {
 
     private static final String SMS_ACTION = "APOC.ACTION_SEND_SMS";
-    private final int IMAGE_SIZE = 100;
+    private final int IMAGE_SIZE = 175;
     public static String USER = "user";
     private String MESSAGE_UPDATED = "Your message has been updated";
     private String SOS_LOG = "%s called SOS";
@@ -59,6 +61,7 @@ public class GroupPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_page);
 
+//        ((TextView)findViewById(R.id.group_name)).setText(groupies.);
         IntentFilter filter = new IntentFilter();
         smsReceiver = new LocalSendSmsBroadcastReceiver();
         registerReceiver(smsReceiver, filter);
@@ -195,8 +198,18 @@ public class GroupPage extends AppCompatActivity {
 
     private void displayMessage(Message message, LinearLayout layout){
         TextView text = new TextView(this);
-        text.setText(message.getContent() + "\n" + message.getFormatDate() + "\n" + "____________");
+        text.setText(message.getContent() + "\n" + message.getFormatDate() );
+
+//        text.setTextSize(TypedValue.COMPLEX_UNIT_SP,text.getTextSize()-5);
+
+
         layout.addView(text,0);
+        View saparator = new View(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,3);
+        params.setMargins(0,50,0,50);
+        saparator.setLayoutParams(params);
+        saparator.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        layout.addView(saparator,1);
     }
 
     private void sosSend(final Context context) {

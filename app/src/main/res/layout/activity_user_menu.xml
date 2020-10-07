@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,27 +7,33 @@
     tools:context=".UserMenu"
     android:orientation="vertical">
     <GridLayout
+        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/menu_user_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
     <TextView
+        style="@style/PageTitle"
+        app:layout_constraintTop_toBottomOf="@id/menu_user_display"
         android:id="@+id/menu_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button
+        app:layout_constraintTop_toBottomOf="@id/menu_nickname"
         style="@style/transparentButton"
         android:id="@+id/menu_edit_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="profile edit"/>
     <Button
+        app:layout_constraintTop_toBottomOf="@id/menu_edit_profile"
         style="@style/transparentButton"
         android:id="@+id/menu_equipment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="equipment"/>
     <Button
+        app:layout_constraintTop_toBottomOf="@id/menu_equipment"
         style="@style/transparentButton"
         android:id="@+id/menu_partners_find"
         android:layout_width="match_parent"
@@ -35,12 +41,13 @@
         android:text="patrners find"/>
     <Button
         style="@style/transparentButton"
-
+app:layout_constraintTop_toBottomOf="@id/menu_partners_find"
         android:id="@+id/menu_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="group page"/>
     <Button
+        app:layout_constraintTop_toBottomOf="@id/menu_group"
         style="@style/transparentButton"
         android:id="@+id/menu_requests"
         android:layout_width="match_parent"
@@ -48,10 +55,11 @@
         android:text="Requests"/>
 
     <Button
-        style="@style/transparentButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/redButton"
         android:id="@+id/menu_log_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="log out"/>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

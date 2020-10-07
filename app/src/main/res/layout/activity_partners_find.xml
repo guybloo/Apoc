@@ -31,8 +31,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:colorControlActivated="@color/colorPrimary"
-        android:progressBackgroundTint="@color/design_default_color_primary_dark"
+        android:progressBackgroundTint="@color/colorPrimaryDark"
         android:progressTint="@color/colorPrimary"
+        android:thumbTint="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent" />
 
 
