@@ -44,6 +44,7 @@ public class GroupPage extends AppCompatActivity {
     private String MESSAGE_UPDATED = "Your message has been updated";
     private String SOS_LOG = "%s called SOS";
     private String SMS_SENT = "SMS sent to %s";
+    private String PAGE_TITLE = "%s's Group";
     private User user;
     private Group group;
     private UsersDB usersDB;
@@ -61,7 +62,6 @@ public class GroupPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_page);
 
-//        ((TextView)findViewById(R.id.group_name)).setText(groupies.);
         IntentFilter filter = new IntentFilter();
         smsReceiver = new LocalSendSmsBroadcastReceiver();
         registerReceiver(smsReceiver, filter);
@@ -95,6 +95,12 @@ public class GroupPage extends AppCompatActivity {
                     @Override
                     public void onGetSpecific() {
                         group = (Group) groupsDB.getItems().get(user.getId());
+                        if(group == null){
+                            finish();
+                        }
+                        String leaderName = ((User)usersDB.getItemById(group.getId())).getNickName();
+                        ((TextView) findViewById(R.id.group_name)).setText(String.format(PAGE_TITLE,leaderName));
+
                         leave.setEnabled(true);
                         if (group.getLeader().equals(user.getId())) {
                             leave.setVisibility(View.GONE);
@@ -108,7 +114,7 @@ public class GroupPage extends AppCompatActivity {
                                         log.insert(message);
                                         Toast.makeText(context, MESSAGE_UPDATED, Toast.LENGTH_SHORT).show();
                                         leaderMessage.setText("");
-                                        displayMessage(message,(LinearLayout)findViewById(R.id.group_log));
+                                        displayMessage(message, (LinearLayout) findViewById(R.id.group_log));
 
                                     }
                                 }
@@ -158,7 +164,7 @@ public class GroupPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sosSend(context);
-                Message message = new Message(String.format(SOS_LOG,user.getId()),user.getId());
+                Message message = new Message(String.format(SOS_LOG, user.getId()), user.getId());
                 log.insert(message);
             }
         });
@@ -192,24 +198,24 @@ public class GroupPage extends AppCompatActivity {
         LinearLayout layout = findViewById(R.id.group_log);
         log.sort(true);
         for (DBItem message : log.getMessages()) {
-            displayMessage((Message)message, layout);
+            displayMessage((Message) message, layout);
         }
     }
 
-    private void displayMessage(Message message, LinearLayout layout){
+    private void displayMessage(Message message, LinearLayout layout) {
         TextView text = new TextView(this);
-        text.setText(message.getContent() + "\n" + message.getFormatDate() );
+        text.setText(message.getContent() + "\n" + message.getFormatDate());
 
 //        text.setTextSize(TypedValue.COMPLEX_UNIT_SP,text.getTextSize()-5);
 
 
-        layout.addView(text,0);
+        layout.addView(text, 0);
         View saparator = new View(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,3);
-        params.setMargins(0,50,0,50);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 3);
+        params.setMargins(0, 50, 0, 50);
         saparator.setLayoutParams(params);
         saparator.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        layout.addView(saparator,1);
+        layout.addView(saparator, 1);
     }
 
     private void sosSend(final Context context) {
@@ -236,7 +242,7 @@ public class GroupPage extends AppCompatActivity {
                                 String.format(SOS_MESSAGE, user.getEmail(), newLocation.getLatitude(), newLocation.getLongitude()),
                                 null,
                                 null);
-                        Toast.makeText(context, String.format(SMS_SENT,groupie.getPhone()),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, String.format(SMS_SENT, groupie.getPhone()), Toast.LENGTH_SHORT).show();
 
                     }
                 }

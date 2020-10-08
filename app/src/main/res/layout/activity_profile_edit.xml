@@ -20,20 +20,12 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-        <ImageView
-        android:id="@+id/image2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        style="@style/transparentButton"
-
-        android:id="@+id/pickImg"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pick image"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"/>
+
+
 
     <TextView
         android:id="@+id/email"
@@ -42,15 +34,26 @@
         android:text="email"/>
 
     <EditText
+        style="@style/EditTextStyle"
         android:id="@+id/nickname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="nickname" />
 
     <EditText
+        style="@style/EditTextStyle"
         android:id="@+id/phone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="phone number"
+        android:inputType="phone" />
+        <Button
+            style="@style/transparentButton"
 
+            android:id="@+id/pickImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="pick image"/>
     <Button
         style="@style/transparentButton"
 
@@ -59,50 +62,80 @@
         android:layout_height="wrap_content"
         android:text="Set Location"/>
 
-    <!-- Fears -->
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fears"/>
         <GridLayout
+            android:layout_marginBottom="20dp"
             android:id="@+id/profile_edit_fears"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Skills"/>
         <GridLayout
+            android:layout_marginBottom="20dp"
             android:id="@+id/profile_edit_skills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lone wolf"/>
+            android:text="Lone wolf"
+            android:id="@+id/edit_lone_wolf"/>
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/status"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            app:layout_constraintLeft_toRightOf="@id/edit_group_player"
+            app:layout_constraintRight_toLeftOf="@id/edit_lone_wolf"
+            app:trackTint="@color/colorPrimaryDark"
+            app:thumbTint="@color/colorPrimary" />
         <TextView
+            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="group player"/>
-    </LinearLayout>
-    <LinearLayout
+            android:text="Group player"
+            android:id="@+id/edit_group_player"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/status_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            app:layout_constraintLeft_toLeftOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other"/>
+            android:text="Member"
+            android:id="@+id/edit_member"/>
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/status_in_group"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:trackTint="@color/colorPrimaryDark"
+        app:thumbTint="@color/colorPrimary"
+        app:layout_constraintLeft_toRightOf="@id/edit_member"
+        app:layout_constraintRight_toLeftOf="@id/edit_leader"
+        />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Leader"/>
-    </LinearLayout>
+            android:text="Leader"
+            android:id="@+id/edit_leader"
+            app:layout_constraintRight_toRightOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <Button
         style="@style/transparentButton"
         android:text="Save"

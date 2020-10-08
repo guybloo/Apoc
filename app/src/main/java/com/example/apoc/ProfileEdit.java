@@ -3,6 +3,7 @@ package com.example.apoc;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,6 +56,7 @@ public class ProfileEdit extends AppCompatActivity {
     public final String STATUS_UNCHANGED = "You must choose your status to proceed!";
     public final String LOCATION_UNDEFINED = "You must set your location to proceed!";
     public final String PROFILE_UPDATED_LOG = "%s info has been updated";
+    public final int IMAGE_SIZE = 500;
     private static final int PICK_IMAGE_REQUEST = 1;
     private final int LOCATION_ACCURACY = 20;
 
@@ -73,7 +75,7 @@ public class ProfileEdit extends AppCompatActivity {
 
     private Button save;
 
-    private LinearLayout statusInGroupLayout;
+    private ConstraintLayout statusInGroupLayout;
     private LocationInfo newLocation;
     private Uri imageUri;
 
@@ -101,10 +103,11 @@ public class ProfileEdit extends AppCompatActivity {
     private void initializeUI() {
         fearsLayouts = findViewById(R.id.profile_edit_fears);
         skillsLayouts = findViewById(R.id.profile_edit_skills);
-        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, fearsLayouts, skillsLayouts, true, 3);
+        GridDisplay gridDisplay = new GridDisplay(getApplicationContext(),user, fearsLayouts, skillsLayouts, true, 6);
 
         image = findViewById(R.id.image);
-
+        image.getLayoutParams().height = IMAGE_SIZE;
+        image.getLayoutParams().width = IMAGE_SIZE;
         if(!user.getImageUrl().equals("")){
             ImagesDB.showCircleImage(user.getImageUrl(),image,this);
         }
@@ -156,7 +159,10 @@ public class ProfileEdit extends AppCompatActivity {
         });
 
         status = findViewById(R.id.status);
+
         statusInGroup = findViewById(R.id.status_in_group);
+
+
         statusInGroupLayout = findViewById(R.id.status_layout);
 
         if(!user.isUndefined()){

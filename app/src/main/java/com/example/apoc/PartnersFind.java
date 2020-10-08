@@ -24,6 +24,7 @@ import android.view.animation.AnimationUtils;
 
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class PartnersFind extends AppCompatActivity {
 
@@ -40,6 +41,7 @@ public class PartnersFind extends AppCompatActivity {
 
     private Animation rotateAnimation;
     private ImageView radar;
+    private TextView distanceText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class PartnersFind extends AppCompatActivity {
         seekbar.setEnabled(false);
         usersLayout = findViewById(R.id.users_layout);
         user = (User) getIntent().getSerializableExtra(USER);
-
+        distanceText = findViewById(R.id.partners_find_distance);
 
 
         requestUserDisplays = new ArrayList<>();
@@ -72,9 +74,8 @@ public class PartnersFind extends AppCompatActivity {
         rotateAnimation();
     }
 
-    public void rotateAnimation ()
-    {
-        rotateAnimation= AnimationUtils.loadAnimation(this,R.anim.rotate);
+    public void rotateAnimation() {
+        rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         radar.startAnimation(rotateAnimation);
     }
 
@@ -91,7 +92,7 @@ public class PartnersFind extends AppCompatActivity {
             userStatus = UserStatus.alpha.name();
         }
         for (DBItem temp : allUsers) {
-            User tempUser = (User)temp;
+            User tempUser = (User) temp;
             float userDistance = getDistance(user.getLocationInfo(), tempUser.getLocationInfo());
             if (!user.getId().equals(temp.getId()) &&
                     userDistance < distance &&
@@ -107,11 +108,11 @@ public class PartnersFind extends AppCompatActivity {
     private void showUsers() {
         for (RequestUserDisplay display : requestUserDisplays) {
             double random = ((new Random()).nextDouble() * 2 * Math.PI);
-            int radius = (int) ((display.getDistance() / distance) * 80) + 10;
+            double radius = display.getDistance() / distance;
             int xCenter = usersLayout.getWidth() / 2;
             int yCenter = usersLayout.getHeight() / 2;
-            int x = getXPos(radius,random,xCenter) - (display.getImage().getLayoutParams().width / 2);
-            int y = getXPos(radius,random,yCenter) - (display.getImage().getLayoutParams().height / 2);
+            int x = getXPos( radius * xCenter, random, xCenter) - (display.getImage().getLayoutParams().width / 2);
+            int y = getYPos( radius * yCenter, random, yCenter) - (display.getImage().getLayoutParams().height / 2);
 //            int x = HelpMethods.getWidth(getXPos(radius, random, CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
 //            int y = HelpMethods.getHeight(getYPos(radius, random, CENTER), usersLayout.getHeight()) - (display.getView().getHeight() / 2);
             display.setParams(x, y);
@@ -119,11 +120,11 @@ public class PartnersFind extends AppCompatActivity {
         }
     }
 
-    private int getXPos(int radius, double theta, int center) {
+    private int getXPos(double radius, double theta, int center) {
         return (int) (radius * Math.cos(theta) + center);
     }
 
-    private int getYPos(int radius, double theta, int center) {
+    private int getYPos(double radius, double theta, int center) {
         return (int) (radius * Math.sin(theta) + center);
     }
 
@@ -133,6 +134,13 @@ public class PartnersFind extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 distance = ((double) progress / 100.0) * MAX_DIST;
                 updateUsers();
+                String kind = "m";
+                double dist = distance;
+                if (distance >= 1000) {
+                    dist /= 1000;
+                    kind = "km";
+                }
+                distanceText.setText(String.format("%.2f %s", dist, kind));
             }
 
             @Override

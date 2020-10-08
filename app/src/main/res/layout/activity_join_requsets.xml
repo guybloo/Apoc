@@ -8,9 +8,12 @@
     android:layoutDirection="ltr">
 
     <TextView
+        style="@style/PageTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:id="@+id/requests_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         android:text="Requests"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/requests_recycler_view"

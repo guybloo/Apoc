@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
@@ -50,6 +52,7 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
         final RecyclerView recyclerView = findViewById(R.id.requests_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         final RequestAdapter.OnItemClickListener listener = this;
+        final Context context = this;
         requestsDB.getItemsByRecipient(user);
         requestsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
             @Override
@@ -70,7 +73,8 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                         }
                         // todo connect between users and requests to that we can delete it
                         if(joinRequests.size() == 0){
-                            ((TextView)findViewById(R.id.requests_title)).setText(NO_REQUESTS);
+                            Toast.makeText(context,NO_REQUESTS,Toast.LENGTH_LONG).show();
+                            finish();
                         }
                         adapter = new RequestAdapter(joinRequests);
                         adapter.setOnItemClickListener(listener);
