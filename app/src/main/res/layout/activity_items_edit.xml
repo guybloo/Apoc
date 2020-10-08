@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ItemsEdit">
+    tools:context=".ItemsEdit"
+    android:layoutDirection="ltr">
     <TextView
+        style="@style/PageTitle"
         android:id="@+id/items_edit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
     <Button
         style="@style/transparentButton"
-
         android:id="@+id/items_edit_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

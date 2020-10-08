@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".GroupPage">
+    tools:context=".GroupPage"
+    android:layoutDirection="ltr">
 
     <TextView
         android:id="@+id/group_map_title"

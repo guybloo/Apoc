@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ProfileEdit">
+    tools:context=".ProfileEdit"
+    android:layoutDirection="ltr">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

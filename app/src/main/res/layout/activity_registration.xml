@@ -7,7 +7,8 @@
     tools:context=".Registration"
     android:gravity="center_vertical"
     android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layoutDirection="ltr">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
