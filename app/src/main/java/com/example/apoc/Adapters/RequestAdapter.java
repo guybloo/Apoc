@@ -1,4 +1,4 @@
-package com.example.apoc.types;
+package com.example.apoc.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apoc.R;
 import com.example.apoc.Storage.ImagesDB;
+import com.example.apoc.Displays.GridDisplay;
+import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 

@@ -18,7 +18,6 @@ import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.location.LocationTracker;
 import com.example.apoc.types.Item;
-import com.example.apoc.types.Navigation;
 import com.example.apoc.types.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -2,24 +2,19 @@ package com.example.apoc.DB;
 
 import androidx.annotation.NonNull;
 
-import com.example.apoc.types.Fears;
+import com.example.apoc.Enums.Fears;
 import com.example.apoc.types.Group;
-import com.example.apoc.types.HelpMethods;
-import com.example.apoc.types.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.example.apoc.types.HelpMethods.ListFromGson;
 import static com.example.apoc.types.HelpMethods.ListToGson;
-import static com.example.apoc.types.HelpMethods.fromGson;
-import static com.example.apoc.types.HelpMethods.toGson;
 
 public class GroupsDB extends DBWrapper {
     protected static String NAME = "name";

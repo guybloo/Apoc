@@ -11,10 +11,9 @@ import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.location.LocationInfo;
-import com.example.apoc.types.HelpMethods;
 import com.example.apoc.types.User;
-import com.example.apoc.types.RequestUserDisplay;
-import com.example.apoc.types.UserStatus;
+import com.example.apoc.Displays.RequestUserDisplay;
+import com.example.apoc.Enums.UserStatus;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,7 +21,6 @@ import java.util.Random;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 

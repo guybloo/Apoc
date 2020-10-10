@@ -1,4 +1,4 @@
-package com.example.apoc.types;
+package com.example.apoc;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,8 @@ import com.example.apoc.PartnersFind;
 import com.example.apoc.ProfileEdit;
 import com.example.apoc.Registration;
 import com.example.apoc.UserMenu;
+import com.example.apoc.types.Group;
+import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 

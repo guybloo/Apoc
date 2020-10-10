@@ -6,24 +6,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.GroupsDB;
-import com.example.apoc.DB.ItemsDB;
-import com.example.apoc.DB.LogDB;
 import com.example.apoc.DB.RequestsDB;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.types.Group;
-import com.example.apoc.types.ItemAdapter;
-import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.JoinRequest;
-import com.example.apoc.types.Message;
-import com.example.apoc.types.RequestAdapter;
+import com.example.apoc.Adapters.RequestAdapter;
 import com.example.apoc.types.User;
-import com.example.apoc.types.UserStatus;
 
 import java.util.ArrayList;
 

@@ -5,12 +5,10 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,10 +26,9 @@ import com.example.apoc.SmsSender.LocalSendSmsBroadcastReceiver;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
 import com.example.apoc.types.Group;
-import com.example.apoc.types.GroupUserDisplay;
+import com.example.apoc.Displays.GroupUserDisplay;
 import com.example.apoc.types.Log;
 import com.example.apoc.types.Message;
-import com.example.apoc.types.Navigation;
 import com.example.apoc.types.User;
 
 import java.util.ArrayList;

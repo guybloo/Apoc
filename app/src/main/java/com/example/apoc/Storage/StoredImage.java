@@ -1,4 +1,4 @@
-package com.example.apoc.types;
+package com.example.apoc.Storage;
 
 public class StoredImage {
     private String name;

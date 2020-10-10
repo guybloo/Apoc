@@ -1,4 +1,4 @@
-package com.example.apoc.types;
+package com.example.apoc.Enums;
 
 public enum UserStatus {
     alpha,

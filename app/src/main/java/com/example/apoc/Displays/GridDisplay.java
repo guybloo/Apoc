@@ -1,12 +1,13 @@
-package com.example.apoc.types;
+package com.example.apoc.Displays;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 
+import com.example.apoc.Enums.Fears;
+import com.example.apoc.Enums.Skills;
 import com.example.apoc.R;
+import com.example.apoc.types.User;
 
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 import net.steamcrafted.materialiconlib.MaterialIconView;

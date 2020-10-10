@@ -1,4 +1,4 @@
-package com.example.apoc.types;
+package com.example.apoc.Displays;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.apoc.R;
 import com.example.apoc.Storage.ImagesDB;
+import com.example.apoc.types.Group;
+import com.example.apoc.types.User;
 
 public class GroupUserDisplay {
     // user is the one who sees this page, other user is another group member to show

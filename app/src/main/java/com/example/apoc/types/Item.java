@@ -1,6 +1,7 @@
 package com.example.apoc.types;
 
 import com.example.apoc.DB.DBItem;
+import com.example.apoc.Enums.Fears;
 
 import java.io.Serializable;
 import java.util.HashMap;

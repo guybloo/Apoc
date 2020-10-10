@@ -1,11 +1,8 @@
 package com.example.apoc.DB;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.example.apoc.types.Fears;
-import com.example.apoc.types.Group;
+import com.example.apoc.Enums.Fears;
 import com.example.apoc.types.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,7 +12,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public class ItemsDB extends DBWrapper {
     protected static String NAME = "name";

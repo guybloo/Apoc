@@ -14,10 +14,9 @@ import android.widget.TextView;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.types.Group;
-import com.example.apoc.types.GroupUserDisplay;
-import com.example.apoc.types.Navigation;
+import com.example.apoc.Displays.GroupUserDisplay;
 import com.example.apoc.types.User;
-import com.example.apoc.types.UserStatus;
+import com.example.apoc.Enums.UserStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserMenu extends AppCompatActivity {

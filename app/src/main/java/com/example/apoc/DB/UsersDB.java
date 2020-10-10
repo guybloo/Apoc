@@ -1,9 +1,9 @@
 package com.example.apoc.DB;
 
 import com.example.apoc.location.LocationInfo;
-import com.example.apoc.types.Fears;
+import com.example.apoc.Enums.Fears;
 import com.example.apoc.types.ItemCount;
-import com.example.apoc.types.Skills;
+import com.example.apoc.Enums.Skills;
 import com.example.apoc.types.User;
 
 import java.util.HashMap;

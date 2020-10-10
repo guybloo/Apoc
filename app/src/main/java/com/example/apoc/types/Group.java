@@ -1,11 +1,10 @@
 package com.example.apoc.types;
 
-import android.service.autofill.AutofillService;
-
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.LogDB;
 import com.example.apoc.DB.UsersDB;
+import com.example.apoc.Enums.Fears;
 
 import java.io.Serializable;
 import java.util.ArrayList;

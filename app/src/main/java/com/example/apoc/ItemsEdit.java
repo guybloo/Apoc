@@ -8,18 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.apoc.DB.DBWrapper;
-import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.ItemsDB;
 import com.example.apoc.DB.LogDB;
 import com.example.apoc.DB.UsersDB;
-import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.types.Group;
-import com.example.apoc.types.Item;
-import com.example.apoc.types.ItemAdapter;
+import com.example.apoc.Adapters.ItemAdapter;
 import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.Message;
 import com.example.apoc.types.User;
@@ -27,8 +23,6 @@ import com.example.apoc.types.User;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemClickListener {
 

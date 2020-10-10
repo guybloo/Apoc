@@ -1,6 +1,9 @@
 package com.example.apoc.types;
 
 import com.example.apoc.DB.DBItem;
+import com.example.apoc.Enums.Fears;
+import com.example.apoc.Enums.Skills;
+import com.example.apoc.Enums.UserStatus;
 import com.example.apoc.location.LocationInfo;
 
 import java.io.Serializable;
