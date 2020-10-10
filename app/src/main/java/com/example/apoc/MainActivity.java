@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             Navigation.openRegistration(context);
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

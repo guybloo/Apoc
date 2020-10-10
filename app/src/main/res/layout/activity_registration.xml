@@ -10,11 +10,13 @@
     android:orientation="vertical"
     android:layoutDirection="ltr">
     <TextView
+        style="@style/PageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register or sign in new account" />
+        android:text="Do you want to SURVIVE?" />
 
     <EditText
+        style="@style/EditTextStyle"
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +24,7 @@
         android:inputType="textEmailAddress"/>
 
     <EditText
+        style="@style/EditTextStyle"
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:text="Register"/>
         <Button
             style="@style/transparentButton"
             android:id="@+id/signIn"
@@ -47,6 +50,12 @@
             android:layout_height="wrap_content"
             android:text="Sign In"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/register_pass_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="forgot your password?"
+        android:textColor="@color/colorPrimaryDark"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -62,26 +62,32 @@
         android:layout_height="wrap_content"
         android:text="Set Location"/>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
     <TextView
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Fears"/>
         <GridLayout
-            android:layout_marginBottom="20dp"
             android:id="@+id/profile_edit_fears"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Skills"/>
         <GridLayout
-            android:layout_marginBottom="20dp"
             android:id="@+id/profile_edit_skills"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

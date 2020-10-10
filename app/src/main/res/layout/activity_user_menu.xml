@@ -7,20 +7,38 @@
     tools:context=".UserMenu"
     android:orientation="vertical"
     android:layoutDirection="ltr">
-    <GridLayout
+    <Space
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/space1"/>
+    <GridLayout
+        app:layout_constraintTop_toBottomOf="@id/space1"
         android:id="@+id/menu_user_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <Space
+        app:layout_constraintTop_toBottomOf="@id/menu_user_display"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:id="@+id/space2"/>
     <TextView
         style="@style/PageTitle"
-        app:layout_constraintTop_toBottomOf="@id/menu_user_display"
+        app:layout_constraintTop_toBottomOf="@id/space2"
         android:id="@+id/menu_nickname"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/space3"
+        app:layout_constraintTop_toBottomOf="@id/menu_nickname"/>
     <Button
-        app:layout_constraintTop_toBottomOf="@id/menu_nickname"
+        app:layout_constraintTop_toBottomOf="@id/space3"
         style="@style/transparentButton"
         android:id="@+id/menu_edit_profile"
         android:layout_width="match_parent"

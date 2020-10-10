@@ -1,51 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    android:background="@drawable/border">
     <ImageView
+        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/request_image"
         android:layout_width="50dp"
         android:layout_height="50dp"/>
+    <Space
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/request_image"
+        android:layout_height="10dp"
+        android:id="@+id/space"/>
     <TextView
-        android:id="@+id/request_nick_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
+        app:layout_constraintTop_toBottomOf="@id/request_nick_name"
         android:id="@+id/request_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
+        app:layout_constraintTop_toBottomOf="@id/space"
+        android:id="@+id/request_nick_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        app:layout_constraintTop_toBottomOf="@id/request_email"
         android:id="@+id/request_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <GridLayout
+        app:layout_constraintTop_toBottomOf="@id/request_phone"
         android:id="@+id/request_fears"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <GridLayout
+        app:layout_constraintTop_toBottomOf="@id/request_fears"
         android:id="@+id/request_skills"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+
         <Button
             style="@style/transparentButton"
             android:id="@+id/request_approve"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OK"/>
+            android:text="OK"
+            app:layout_constraintTop_toBottomOf="@id/request_skills"
+            app:layout_constraintRight_toRightOf="parent"/>
         <Button
             style="@style/transparentButton"
             android:id="@+id/request_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DELETE"/>
-    </LinearLayout>
+            android:text="DELETE"
+            app:layout_constraintTop_toBottomOf="@id/request_skills"
+            app:layout_constraintLeft_toLeftOf="parent"/>
 
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

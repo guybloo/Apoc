@@ -1,9 +1,11 @@
 package com.example.apoc.types;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +38,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.JoinRequ
         public TextView phone;
         public Button approve;
         public Button delete;
+        public GridLayout fears;
+        public GridLayout skills;
+        public Context context;
 
         public JoinRequestViewHolder(@NonNull View itemView, final RequestAdapter.OnItemClickListener listener) {
             super(itemView);
@@ -45,6 +50,9 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.JoinRequ
             phone = itemView.findViewById(R.id.request_phone);
             approve = itemView.findViewById(R.id.request_approve);
             delete = itemView.findViewById(R.id.request_delete);
+            fears = itemView.findViewById(R.id.request_fears);
+            skills = itemView.findViewById(R.id.request_skills);
+            context = itemView.getContext();
 
             approve.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -91,6 +99,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.JoinRequ
         holder.nickname.setText(currentItem.getNickName());
         holder.email.setText(currentItem.getEmail());
         holder.phone.setText(currentItem.getPhone());
+        GridDisplay gridDisplay = new GridDisplay(holder.context,currentItem, holder.fears, holder.skills, false, 6);
+
         ImagesDB.showCircleImage(currentItem.getImageUrl(), holder.image,holder.image.getContext());
     }
 

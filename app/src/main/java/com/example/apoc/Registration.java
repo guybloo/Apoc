@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,6 +32,8 @@ public class Registration extends AppCompatActivity {
     private final String EMAIL = "Please enter email...";
     private final String PASS = "Please enter password!";
     private final String REGISTER_LOG = "%s has registered and now has a chance to SURVIVE!";
+    private final String RESET_MSG = "Email was sent - you know what to do";
+    private final String RESET_EMAIL_MSG = "Enter your email";
 
     public static final String RES_EMAIL = "email";
     public static final String RES_USER = "user";
@@ -49,10 +52,9 @@ public class Registration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        final Context context = this;
 
         mAuth = FirebaseAuth.getInstance();
-
-//        Intent intent = getIntent();
 
         initializeUI();
 
@@ -71,6 +73,26 @@ public class Registration extends AppCompatActivity {
                     signInUser();
                 }
 
+            }
+        });
+        findViewById(R.id.register_pass_reset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                email = emailTV.getText().toString();
+                if (email.equals("")) {
+                    Toast.makeText(context, RESET_EMAIL_MSG, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                mAuth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(context, RESET_MSG, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
             }
         });
     }
@@ -103,7 +125,7 @@ public class Registration extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             User user = new User(email);
                             (new UsersDB()).addItem(user);
-                            (new LogDB()).addItem(new Message(String.format(REGISTER_LOG,user.getId()),user.getId()));
+                            (new LogDB()).addItem(new Message(String.format(REGISTER_LOG, user.getId()), user.getId()));
                             returnResult(true);
                         } else {
                             Toast.makeText(getApplicationContext(), String.format(FAIL, REG), Toast.LENGTH_LONG).show();

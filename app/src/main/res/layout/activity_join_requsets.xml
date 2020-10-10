@@ -16,8 +16,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="Requests"/>
     <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@id/requests_title"
         android:id="@+id/requests_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class UserMenu extends AppCompatActivity {
 
-    private final int IMAGE_SIZE = 300;
+    private final int IMAGE_SIZE = 400;
     public static String USER = "user";
     private User user;
     private UsersDB usersDB;

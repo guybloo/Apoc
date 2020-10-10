@@ -32,8 +32,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
     public static class ItemsEditViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public TextView amount;
-        public Button increase;
-        public Button decrease;
+        public TextView increase;
+        public TextView decrease;
         public ProgressBar progressBar;
 
         public ItemsEditViewHolder(@NonNull View itemView, final ItemAdapter.OnItemClickListener listener) {
@@ -91,8 +91,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemsEditViewH
         holder.progressBar.setProgress((int)(currentItem.getPrecentage() * holder.progressBar.getMax()));
         holder.amount.setText(String.valueOf(currentItem.getAmount()));
         if(isGroup){
-            holder.increase.setVisibility(View.GONE);
-            holder.decrease.setVisibility(View.GONE);
+            holder.increase.setVisibility(View.INVISIBLE);
+            holder.decrease.setVisibility(View.INVISIBLE);
         }
     }
 
