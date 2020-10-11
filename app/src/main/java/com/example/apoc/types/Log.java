@@ -44,20 +44,34 @@ public class Log implements Serializable {
         });
     }
 
+    /**
+     * event
+     */
     public interface OnLogLoadedListener {
         void onLoaded();
     }
 
+    /**
+     * sets the event listener
+     * @param eventListener
+     */
     public void setLogLoadedListener(OnLogLoadedListener eventListener) {
         listener = eventListener;
     }
 
+    /**
+     * notify when loaded
+     */
     protected void notifyLoaded() {
         if (listener != null) {
             listener.onLoaded();
         }
     }
 
+    /**
+     * gets messages by user id
+     * @param id
+     */
     public void loadByUserId(String id){
         logDB.loadMessagesByUser(id);
         counter++;

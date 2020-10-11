@@ -27,6 +27,11 @@ public class Message implements DBItem, Serializable {
         date = msgDate;
     }
 
+    /**
+     * constructor
+     * @param msgContent the message
+     * @param msgWriter the writer
+     */
     public Message(String msgContent, String msgWriter)
     {
         content = msgContent;
@@ -41,22 +46,42 @@ public class Message implements DBItem, Serializable {
         this("","", new Date());
     }
 
+    /**
+     * gets the date
+     * @return
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * gets formated date
+     * @return
+     */
     public String getFormatDate(){
         return date.toString();
     }
 
+    /**
+     * gets message content
+     * @return
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * gets message writer
+     * @return
+     */
     public String getWriter() {
         return writer;
     }
 
+    /**
+     * gets message id
+     * @return
+     */
     @Override
     public String getId() {
         return writer + "_" + date.toString();
