@@ -246,7 +246,9 @@ public class ProfileEdit extends AppCompatActivity {
             return;
         }
 
-        imagesDB.Upload(imageUri, user, this);
+        if(imageUri!= null) {
+            imagesDB.Upload(imageUri, user, this);
+        }
         updateItems(udb); // at end updates users db
         Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
 
@@ -310,6 +312,9 @@ public class ProfileEdit extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             Uri ourImageUri = data.getData();
+            if(ourImageUri == null){
+                return;
+            }
             imageUri = ourImageUri;
 
             try {
