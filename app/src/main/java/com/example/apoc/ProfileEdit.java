@@ -76,6 +76,8 @@ public class ProfileEdit extends AppCompatActivity {
     private Context cnt;
     LocationTracker locationTracker;
 
+    private boolean imageUploaded, itemsUpdated;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,8 @@ public class ProfileEdit extends AppCompatActivity {
         setContentView(R.layout.activity_profile_edit);
         cnt = this;
         imagesDB = new ImagesDB();
+        imageUploaded = false;
+        itemsUpdated = false;
 
         Intent intent = getIntent();
         user = (User) intent.getSerializableExtra(USER_DATA);
@@ -249,9 +253,10 @@ public class ProfileEdit extends AppCompatActivity {
         if(imageUri!= null) {
             imagesDB.Upload(imageUri, user, this);
         }
+        else{
+            imageUploaded = true;
+        }
         updateItems(udb); // at end updates users db
-        Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
-
     }
 
     private void updateItems(final UsersDB udb){
@@ -285,6 +290,11 @@ public class ProfileEdit extends AppCompatActivity {
                 user.setItems(newItems);
                 udb.updateItem(user);
                 (new LogDB()).addItem(new Message(String.format(PROFILE_UPDATED_LOG,user.getId()),user.getId()));
+                itemsUpdated = true;
+                if(imageUploaded){
+                    Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }
         });
     }
@@ -297,6 +307,14 @@ public class ProfileEdit extends AppCompatActivity {
             }
         }
         return max;
+    }
+
+    public void imageUploaded(){
+        imageUploaded = true;
+        if(itemsUpdated){
+            Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     private void openFileChooser() {

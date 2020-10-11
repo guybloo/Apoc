@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.apoc.DB.UsersDB;
+import com.example.apoc.ProfileEdit;
 import com.example.apoc.R;
 import com.example.apoc.types.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,8 +48,8 @@ public class ImagesDB {
             {
                 user.setImageUrl(downloadUrl.toString());
                 (new UsersDB()).updateField(user.getId(),UsersDB.IMAGE,downloadUrl.toString());
-                Toast.makeText(context,"Image uploaded", Toast.LENGTH_SHORT).show();
-                ((Activity)context).finish();
+//                Toast.makeText(context,"Image uploaded", Toast.LENGTH_SHORT).show();
+                ((ProfileEdit)context).imageUploaded();
             }
         });
 
