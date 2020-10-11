@@ -106,6 +106,23 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                     deleteRequest(reqUser, user);
                     joinRequests.remove(position);
 
+                    final RequestsDB requestsDB1 = new RequestsDB();
+                    requestsDB1.getItemsByApplier(beta);
+                    requestsDB1.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                        @Override
+                        public void onGetAll() {
+
+                        }
+
+                        @Override
+                        public void onGetSpecific() {
+                            for(DBItem item : requestsDB1.getItems().values()){
+                                requestsDB1.removeItem(((JoinRequest)item).getId());
+                            }
+                        }
+                    });
+
+
 //                    logDB.addItem(new Message(String.format(JOIN_LOG,beta.getEmail()),alpha.getId()));
                     if (user.isBeta()) {
                         finish();

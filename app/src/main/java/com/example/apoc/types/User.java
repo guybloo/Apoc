@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class User implements DBItem, Serializable {
 
 
+    private String DEFAULT_IMAGE = "https://firebasestorage.googleapis.com/v0/b/apoc-4f783.appspot.com/o/images%2Fimage%3A143509?alt=media&token=1016c18b-ea95-460d-8eff-1ccad6eb579d";
     private String nickName;
     private String email;
     private String phone;
@@ -42,7 +43,7 @@ public class User implements DBItem, Serializable {
         this.nickName = "";
         this.email = newEmail;
         this.phone = "";
-        this.imageUrl = "";
+        this.imageUrl = DEFAULT_IMAGE;
         this.status = UserStatus.undefined.name();
         this.locationInfo = new LocationInfo();
         this.skills = new ArrayList<>();

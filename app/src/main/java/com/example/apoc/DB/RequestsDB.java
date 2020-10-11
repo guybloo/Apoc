@@ -61,4 +61,25 @@ public class RequestsDB extends DBWrapper {
                     }
                 });
     }
+    public void getItemsByApplier(final User user){
+        items.clear();
+        db.collection(docName).whereEqualTo(APPLIER,user.getId())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> item = document.getData();
+                                JoinRequest tempItem = (JoinRequest) parseItem(item);
+
+                                items.put(tempItem.getId(),tempItem);
+                            }
+
+                            notifyGetSpecific();
+                        }
+                    }
+                });
+    }
+
 }
