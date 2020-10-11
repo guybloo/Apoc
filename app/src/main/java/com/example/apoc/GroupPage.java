@@ -215,11 +215,7 @@ public class GroupPage extends AppCompatActivity {
         TextView text = new TextView(this);
         text.setText(message.getContent() + "\n" + message.getFormatDate());
         Typeface face = ResourcesCompat.getFont(this, R.font.smallpixel);
-
         text.setTypeface(face);
-
-//        text.setTextSize(TypedValue.COMPLEX_UNIT_SP,text.getTextSize()-5);
-
 
         layout.addView(text, 0);
         View saparator = new View(this);

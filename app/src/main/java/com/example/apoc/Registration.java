@@ -78,7 +78,7 @@ public class Registration extends AppCompatActivity {
         findViewById(R.id.register_pass_reset).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = emailTV.getText().toString();
+                email = emailTV.getText().toString().toLowerCase();
                 if (email.equals("")) {
                     Toast.makeText(context, RESET_EMAIL_MSG, Toast.LENGTH_LONG).show();
                     return;
@@ -100,7 +100,7 @@ public class Registration extends AppCompatActivity {
     private boolean checkInput() {
         progressBar.setVisibility(View.VISIBLE);
 
-        email = emailTV.getText().toString();
+        email = emailTV.getText().toString().toLowerCase();
         password = passwordTV.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
