@@ -3,7 +3,6 @@ package com.example.apoc.types;
 import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.LogDB;
-import com.example.apoc.DB.UsersDB;
 import com.example.apoc.Enums.Fears;
 
 import java.io.Serializable;
@@ -38,20 +37,17 @@ public class Group implements DBItem, Serializable {
     public void addMember (User newUser)
     {
         groupies.add(newUser.getId());
-//        newUser.setIsGrouped(true);
-        updateUserAndGroup(newUser);
+        updateGroup(newUser);
         addLog(newUser,ADD_LOG);
     }
     public void removeMember (User user)
     {
         groupies.remove(user.getId());
-//        user.setIsGrouped(false);
-        updateUserAndGroup(user);
+        updateGroup(user);
         addLog(user,REMOVE_LOG);
     }
-    private void updateUserAndGroup(User user){
+    private void updateGroup(User user){
         (new GroupsDB()).updateItem(this);
-//        (new UsersDB()).updateItem(user);
     }
 
     private void addLog(User user, String message){

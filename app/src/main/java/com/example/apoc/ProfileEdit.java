@@ -206,6 +206,7 @@ public class ProfileEdit extends AppCompatActivity {
             } else {
                 if (statusInGroup.isChecked()) {
                     user.setStatus(UserStatus.alpha.name());
+                    user.setIsGrouped(true);
 
                     groupsDB.getGroupByUser(user.getId());
                     groupsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
