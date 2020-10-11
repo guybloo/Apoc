@@ -26,20 +26,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * MainActivity class
+ */
 public class MainActivity extends AppCompatActivity {
 
     private final String ID = "id";
     private LocationTracker location;
-    private final int REGISTERATION_CODE = 1;
-    private final int PROFILE_EDIT_CODE = 2;
-    private final int PARTNERS_FIND_EDIT_CODE = 3;
+//    private final int REGISTERATION_CODE = 1;
+//    private final int PROFILE_EDIT_CODE = 2;
+//    private final int PARTNERS_FIND_EDIT_CODE = 3;
     private String userID;
     private SharedPreferences sp;
     private FirebaseUser firebaseUser;
     private User user;
     private Context context;
 
-
+    /**
+     * starts the app
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,29 +53,21 @@ public class MainActivity extends AppCompatActivity {
         context = this;
 
         location = new LocationTracker(this);
-
         ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.SEND_SMS}, 0);
-
         sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-
-//        try {
-//            loadItemsFromCSV();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         openPage();
     }
 
+    /**
+     * checks if the current user is new or already registered and reacts accordingly
+     */
     private void openPage(){
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser != null) {
-
             final UsersDB udb = new UsersDB();
-//            udb.getAllItems();
             udb.loadItemByIdFromDB(firebaseUser.getEmail());
-
             udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
                 @Override
                 public void onGetAll() {
@@ -79,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onGetSpecific() {
                     user = (User)udb.getItemById(firebaseUser.getEmail());
                     Navigation.openMenu(context, user);
-
                 }
             });
 
@@ -88,10 +85,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * sends to openPage
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         openPage();
     }
 
