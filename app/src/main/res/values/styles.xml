@@ -14,7 +14,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:alertDialogStyle">@style/MyDialogTheme</item>
         <item name="android:alertDialogTheme">@style/MyDialogTheme</item>
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">20dp</item>
         <item name="android:layout_margin">2dp</item>
     </style>
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -40,7 +40,7 @@
     <style name="transparentButton" parent="@style/Widget.MaterialComponents.Button">
                 <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
                 <item name="android:textColor">@color/colorPrimary</item>
-                <item name="android:textSize">15sp</item>
+<!--                <item name="android:textSize">15sp</item>-->
                 <item name="backgroundTint">@android:color/transparent</item>
                 <item name="background">@android:color/transparent</item>
                 <item name="cornerRadius">8dp</item>
@@ -51,7 +51,7 @@
     <style name="coloredButton" parent="@style/Widget.MaterialComponents.Button">
                 <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
                 <item name="android:textColor">@color/colorPrimary</item>
-                <item name="android:textSize">15sp</item>
+<!--                <item name="android:textSize">15sp</item>-->
                 <item name="backgroundTint">@color/redColor</item>
                 <item name="background">@color/redColor</item>
                 <item name="cornerRadius">8dp</item>
@@ -62,7 +62,7 @@
     <style name="redButton" parent="@style/Widget.MaterialComponents.Button">
                 <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
                 <item name="android:textColor">@color/lightRedColor</item>
-                <item name="android:textSize">15sp</item>
+<!--                <item name="android:textSize">15sp</item>-->
                 <item name="backgroundTint">@android:color/transparent</item>
                 <item name="background">@android:color/transparent</item>
                 <item name="cornerRadius">8dp</item>
