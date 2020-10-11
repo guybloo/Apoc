@@ -47,6 +47,8 @@ public class ImagesDB {
             {
                 user.setImageUrl(downloadUrl.toString());
                 (new UsersDB()).updateField(user.getId(),UsersDB.IMAGE,downloadUrl.toString());
+                Toast.makeText(context,"Image uploaded", Toast.LENGTH_SHORT).show();
+                ((Activity)context).finish();
             }
         });
 
@@ -60,7 +62,6 @@ public class ImagesDB {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(context,"Image uploaded", Toast.LENGTH_SHORT).show();
             }
         });
     }

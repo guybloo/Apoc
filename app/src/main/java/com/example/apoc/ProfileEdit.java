@@ -283,7 +283,6 @@ public class ProfileEdit extends AppCompatActivity {
                 user.setItems(newItems);
                 udb.updateItem(user);
                 (new LogDB()).addItem(new Message(String.format(PROFILE_UPDATED_LOG,user.getId()),user.getId()));
-                finish();
             }
         });
     }
