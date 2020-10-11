@@ -2,11 +2,13 @@ package com.example.apoc;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -212,6 +214,9 @@ public class GroupPage extends AppCompatActivity {
     private void displayMessage(Message message, LinearLayout layout) {
         TextView text = new TextView(this);
         text.setText(message.getContent() + "\n" + message.getFormatDate());
+        Typeface face = ResourcesCompat.getFont(this, R.font.smallpixel);
+
+        text.setTypeface(face);
 
 //        text.setTextSize(TypedValue.COMPLEX_UNIT_SP,text.getTextSize()-5);
 
