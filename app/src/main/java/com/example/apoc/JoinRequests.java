@@ -20,6 +20,9 @@ import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 
+/**
+ * JoinRequests class
+ */
 public class JoinRequests extends AppCompatActivity implements RequestAdapter.OnItemClickListener {
 
     public static final String USER = "user";
@@ -29,19 +32,24 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
     private RequestsDB requestsDB;
     private UsersDB usersDB;
     ArrayList<User> joinRequests;
-//    LogDB logDB;
 
+    /**
+     * create the page of JoinRequests
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_requsets);
         user = (User) getIntent().getSerializableExtra(USER);
         requestsDB = new RequestsDB();
-//        logDB = new LogDB();
 
         recyclerViewConfig();
     }
 
+    /**
+     * create the recyclerView of the join requests from the current user
+     */
     private void recyclerViewConfig() {
         final RecyclerView recyclerView = findViewById(R.id.requests_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -65,7 +73,6 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                         for (DBItem item : new ArrayList<DBItem>(requestsDB.getItems().values())) {
                             joinRequests.add((User) usersDB.getItemById(((JoinRequest) item).getApplier()));
                         }
-                        // todo connect between users and requests to that we can delete it
                         if (joinRequests.size() == 0) {
                             Toast.makeText(context, NO_REQUESTS, Toast.LENGTH_LONG).show();
                             finish();
@@ -84,6 +91,11 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
         });
     }
 
+    /**
+     * if the user approve the requests then the beta one of then joins
+     * the group of the alpha and all its other requests form other groups are deleted
+     * @param position the position of the requests in the recyclerView
+     */
     @Override
     public void onRequestApprove(final int position) {
         final User reqUser = adapter.getUserByPosition(position);
@@ -105,7 +117,6 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                     group.addMember(beta);
                     updateIsGrouped(beta, true);
                     deleteRequest(reqUser, user);
-//                    joinRequests.remove(position);
                     adapter.deleteRequest(position);
 
                     final RequestsDB requestsDB1 = new RequestsDB();
@@ -125,8 +136,6 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                         }
                     });
 
-
-//                    logDB.addItem(new Message(String.format(JOIN_LOG,beta.getEmail()),alpha.getId()));
                     if (user.isBeta()) {
                         finish();
                     }
@@ -135,17 +144,31 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
         });
     }
 
+    /**
+     * update the user status - is it in group or not
+     * @param user the user to be updated
+     * @param value true if is in group false otherwise
+     */
     private void updateIsGrouped(User user, boolean value){
         user.setIsGrouped(value);
         usersDB.updateField(user.getId(),UsersDB.IS_GROUPED,value);
     }
 
+    /**
+     * delete the requests if the receiver decline
+     * @param position the position of the requests in the recyclerView
+     */
     @Override
     public void onRequestDelete(int position) {
         final User reqUser = adapter.getUserByPosition(position);
         deleteRequest(reqUser, user);
     }
 
+    /**
+     * remove the requests from the recyclerView in case of delete
+     * @param applier the one who sent the requests
+     * @param recipient - the one who was asked
+     */
     private void deleteRequest(User applier, User recipient) {
         requestsDB.removeItem((new JoinRequest(applier.getId(), recipient.getId(), false)).getId());
 

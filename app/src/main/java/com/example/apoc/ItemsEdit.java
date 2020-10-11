@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * ItemEdit class
+ */
 public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemClickListener {
 
     private final String PRIVATE_TITLE = "Items edit";
@@ -41,6 +44,10 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
     private HashSet<ItemCount> changed;
 
+    /**
+     * create the page of itemsEdit
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +76,9 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
         recyclerViewConfig();
     }
 
+    /**
+     * create the recyclerView of the items by the fears of the user
+     */
     private void recyclerViewConfig() {
         final ItemAdapter.OnItemClickListener itemClickListener = this;
         final RecyclerView recyclerView = findViewById(R.id.items_recycler);
@@ -111,6 +121,10 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
 
     }
 
+    /**
+     * increase the amount of the item in that position by one
+     * @param position the position of the clicked item in the recyclerView
+     */
     @Override
     public void onItemIncrease(int position) {
         user.getItemFromPosition(position).increase();
@@ -118,6 +132,10 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
         changed.add(user.getItemFromPosition(position));
     }
 
+    /**
+     * decrease the amount of the item in that position by one
+     * @param position the position of the clicked item in the recyclerView
+     */
     @Override
     public void onItemDecrease(int position) {
         ItemCount item = user.getItemFromPosition(position);
@@ -126,11 +144,9 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
         changed.add(user.getItemFromPosition(position));
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
+    /**
+     * create a message for the log db for the user
+     */
     private void saveItems() {
         UsersDB udb = new UsersDB();
         udb.updateItem(user);
@@ -144,5 +160,13 @@ public class ItemsEdit extends AppCompatActivity implements ItemAdapter.OnItemCl
         logDB.addItem(new Message(message, user.getId()));
 
         finish();
+    }
+
+    /**
+     * destroy the event
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
