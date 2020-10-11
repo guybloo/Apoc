@@ -33,9 +33,11 @@ import com.example.apoc.types.User;
 
 import java.util.ArrayList;
 
+/**
+ * groupPage class
+ */
 public class GroupPage extends AppCompatActivity {
 
-    private static final String SMS_ACTION = "APOC.ACTION_SEND_SMS";
     private final int IMAGE_SIZE = 175;
     public static String USER = "user";
     private String MESSAGE_UPDATED = "Your message has been updated";
@@ -50,8 +52,13 @@ public class GroupPage extends AppCompatActivity {
     private ArrayList<GroupUserDisplay> userDisplays;
     private ArrayList<User> groupies;
 
-    private String SOS_MESSAGE = "%s is in danger! this is his location: \n https://www.google.com/maps/search/?api=1&query=%s,%s \nThis message Was sent from APOC app";
+    private String SOS_MESSAGE = "%s is in danger! this is his location: \n " +
+            "https://www.google.com/maps/search/?api=1&query=%s,%s \nThis message Was sent from APOC app";
 
+    /**
+     * create the gtoup page and define all the buttons in it
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,13 +169,20 @@ public class GroupPage extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * define user as one without a group and update the db
+     */
     private void setUserUngrouped(){
         user.setIsGrouped(false);
         usersDB.updateField(user.getId(),UsersDB.IS_GROUPED, false);
     }
 
 
-
+    /**
+     * creates the grid of images of group members on the top op the page
+     * @param columns the number of users to display on one line
+     */
     private void displayUsers(int columns) {
         GridLayout grid = findViewById(R.id.groupies_info);
         grid.setColumnCount(columns);
@@ -195,6 +209,9 @@ public class GroupPage extends AppCompatActivity {
         }
     }
 
+    /**
+     * creates the log messages on the group page
+     */
     private void displayLog() {
         LinearLayout layout = findViewById(R.id.group_log);
         log.sort(true);
@@ -203,6 +220,11 @@ public class GroupPage extends AppCompatActivity {
         }
     }
 
+    /**
+     * create each message of the member ib the group for the log
+     * @param message the message from the db
+     * @param layout the group log layout
+     */
     private void displayMessage(Message message, LinearLayout layout) {
         TextView text = new TextView(this);
         text.setText(message.getContent() + "\n" + message.getFormatDate());
@@ -218,6 +240,10 @@ public class GroupPage extends AppCompatActivity {
         layout.addView(saparator, 1);
     }
 
+    /**
+     * sends sms for all the members of the group
+     * @param context
+     */
     private void sosSend(final Context context) {
         final LocationTracker location = new LocationTracker(context);
         location.startTracking();
@@ -250,6 +276,9 @@ public class GroupPage extends AppCompatActivity {
         });
     }
 
+    /**
+     * destroy the event
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();

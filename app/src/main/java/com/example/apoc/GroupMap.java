@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentActivity;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -25,10 +24,12 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
+
+/**
+ * groupMap class
+ */
 public class GroupMap extends FragmentActivity implements OnMapReadyCallback {
 
     private final int PIN_SIZE = 100;
@@ -38,6 +39,10 @@ public class GroupMap extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<User> groupies;
     private User user;
 
+    /**
+     * kick start google map
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +89,12 @@ public class GroupMap extends FragmentActivity implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * creates the images of the group members on the map
+     * @param user the user to display
+     * @param setCamera
+     * @throws IOException
+     */
     private void addPosition(User user, final boolean setCamera) throws IOException {
         final LatLng position = new LatLng(user.getLocationInfo().getLatitude(), user.getLocationInfo().getLongitude());
         final MarkerOptions options = new MarkerOptions().position(position).title(user.getNickName());
