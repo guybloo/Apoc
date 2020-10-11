@@ -19,6 +19,9 @@ import com.example.apoc.types.User;
 import com.example.apoc.Enums.UserStatus;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * UserMenu class
+ */
 public class UserMenu extends AppCompatActivity {
 
     private final int IMAGE_SIZE = 400;
@@ -27,6 +30,10 @@ public class UserMenu extends AppCompatActivity {
     private UsersDB usersDB;
     private GroupUserDisplay userDisplay;
 
+    /**
+     * starts the UserMenu activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +44,6 @@ public class UserMenu extends AppCompatActivity {
         usersDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
             @Override
             public void onGetAll() {
-
             }
 
             @Override
@@ -58,6 +64,18 @@ public class UserMenu extends AppCompatActivity {
         }
     }
 
+    /**
+     * initialize the page of the user menu page
+     */
+    private void initializeUI() {
+        showDetails();
+        initializeNavigation(this);
+        buttonsUpdate();
+    }
+
+    /**
+     * initialize the ui of the user menu page - image and nickname
+     */
     private void showDetails() {
         userDisplay = new GroupUserDisplay(user, user, new Group("", "", user.getFears()), this);
         userDisplay.setImageSize(IMAGE_SIZE);
@@ -66,12 +84,10 @@ public class UserMenu extends AppCompatActivity {
         ((TextView) findViewById(R.id.menu_nickname)).setText(user.getNickName());
     }
 
-    private void initializeUI() {
-        showDetails();
-        initializeNavigation(this);
-        buttonsUpdate();
-    }
-
+    /**
+     * initialize the buttons of the user menu page
+     * @param context
+     */
     private void initializeNavigation(final Context context){
         ((Button) findViewById(R.id.menu_edit_profile)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +96,6 @@ public class UserMenu extends AppCompatActivity {
             }
         });
 
-
         ((Button) findViewById(R.id.menu_equipment)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,14 +103,12 @@ public class UserMenu extends AppCompatActivity {
             }
         });
 
-
         ((Button) findViewById(R.id.menu_partners_find)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.openPartnersFind(context, user);
             }
         });
-
 
         ((Button) findViewById(R.id.menu_group)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +133,9 @@ public class UserMenu extends AppCompatActivity {
         });
     }
 
+    /**
+     * sets the visibility of the buttons that related to group/lone wolf only
+     */
     private void buttonsUpdate(){
         if ((user.getIsGrouped() && user.isBeta()) || user.getStatus().equals(UserStatus.loneWolf.name())) {
             findViewById(R.id.menu_partners_find).setVisibility(View.GONE);
@@ -146,6 +162,12 @@ public class UserMenu extends AppCompatActivity {
         }
     }
 
+    /**
+     * loads the usersDB
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

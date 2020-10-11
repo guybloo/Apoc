@@ -37,12 +37,13 @@ import com.example.apoc.types.ItemCount;
 import com.example.apoc.types.Message;
 import com.example.apoc.types.User;
 import com.example.apoc.Enums.UserStatus;
-//import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+/**
+ * ProfileEdit class
+ */
 public class ProfileEdit extends AppCompatActivity {
 
     public static final String USER_DATA = "user";
@@ -52,9 +53,7 @@ public class ProfileEdit extends AppCompatActivity {
     public final int IMAGE_SIZE = 500;
     private static final int PICK_IMAGE_REQUEST = 1;
     private final int LOCATION_ACCURACY = 20;
-
     private ImagesDB imagesDB;
-
     private ImageView image;
     private Button pickImg;
     private TextView email;
@@ -65,20 +64,19 @@ public class ProfileEdit extends AppCompatActivity {
     private SwitchCompat statusInGroup;
     private GridLayout fearsLayouts;
     private GridLayout skillsLayouts;
-
     private Button save;
-
     private ConstraintLayout statusInGroupLayout;
     private LocationInfo newLocation;
     private Uri imageUri;
-
     private User user;
     private Context cnt;
-    LocationTracker locationTracker;
-
+    LocationTracker locationTracker;  // todo is it public or private
     private boolean imageUploaded, itemsUpdated;
 
-
+    /**
+     * starts the ProfileEdit activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,9 +102,11 @@ public class ProfileEdit extends AppCompatActivity {
             finish();
         }
         initializeUI();
-
     }
 
+    /**
+     * create the ProfileEdit page - ui
+     */
     private void initializeUI() {
         fearsLayouts = findViewById(R.id.profile_edit_fears);
         skillsLayouts = findViewById(R.id.profile_edit_skills);
@@ -118,8 +118,8 @@ public class ProfileEdit extends AppCompatActivity {
         if(!user.getImageUrl().equals("")){
             ImagesDB.showCircleImage(user.getImageUrl(),image,this);
         }
-        pickImg = findViewById(R.id.pickImg);
 
+        pickImg = findViewById(R.id.pickImg);
         pickImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,8 +135,6 @@ public class ProfileEdit extends AppCompatActivity {
 
         phone = findViewById(R.id.phone);
         phone.setText(user.getPhone());
-
-
 
         location = findViewById(R.id.location);
         location.setOnClickListener(new View.OnClickListener() {
@@ -166,10 +164,7 @@ public class ProfileEdit extends AppCompatActivity {
         });
 
         status = findViewById(R.id.status);
-
         statusInGroup = findViewById(R.id.status_in_group);
-
-
         statusInGroupLayout = findViewById(R.id.status_layout);
 
         if(!user.isUndefined()){
@@ -179,7 +174,6 @@ public class ProfileEdit extends AppCompatActivity {
             status.setEnabled(false);
             statusInGroup.setEnabled(false);
         }
-
 
         status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -194,7 +188,6 @@ public class ProfileEdit extends AppCompatActivity {
         });
 
         save = findViewById(R.id.save);
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,44 +196,46 @@ public class ProfileEdit extends AppCompatActivity {
         });
     }
 
+    /**
+     * saves all the details of the user and updates the dbs
+     */
     private void saveProfile(){
-
         UsersDB udb = new UsersDB();
         final GroupsDB groupsDB = new GroupsDB();
+        if (!status.isChecked())
+        {
+            user.setStatus(UserStatus.loneWolf.name());
+        }
+        else {
+            if (statusInGroup.isChecked())
+            {
+                user.setStatus(UserStatus.alpha.name());
+                user.setIsGrouped(true);
 
-            if (!status.isChecked()) {
-                user.setStatus(UserStatus.loneWolf.name());
+                groupsDB.getGroupByUser(user.getId());
+                groupsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                    @Override
+                    public void onGetAll() {
+                    }
+
+                    @Override
+                    public void onGetSpecific() {
+                        Group group = (Group)groupsDB.getItemById(user.getId());
+                        if(group == null){
+                            group = new Group(user.getNickName(), user.getId(), user.getFears());
+                            groupsDB.addItem(group);
+                            group.addMember(user);
+                        }
+                        else {
+                            group.setFears(user.getFears());
+                            groupsDB.updateItem(group);
+                        }
+                    }
+                });
             } else {
-                if (statusInGroup.isChecked()) {
-                    user.setStatus(UserStatus.alpha.name());
-                    user.setIsGrouped(true);
-
-                    groupsDB.getGroupByUser(user.getId());
-                    groupsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
-                        @Override
-                        public void onGetAll() {
-
-                        }
-
-                        @Override
-                        public void onGetSpecific() {
-                            Group group = (Group)groupsDB.getItemById(user.getId());
-                            if(group == null){
-                                group = new Group(user.getNickName(), user.getId(), user.getFears());
-                                groupsDB.addItem(group);
-                                group.addMember(user);
-                            }
-                            else {
-                                group.setFears(user.getFears());
-                                groupsDB.updateItem(group);
-                            }
-                        }
-                    });
-                } else {
-                    user.setStatus(UserStatus.beta.name());
-                }
+                user.setStatus(UserStatus.beta.name());
             }
-
+        }
 
         user.setNickName(nickname.getText().toString());
         user.setPhone(phone.getText().toString());
@@ -264,9 +259,13 @@ public class ProfileEdit extends AppCompatActivity {
         else{
             imageUploaded = true;
         }
-        updateItems(udb); // at end updates users db
+        updateItems(udb); // in the end it updates the users db
     }
 
+    /**
+     * updates all the relevant items for the user fears in the items list
+     * @param udb - users db
+     */
     private void updateItems(final UsersDB udb){
         final ItemsDB itemsDB = new ItemsDB();
         itemsDB.getItemsByFears(user.getFears());
@@ -274,7 +273,6 @@ public class ProfileEdit extends AppCompatActivity {
             @Override
             public void onGetAll() {
             }
-
 
             @Override
             public void onGetSpecific() {
@@ -293,7 +291,6 @@ public class ProfileEdit extends AppCompatActivity {
                     if(!added) {
                         newItems.add(new ItemCount(item.getId()));
                     }
-
                 }
                 user.setItems(newItems);
                 udb.updateItem(user);
@@ -307,6 +304,12 @@ public class ProfileEdit extends AppCompatActivity {
         });
     }
 
+    /**
+     * get the max number of needed items form the user fears
+     * @param item - the item that is in need for more then one fear
+     * @param fears - the fears of the user
+     * @return
+     */
     private double getMaxCountByFears(Item item, ArrayList<Fears> fears){
         double max = 0;
         for(Fears fear : fears){
@@ -317,7 +320,9 @@ public class ProfileEdit extends AppCompatActivity {
         return max;
     }
 
-
+    /**
+     * opens the gallery for choosing profile image for the user
+     */
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -325,6 +330,12 @@ public class ProfileEdit extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
+    /**
+     * update the user's imageUri after it chooses an image
+     * @param requestCode - PICK_IMAGE_REQUEST
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

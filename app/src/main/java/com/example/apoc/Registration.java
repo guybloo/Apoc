@@ -23,6 +23,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Registration class
+ */
 public class Registration extends AppCompatActivity {
 
     private final String SUCCESS = "%s Succeeded!";
@@ -30,7 +33,7 @@ public class Registration extends AppCompatActivity {
     private final String REG = "Register";
     private final String SIGN = "Sign in";
     private final String EMAIL = "Please enter email...";
-    private final String PASS = "Please enter password!";
+    private final String PASS = "Please enter password! (8 letters long)";
     private final String REGISTER_LOG = "%s has registered and now has a chance to SURVIVE!";
     private final String RESET_MSG = "Email was sent - you know what to do";
     private final String RESET_EMAIL_MSG = "Enter your email";
@@ -38,7 +41,6 @@ public class Registration extends AppCompatActivity {
     public static final String RES_EMAIL = "email";
     public static final String RES_USER = "user";
     public static final String RES_IS_REGISTER = "is_reg";
-
 
     private EditText emailTV, passwordTV;
     private Button regBtn;
@@ -48,14 +50,18 @@ public class Registration extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    /**
+     * starts Registration activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
         final Context context = this;
 
         mAuth = FirebaseAuth.getInstance();
-
         initializeUI();
 
         regBtn.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +72,7 @@ public class Registration extends AppCompatActivity {
                 }
             }
         });
+
         signInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +82,7 @@ public class Registration extends AppCompatActivity {
 
             }
         });
+
         findViewById(R.id.register_pass_reset).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +105,10 @@ public class Registration extends AppCompatActivity {
         });
     }
 
+    /**
+     * checks if the email and the password fields are not null
+     * @return
+     */
     private boolean checkInput() {
         progressBar.setVisibility(View.VISIBLE);
 
@@ -114,7 +126,9 @@ public class Registration extends AppCompatActivity {
         return true;
     }
 
-
+    /**
+     * register the new user
+     */
     private void registerNewUser() {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -135,6 +149,9 @@ public class Registration extends AppCompatActivity {
                 });
     }
 
+    /**
+     * sign in existing user
+     */
     private void signInUser() {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -152,7 +169,9 @@ public class Registration extends AppCompatActivity {
                 });
     }
 
-
+    /**
+     * connects the activity to the layout
+     */
     private void initializeUI() {
         emailTV = findViewById(R.id.email);
         passwordTV = findViewById(R.id.password);
@@ -161,6 +180,10 @@ public class Registration extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
     }
 
+    /**
+     * finishes the activity in the page
+     * @param isRegister - true if we need to create a new user false if its already exists
+     */
     private void returnResult(boolean isRegister) {
         Intent resultIntent = new Intent();
         resultIntent.putExtra(RES_EMAIL, email);
