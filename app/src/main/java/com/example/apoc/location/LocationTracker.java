@@ -20,7 +20,9 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.apoc.DB.DBWrapper;
 
-
+/**
+ * location tracker class - manages the gps location tracking
+ */
 public class LocationTracker implements LocationListener {
     public static int ACCURACY = 20;
     private static final String MSG = "Location services are MANDATORY. Without permission some features won't work.";
@@ -42,17 +44,26 @@ public class LocationTracker implements LocationListener {
         context = cnt;
         info = new LocationInfo();
         isTracking = false;
-//        startTracking();
     }
 
+    /**
+     * event
+     */
     public interface OnLocationUpdateListener {
         void onLocationUpdate();
     }
 
+    /**
+     * sets listener
+     * @param eventListener
+     */
     public void setLocationUpdateListener(OnLocationUpdateListener eventListener) {
         listener = eventListener;
     }
 
+    /**
+     * notify updates for events
+     */
     protected void notifyUpdate() {
         if (listener != null) {
             listener.onLocationUpdate();

@@ -13,14 +13,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * items db class
+ */
 public class ItemsDB extends DBWrapper {
     protected static String NAME = "name";
 
+    /**
+     * constructor
+     */
     public ItemsDB() {
         super();
         docName = "items";
     }
 
+    /**
+     * updates items item to the db
+     * @param updateItem the item
+     */
     @Override
     public void updateItem(DBItem updateItem) {
         Item item = (Item) updateItem;
@@ -37,6 +47,11 @@ public class ItemsDB extends DBWrapper {
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
+    /**
+     * parse item from the db
+     * @param item
+     * @return
+     */
     @Override
     protected DBItem parseItem(Map<String, Object> item) {
         Map<Fears, Double> amount = new HashMap<>();
@@ -50,6 +65,10 @@ public class ItemsDB extends DBWrapper {
         return new Item((String) item.get(NAME), amount);
     }
 
+    /**
+     * gets all the items which are necessary for the specific fears
+     * @param fears fears to find
+     */
     public void getItemsByFears(final ArrayList<Fears> fears) {
         items.clear();
         db.collection(docName)
@@ -74,25 +93,4 @@ public class ItemsDB extends DBWrapper {
                     }
                 });
     }
-//
-//    public void getItemsByFear(final Fears fear) {
-////        final ArrayList<Item> tempItems = new ArrayList<>();
-//        db.collection(docName).whereGreaterThan(fear.name(), 0)
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Map<String, Object> item = document.getData();
-//                                Item tempItem = (Item) parseItem(item);
-////                                tempItems.add(tempItem);
-//                                items.put(tempItem.getId(),tempItem);
-//                            }
-//
-//                            notifyGetSpecific();
-//                        }
-//                    }
-//                });
-//    }
 }

@@ -15,6 +15,9 @@ import static com.example.apoc.types.HelpMethods.ListToGson;
 import static com.example.apoc.types.HelpMethods.fromGson;
 import static com.example.apoc.types.HelpMethods.toGson;
 
+/**
+ * users db class
+ */
 public class UsersDB extends DBWrapper {
     public static String NICK_NAME = "nick_name";
     public static String EMAIL = "email";
@@ -27,11 +30,18 @@ public class UsersDB extends DBWrapper {
     public static String ITEMS = "items";
     public static String IS_GROUPED = "is_grouped";
 
+    /**
+     * constructor
+     */
     public UsersDB(){
         super();
         docName = "users";
     }
 
+    /**
+     * updates user item to db
+     * @param item the item
+     */
     @Override
     public void updateItem(DBItem item) {
         User user = (User)item;
@@ -52,6 +62,11 @@ public class UsersDB extends DBWrapper {
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
+    /**
+     * parse user item from db
+     * @param item the item
+     * @return the user
+     */
     @Override
     protected DBItem parseItem(Map<String, Object> item) {
         User user =  new User((String) item.get(NICK_NAME),

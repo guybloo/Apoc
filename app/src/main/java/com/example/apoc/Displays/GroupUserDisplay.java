@@ -16,6 +16,9 @@ import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.types.Group;
 import com.example.apoc.types.User;
 
+/**
+ * shows user details in group
+ */
 public class GroupUserDisplay {
     // user is the one who sees this page, other user is another group member to show
     private User user;
@@ -29,8 +32,13 @@ public class GroupUserDisplay {
     private AlertDialog dialog;
     private onDeleteListener listener;
 
-
-
+    /**
+     * constructor
+     * @param user the one who sees this page
+     * @param otherUser the user to show
+     * @param group group item
+     * @param context the activity
+     */
     public GroupUserDisplay( User user, User otherUser, Group group,  final Context context){
         this.group = group;
         this.context = context;
@@ -50,7 +58,10 @@ public class GroupUserDisplay {
         });
     }
 
-
+    /**
+     * sets the images size
+     * @param size the wanted size
+     */
     public void setImageSize(int size){
         ImageView image = view.findViewById(R.id.user_display_image);
 
@@ -58,43 +69,77 @@ public class GroupUserDisplay {
        image.getLayoutParams().width = size;
     }
 
+    /**
+     * event interface
+     */
     public interface onDeleteListener {
         void onDelete(User user);
     }
 
+    /**
+     * sets the listener
+     * @param listener
+     */
     public void setOnDeleteListener(GroupUserDisplay.onDeleteListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * gets the view
+     * @return the specific view layout
+     */
     public View getView() {
         return view;
     }
 
+    /**
+     * gets other user
+     * @return the user
+     */
     public User getOtherUser() {
         return otherUser;
     }
 
+    /**
+     * sets margin params
+     * @param left from left
+     * @param top from top
+     */
     public void setParams(int left, int top) {
         this.params.leftMargin = left;
         this.params.topMargin = top;
     }
 
+    /**
+     * gets the layout params
+     * @return
+     */
     public RelativeLayout.LayoutParams getParams() {
         return params;
     }
 
+    /**
+     * adds the view to the layout
+     * @param layout
+     */
     public void addView(GridLayout layout){
         if(parent == null) {
             parent = layout;
             parent.addView(view, params);
         }
     }
+
+    /**
+     * remove this view from the layout
+     */
     public void removeView(){
         ((ViewGroup) parent).removeView(view);
         parent = null;
     }
 
-
+    /**
+     * updates the user details in the view
+     */
     public void updateUserDetails()
     {
         ImagesDB.showCircleImage(otherUser.getImageUrl(),(ImageView)view.findViewById(R.id.user_display_image),context);

@@ -12,23 +12,30 @@ import com.example.apoc.types.User;
 import net.steamcrafted.materialiconlib.MaterialDrawableBuilder;
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
+/**
+ * displays fears and skills
+ */
 public class GridDisplay {
     private final int ICON_SIZE = 50;
     private Context context;
     private User user;
     private GridLayout fearsLayout;
     private GridLayout skillsLayout;
-    private boolean isEdit;
-    private int columns;
 
-
+    /**
+     * constructor
+     * @param context the activity
+     * @param user user to show
+     * @param fears layout to show fears
+     * @param skills layout to show skills
+     * @param isEdit boolean if to show buttons of textViews
+     * @param columns number of cols in the grid
+     */
     public GridDisplay(Context context, User user, GridLayout fears, GridLayout skills, boolean isEdit, int columns){
         this.context = context;
         this.user = user;
         this.fearsLayout = fears;
         this.skillsLayout = skills;
-        this.isEdit = isEdit;
-        this.columns = columns;
         fearsLayout.setColumnCount(columns);
         skills.setColumnCount(columns);
         if(isEdit)
@@ -40,10 +47,11 @@ public class GridDisplay {
         }
     }
 
+    /**
+     * create views - only the specific fears and skills
+     */
     private void createViews(){
         for(final Fears fear : user.getFears()){
-//            ImageView imageView = new ImageView(context);
-            // add logos
             MaterialIconView icon = new MaterialIconView(context);
             icon.setIcon(getFearIcon(fear));
             icon.setColor(context.getResources().getColor(R.color.colorPrimaryDark));
@@ -58,6 +66,11 @@ public class GridDisplay {
         }
     }
 
+    /**
+     * gets specific fear icon by its enum
+     * @param fear the specific fear
+     * @return the icon
+     */
     private MaterialDrawableBuilder.IconValue getFearIcon(Fears fear){
         switch (fear){
             case War:
@@ -75,6 +88,12 @@ public class GridDisplay {
         }
         return MaterialDrawableBuilder.IconValue.CURSOR_DEFAULT;
     }
+
+    /**
+     * gets specific skill icon from enum
+     * @param skill the specific skill
+     * @return icon
+     */
     private MaterialDrawableBuilder.IconValue getSkillIcon(Skills skill){
         switch (skill){
             case fire:
@@ -117,6 +136,9 @@ public class GridDisplay {
         return MaterialDrawableBuilder.IconValue.CURSOR_DEFAULT;
     }
 
+    /**
+     * creates buttons of all fears and skills for editing
+     */
     private void createButtons(){
         final int primary = context.getResources().getColor(R.color.colorPrimary);
         final int primaryDark = context.getResources().getColor(R.color.colorPrimaryDark);

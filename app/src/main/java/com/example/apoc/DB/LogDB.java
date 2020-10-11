@@ -13,16 +13,26 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * logs db
+ */
 public class LogDB extends DBWrapper {
     protected static String CONTENT = "content";
     protected static String WRITER = "writer";
     protected static String DATE = "date";
 
+    /**
+     * constructor
+     */
     public LogDB() {
         super();
         docName = "log";
     }
 
+    /**
+     * updates log item
+     * @param updateItem the item
+     */
     @Override
     public void updateItem(DBItem updateItem) {
         Message item = (Message) updateItem;
@@ -35,6 +45,11 @@ public class LogDB extends DBWrapper {
         db.collection(docName).document(String.valueOf(item.getId())).set(newItem);
     }
 
+    /**
+     * parse log item from the db
+     * @param item
+     * @return
+     */
     @Override
     protected DBItem parseItem(Map<String, Object> item) {
         Date date = new Date();
@@ -42,8 +57,11 @@ public class LogDB extends DBWrapper {
         return new Message((String) item.get(CONTENT), (String) item.get(WRITER), date);
     }
 
+    /**
+     * loads log messages by user id
+     * @param userId the id
+     */
     public void loadMessagesByUser(final String userId) {
-//        items.clear();
         db.collection(docName).whereEqualTo(WRITER, userId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -62,14 +80,4 @@ public class LogDB extends DBWrapper {
                 });
     }
 
-    public ArrayList<Message> getMessagesByUser(String userId) {
-        ArrayList<Message> messages = new ArrayList<>();
-        for (DBItem msg : items.values()) {
-            Message tempMessage = (Message) msg;
-            if (tempMessage.getWriter().equals(userId)) {
-                messages.add(tempMessage);
-            }
-        }
-        return messages;
-    }
 }

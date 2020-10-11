@@ -1,5 +1,8 @@
 package com.example.apoc.Enums;
 
+/**
+ * skills list
+ */
 public enum Skills {
     fishing,
     hunting,

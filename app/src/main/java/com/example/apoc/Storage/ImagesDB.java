@@ -1,6 +1,5 @@
 package com.example.apoc.Storage;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,33 +12,64 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.apoc.DB.UsersDB;
 import com.example.apoc.ProfileEdit;
-import com.example.apoc.R;
+import com.example.apoc.location.LocationTracker;
 import com.example.apoc.types.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-
+/**
+ * images storage db manager
+ */
 public class ImagesDB {
     private StorageReference storageRef;
+    private OnImageUploadListener listener;
 
+    /**
+     * cunstructor
+     */
     public ImagesDB() {
         storageRef = FirebaseStorage.getInstance().getReference();
     }
 
+    /**
+     * event
+     */
+    public interface OnImageUploadListener {
+        void onImageUpload();
+    }
 
+    /**
+     * sets listener
+     * @param eventListener
+     */
+    public void setImageUploadListener(OnImageUploadListener eventListener) {
+        listener = eventListener;
+    }
+
+    /**
+     * notify upload for events
+     */
+    protected void notifyUploaded() {
+        if (listener != null) {
+            listener.onImageUpload();
+        }
+    }
+
+    /**
+     * uploads a new image to db
+     * @param uri the image details to upload
+     * @param user the specific user
+     * @param context activity
+     */
     public void Upload(final Uri uri, final User user, final Context context) {
         if(uri == null){
             Toast.makeText(context,"Image doesnt exist", Toast.LENGTH_SHORT).show();
             return;
         }
         final String path = "images/" + uri.getLastPathSegment();
-//        UploadTask uploadTask = storageRef.child(path).putFile(uri);
         StorageReference imageRef = storageRef.child(path);
         UploadTask uploadTask = imageRef.putFile(uri);
         imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
@@ -49,8 +79,7 @@ public class ImagesDB {
             {
                 user.setImageUrl(downloadUrl.toString());
                 (new UsersDB()).updateField(user.getId(),UsersDB.IMAGE,downloadUrl.toString());
-//                Toast.makeText(context,"Image uploaded", Toast.LENGTH_SHORT).show();
-                ((ProfileEdit)context).imageUploaded();
+                notifyUploaded();
             }
         });
 
@@ -68,12 +97,32 @@ public class ImagesDB {
         });
     }
 
+    /**
+     * show original image
+     * @param path image path
+     * @param imageView the layout
+     * @param context activity
+     */
     public static void showImage(String path, ImageView imageView, Context context) {
         Glide.with(context).load(path).into(imageView);
     }
+
+    /**
+     * show image in a circle shape from url
+     * @param path image path
+     * @param imageView the layout
+     * @param context activity
+     */
     public static void showCircleImage(String path, ImageView imageView, Context context) {
         Glide.with(context).load(path).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
+
+    /**
+     * show image in a circle from bitmap
+     * @param image the botmap
+     * @param imageView the layout
+     * @param context activity
+     */
     public static void showCircleBitmapImage(Bitmap image, ImageView imageView, Context context) {
         Glide.with(context).load(image).apply(RequestOptions.circleCropTransform()).into(imageView);
     }

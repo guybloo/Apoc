@@ -6,7 +6,6 @@ import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import com.example.apoc.DB.DBItem;
 import com.example.apoc.DB.DBWrapper;
 import com.example.apoc.DB.GroupsDB;
 import com.example.apoc.DB.UsersDB;
-import com.example.apoc.SmsSender.LocalSendSmsBroadcastReceiver;
 import com.example.apoc.location.LocationInfo;
 import com.example.apoc.location.LocationTracker;
 import com.example.apoc.types.Group;
@@ -53,17 +51,11 @@ public class GroupPage extends AppCompatActivity {
     private ArrayList<User> groupies;
 
     private String SOS_MESSAGE = "%s is in danger! this is his location: \n https://www.google.com/maps/search/?api=1&query=%s,%s \nThis message Was sent from APOC app";
-    private LocalSendSmsBroadcastReceiver smsReceiver;
-    private int SMS_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_page);
-
-        IntentFilter filter = new IntentFilter();
-        smsReceiver = new LocalSendSmsBroadcastReceiver();
-        registerReceiver(smsReceiver, filter);
 
         final Button leave = findViewById(R.id.group_leave);
         leave.setEnabled(false);
@@ -261,6 +253,5 @@ public class GroupPage extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(smsReceiver);
     }
 }

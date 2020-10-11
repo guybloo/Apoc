@@ -18,6 +18,9 @@ import com.example.apoc.Storage.ImagesDB;
 import com.example.apoc.types.JoinRequest;
 import com.example.apoc.types.User;
 
+/**
+ * shows request user details
+ */
 public class RequestUserDisplay {
     private String SEND_REQUEST = "Send request";
     private String CLOSE = "Close";
@@ -34,7 +37,13 @@ public class RequestUserDisplay {
     private AlertDialog dialog;
     private ImageView image;
 
-
+    /**
+     * constructor
+     * @param user the user to show
+     * @param caller the current user
+     * @param distance the distance between then
+     * @param context the activity
+     */
     public RequestUserDisplay(final User user, User caller, float distance, final Context context){
         this.context = context;
         this.user = user;
@@ -55,42 +64,78 @@ public class RequestUserDisplay {
         });
     }
 
+    /**
+     * return the current details view
+     * @return the view
+     */
     public View getView() {
         return view;
     }
 
+    /**
+     * gets the user imageview
+     * @return
+     */
     public ImageView getImage() {
         return image;
     }
 
+    /**
+     * gets the current user
+     * @return
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * sets the layout margins params
+     * @param left from left
+     * @param top from top
+     */
     public void setParams(int left, int top) {
         this.params.leftMargin = left;
         this.params.topMargin = top;
     }
 
+    /**
+     * gets the layout params
+     * @return params
+     */
     public RelativeLayout.LayoutParams getParams() {
         return params;
     }
 
+    /**
+     * adds the view to the input layout
+     * @param layout the layout to add the view to
+     */
     public void addView(RelativeLayout layout){
         if(parent == null) {
             parent = layout;
             parent.addView(view, params);
         }
     }
+
+    /**
+     * removed the user details from the view
+     */
     public void removeView(){
         ((ViewGroup) parent).removeView(view);
         parent = null;
     }
 
+    /**
+     * gets the ditance from the current user
+     * @return
+     */
     public float getDistance() {
         return distance;
     }
 
+    /**
+     * sets the user details in the view
+     */
     public void setUserDetails ()
     {
         final RequestsDB requestsDB = new RequestsDB();
@@ -103,7 +148,6 @@ public class RequestUserDisplay {
 
         ((TextView)detailsView.findViewById(R.id.user_details_nickname)).setText(user.getNickName());
         ImagesDB.showCircleImage(user.getImageUrl(),(ImageView)detailsView.findViewById(R.id.user_details_display_image),context);
-//        openDetails.setMessage("Are You Sure to delete?");
         ((Button)detailsView.findViewById(R.id.user_details_request)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

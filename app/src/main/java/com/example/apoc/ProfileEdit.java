@@ -85,6 +85,16 @@ public class ProfileEdit extends AppCompatActivity {
         setContentView(R.layout.activity_profile_edit);
         cnt = this;
         imagesDB = new ImagesDB();
+        imagesDB.setImageUploadListener(new ImagesDB.OnImageUploadListener() {
+            @Override
+            public void onImageUpload() {
+                imageUploaded = true;
+                if(itemsUpdated){
+                    Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        });
         imageUploaded = false;
         itemsUpdated = false;
 
@@ -310,13 +320,6 @@ public class ProfileEdit extends AppCompatActivity {
         return max;
     }
 
-    public void imageUploaded(){
-        imageUploaded = true;
-        if(itemsUpdated){
-            Toast.makeText(cnt,"Profile updated",Toast.LENGTH_LONG).show();
-            finish();
-        }
-    }
 
     private void openFileChooser() {
         Intent intent = new Intent();
