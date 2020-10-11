@@ -142,7 +142,7 @@ public class ProfileEdit extends AppCompatActivity {
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // add waiting indication
+                // todo add waiting indication
                 locationTracker = new LocationTracker(cnt);
 
                 locationTracker.setLocationUpdateListener(new LocationTracker.OnLocationUpdateListener() {
@@ -179,18 +179,15 @@ public class ProfileEdit extends AppCompatActivity {
             status.setEnabled(false);
             statusInGroup.setEnabled(false);
         }
-//        statusInGroupLayout.setVisibility(View.INVISIBLE);
 
 
         status.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-//                    statusInGroupLayout.setVisibility(View.VISIBLE);
                     statusInGroup.setEnabled(true);
                 }
                 else{
-//                    statusInGroupLayout.setVisibility(View.INVISIBLE);
                     statusInGroup.setEnabled(false);
                 }
             }
@@ -342,12 +339,9 @@ public class ProfileEdit extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver() , ourImageUri);
                 ImagesDB.showCircleBitmapImage(bitmap,image,this);
-//                image.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-//            Picasso.with(this).load(ourImageUri).into(image);
         }
     }
 

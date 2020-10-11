@@ -24,11 +24,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * PartnersFind class
+ */
 public class PartnersFind extends AppCompatActivity {
 
     public static final String USER = "user";
     public static final int MAX_DIST = 50000;
-    public static final int CENTER = 50;
 
     private User user;
     private ArrayList<RequestUserDisplay> requestUserDisplays;
@@ -41,6 +43,10 @@ public class PartnersFind extends AppCompatActivity {
     private ImageView radar;
     private TextView distanceText;
 
+    /**
+     * starts the PartnersFind activity
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +56,6 @@ public class PartnersFind extends AppCompatActivity {
         usersLayout = findViewById(R.id.users_layout);
         user = (User) getIntent().getSerializableExtra(USER);
         distanceText = findViewById(R.id.partners_find_distance);
-
 
         requestUserDisplays = new ArrayList<>();
         udb = new UsersDB();
@@ -72,11 +77,19 @@ public class PartnersFind extends AppCompatActivity {
         rotateAnimation();
     }
 
+    /**
+     * the animation of the radar
+     */
     public void rotateAnimation() {
         rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate);
         radar.startAnimation(rotateAnimation);
     }
 
+    /**
+     * refresh the array requestUserDisplays with users to display on the radar,
+     * if the current user is alpha it will see betas,
+     * if its beta it will see alphas
+     */
     private void updateUsers() {
         for (RequestUserDisplay display : requestUserDisplays) {
             display.removeView();
@@ -102,7 +115,10 @@ public class PartnersFind extends AppCompatActivity {
         showUsers();
     }
 
-
+    /**
+     * display the users from requestUserDisplays with consideration of their distance
+     * from the current user
+     */
     private void showUsers() {
         for (RequestUserDisplay display : requestUserDisplays) {
             double random = ((new Random()).nextDouble() * 2 * Math.PI);
@@ -111,21 +127,38 @@ public class PartnersFind extends AppCompatActivity {
             int yCenter = usersLayout.getHeight() / 2;
             int x = getXPos( radius * xCenter, random, xCenter) - (display.getImage().getLayoutParams().width / 2);
             int y = getYPos( radius * yCenter, random, yCenter) - (display.getImage().getLayoutParams().height / 2);
-//            int x = HelpMethods.getWidth(getXPos(radius, random, CENTER), usersLayout.getWidth()) - (display.getView().getWidth() / 2);
-//            int y = HelpMethods.getHeight(getYPos(radius, random, CENTER), usersLayout.getHeight()) - (display.getView().getHeight() / 2);
             display.setParams(x, y);
             display.addView(usersLayout);
         }
     }
 
+    /**
+     * calculates a random x position on the circles around the current user
+     * @param radius the relative distance of the current user from the other user to display
+     *               for the xCenter
+     * @param theta random number
+     * @param center the xCenter of the layout
+     * @return
+     */
     private int getXPos(double radius, double theta, int center) {
         return (int) (radius * Math.cos(theta) + center);
     }
 
+    /**
+     * calculates a random y position on the circles around the current user
+     * @param radius the relative distance of the current user from the other user to display
+     *               for the yCenter
+     * @param theta random number
+     * @param center the yCenter of the layout
+     * @return
+     */
     private int getYPos(double radius, double theta, int center) {
         return (int) (radius * Math.sin(theta) + center);
     }
 
+    /**
+     * changes the distance from the current user to look for other users
+     */
     private void configSeekbar() {
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -153,8 +186,12 @@ public class PartnersFind extends AppCompatActivity {
         });
     }
 
-
-    // base is te main user. dest all the others
+    /**
+     * returns the calculated distance between the current user and the other user
+     * @param base - main/current user
+     * @param dest - other user
+     * @return
+     */
     private float getDistance(LocationInfo base, LocationInfo dest) {
         float[] res = new float[1];
         if (user != null && dest != null) {
