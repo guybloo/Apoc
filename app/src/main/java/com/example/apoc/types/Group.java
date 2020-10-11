@@ -38,20 +38,20 @@ public class Group implements DBItem, Serializable {
     public void addMember (User newUser)
     {
         groupies.add(newUser.getId());
-        newUser.setIsGrouped(true);
+//        newUser.setIsGrouped(true);
         updateUserAndGroup(newUser);
         addLog(newUser,ADD_LOG);
     }
     public void removeMember (User user)
     {
         groupies.remove(user.getId());
-        user.setIsGrouped(false);
+//        user.setIsGrouped(false);
         updateUserAndGroup(user);
         addLog(user,REMOVE_LOG);
     }
     private void updateUserAndGroup(User user){
         (new GroupsDB()).updateItem(this);
-        (new UsersDB()).updateItem(user);
+//        (new UsersDB()).updateItem(user);
     }
 
     private void addLog(User user, String message){

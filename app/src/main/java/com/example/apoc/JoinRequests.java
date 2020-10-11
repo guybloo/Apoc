@@ -27,6 +27,7 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
     private User user;
     private RequestAdapter adapter;
     private RequestsDB requestsDB;
+    private UsersDB usersDB;
     ArrayList<User> joinRequests;
 //    LogDB logDB;
 
@@ -55,18 +56,18 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
 
             @Override
             public void onGetSpecific() {
-                final UsersDB udb = new UsersDB();
-                udb.getAllItems();
-                udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                usersDB = new UsersDB();
+                usersDB.getAllItems();
+                usersDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
                     @Override
                     public void onGetAll() {
                         joinRequests = new ArrayList<>();
                         for (DBItem item : new ArrayList<DBItem>(requestsDB.getItems().values())) {
-                            joinRequests.add((User) udb.getItemById(((JoinRequest) item).getApplier()));
+                            joinRequests.add((User) usersDB.getItemById(((JoinRequest) item).getApplier()));
                         }
                         // todo connect between users and requests to that we can delete it
-                        if(joinRequests.size() == 0){
-                            Toast.makeText(context,NO_REQUESTS,Toast.LENGTH_LONG).show();
+                        if (joinRequests.size() == 0) {
+                            Toast.makeText(context, NO_REQUESTS, Toast.LENGTH_LONG).show();
                             finish();
                         }
                         adapter = new RequestAdapter(joinRequests);
@@ -87,7 +88,10 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
     public void onRequestApprove(final int position) {
         final User reqUser = adapter.getUserByPosition(position);
         final GroupsDB groupsDB = new GroupsDB();
-        groupsDB.getGroupByUser(reqUser.getId());
+        final User alpha = user.isAlpha() ? user : reqUser;
+        final User beta = user.isBeta() ? user : reqUser;
+
+        groupsDB.getGroupByUser(alpha.getId());
         groupsDB.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
             @Override
             public void onGetAll() {
@@ -96,15 +100,13 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
 
             @Override
             public void onGetSpecific() {
-                User alpha = user.isAlpha()? user : reqUser;
-                User beta = user.isBeta()? user:reqUser;
-
-                Group group = (Group) groupsDB.getItems().get(reqUser.getId());
-
+                Group group = (Group) groupsDB.getItems().get(alpha.getId());
                 if (group != null) {
                     group.addMember(beta);
+                    updateIsGrouped(beta, true);
                     deleteRequest(reqUser, user);
-                    joinRequests.remove(position);
+//                    joinRequests.remove(position);
+                    adapter.deleteRequest(position);
 
                     final RequestsDB requestsDB1 = new RequestsDB();
                     requestsDB1.getItemsByApplier(beta);
@@ -116,8 +118,9 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
 
                         @Override
                         public void onGetSpecific() {
-                            for(DBItem item : requestsDB1.getItems().values()){
-                                requestsDB1.removeItem(((JoinRequest)item).getId());
+                            ArrayList<DBItem> toDelete = new ArrayList<>(requestsDB1.getItems().values());
+                            for (DBItem item : toDelete) {
+                                requestsDB1.removeItem(((JoinRequest) item).getId());
                             }
                         }
                     });
@@ -130,6 +133,11 @@ public class JoinRequests extends AppCompatActivity implements RequestAdapter.On
                 }
             }
         });
+    }
+
+    private void updateIsGrouped(User user, boolean value){
+        user.setIsGrouped(value);
+        usersDB.updateField(user.getId(),UsersDB.IS_GROUPED,value);
     }
 
     @Override

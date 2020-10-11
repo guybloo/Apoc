@@ -154,6 +154,7 @@ public class GroupPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 group.removeMember(user);
+                setUserUngrouped();
                 finish();
             }
         });
@@ -166,6 +167,13 @@ public class GroupPage extends AppCompatActivity {
             }
         });
     }
+
+    private void setUserUngrouped(){
+        user.setIsGrouped(false);
+        usersDB.updateField(user.getId(),UsersDB.IS_GROUPED, false);
+    }
+
+
 
     private void displayUsers(int columns) {
         GridLayout grid = findViewById(R.id.groupies_info);
@@ -183,6 +191,8 @@ public class GroupPage extends AppCompatActivity {
                     @Override
                     public void onDelete(User user) {
                         group.removeMember(user);
+                        user.setIsGrouped(false);
+                        usersDB.updateField(user.getId(),UsersDB.IS_GROUPED, false);
                         userDisplay.removeView();
                         groupsDB.updateItem(group);
                     }

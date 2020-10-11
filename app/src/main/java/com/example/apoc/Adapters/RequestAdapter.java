@@ -111,6 +111,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.JoinRequ
         return itemsList.size();
     }
 
+    public void deleteRequest(int position){
+        itemsList.remove(position);
+        notifyDataSetChanged();
+    }
+
     public User getUserByPosition(int position){
         return itemsList.get(position);
     }

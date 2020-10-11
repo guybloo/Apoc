@@ -60,7 +60,7 @@ public class GroupsDB extends DBWrapper {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> item = document.getData();
                                 Group tempGroup = (Group) parseItem(item);
-                                items.put(userId,tempGroup);
+                                items.put(tempGroup.getId(),tempGroup);
                             }
 
                             notifyGetSpecific();
