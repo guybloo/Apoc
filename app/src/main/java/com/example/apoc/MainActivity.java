@@ -102,19 +102,10 @@ public class MainActivity extends AppCompatActivity {
         location.onPermissionResult(requestCode, permission, grantResults);
     }
 
-    private void savePreferences() {
-
-        SharedPreferences.Editor prefsEditor = sp.edit();
-        prefsEditor.putString(ID, userID);
-
-        prefsEditor.apply();
-    }
-
-    private void getPreferences() {
-
-        userID = sp.getString(ID, "");
-    }
-
+    /**
+     * help function that we used for building our items db
+     * @throws IOException
+     */
     private void loadItemsFromCSV() throws IOException {
 
         ItemsDB itemsDB = new ItemsDB();

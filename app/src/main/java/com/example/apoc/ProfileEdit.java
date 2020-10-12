@@ -70,7 +70,7 @@ public class ProfileEdit extends AppCompatActivity {
     private Uri imageUri;
     private User user;
     private Context cnt;
-    LocationTracker locationTracker;  // todo is it public or private
+    private LocationTracker locationTracker;
     private boolean imageUploaded, itemsUpdated;
 
     /**
@@ -140,7 +140,6 @@ public class ProfileEdit extends AppCompatActivity {
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // todo add waiting indication
                 locationTracker = new LocationTracker(cnt);
 
                 locationTracker.setLocationUpdateListener(new LocationTracker.OnLocationUpdateListener() {
@@ -153,12 +152,6 @@ public class ProfileEdit extends AppCompatActivity {
                         }
                     }
                 });
-//                if(location.startTracking()) {
-//                    newLocation = location.getInfo();
-//                }
-//                else{
-//                    // todo notify location didnt work
-//                }
                 locationTracker.startTracking();
             }
         });
