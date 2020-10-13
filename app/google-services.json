@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:746979479818:android:5de6d06a6468108e276af3",
         "android_client_info": {
-          "package_name": "com.example.apoc"
+          "package_name": "com.postpc.apoc"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "746979479818-tpk4kabjdioek3v87ealjrs3v1abked6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.apoc",
+            "package_name": "com.postpc.apoc",
             "certificate_hash": "77a6267103d5210d656c52f8766eb2fe7faca497"
           }
         },

@@ -1,0 +1,122 @@
+package com.postpc.apoc;
+
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+
+import com.postpc.apoc.DB.DBWrapper;
+import com.postpc.apoc.DB.ItemsDB;
+import com.postpc.apoc.DB.UsersDB;
+import com.postpc.apoc.location.LocationTracker;
+import com.postpc.apoc.types.Item;
+import com.postpc.apoc.types.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * MainActivity class
+ */
+public class MainActivity extends AppCompatActivity {
+
+    private final String ID = "id";
+    private LocationTracker location;
+//    private final int REGISTERATION_CODE = 1;
+//    private final int PROFILE_EDIT_CODE = 2;
+//    private final int PARTNERS_FIND_EDIT_CODE = 3;
+    private String userID;
+    private SharedPreferences sp;
+    private FirebaseUser firebaseUser;
+    private User user;
+    private Context context;
+
+    /**
+     * starts the app
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        context = this;
+
+        location = new LocationTracker(this);
+        sp = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+
+        openPage();
+    }
+
+    /**
+     * checks if the current user is new or already registered and reacts accordingly
+     */
+    private void openPage(){
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (firebaseUser != null) {
+            final UsersDB udb = new UsersDB();
+            udb.loadItemByIdFromDB(firebaseUser.getEmail());
+            udb.setDataChangeListener(new DBWrapper.OnDataChangeListener() {
+                @Override
+                public void onGetAll() {
+                }
+
+                @Override
+                public void onGetSpecific() {
+                    user = (User)udb.getItemById(firebaseUser.getEmail());
+                    Navigation.openMenu(context, user);
+                }
+            });
+
+        } else {
+            Navigation.openRegistration(context);
+        }
+    }
+
+    /**
+     * sends to openPage
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        openPage();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permission, @NonNull int[] grantResults) {
+        location.onPermissionResult(requestCode, permission, grantResults);
+    }
+
+    /**
+     * help function that we used for building our items db
+     * @throws IOException
+     */
+    private void loadItemsFromCSV() throws IOException {
+
+        ItemsDB itemsDB = new ItemsDB();
+        BufferedReader datasetFile = new BufferedReader(new InputStreamReader(this.getResources().openRawResource(R.raw.items)));
+        String line;
+        String titles = datasetFile.readLine();
+        while ((line = datasetFile.readLine()) != null) {
+            if (line.equals(""))
+                continue;
+            Item item = new Item(line,titles);
+            itemsDB.addItem(item);
+
+        }
+    }
+}

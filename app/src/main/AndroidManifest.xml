@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.apoc">
+    package="com.postpc.apoc">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UserMenu"></activity>
+        <activity android:name="com.postpc.apoc.UserMenu"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -19,15 +19,15 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <activity
-            android:name=".GroupMap"
+            android:name="com.postpc.apoc.GroupMap"
             android:label="@string/title_activity_group_map" />
-        <activity android:name=".GroupPage" />
-        <activity android:name=".JoinRequests" />
-        <activity android:name=".PartnersFind" />
-        <activity android:name=".ItemsEdit" />
-        <activity android:name=".ProfileEdit" />
-        <activity android:name=".Registration" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.postpc.apoc.GroupPage" />
+        <activity android:name="com.postpc.apoc.JoinRequests" />
+        <activity android:name="com.postpc.apoc.PartnersFind" />
+        <activity android:name="com.postpc.apoc.ItemsEdit" />
+        <activity android:name="com.postpc.apoc.ProfileEdit" />
+        <activity android:name="com.postpc.apoc.Registration" />
+        <activity android:name="com.postpc.apoc.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +40,6 @@
             android:value="@string/google_maps_key" />
     </application>
 
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.ACCESS_COARSE_LOCATION"
