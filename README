@@ -1,0 +1,4 @@
+apoc application was created by Maya Prozan and Guy Bloomenfeld as part of the course "Post PC" in the hebrew university of jerusalem.
+It is purposed to the Doomsday Preppers in the USA, and gives them the option to try survive alone or in groups.
+It tells them the neccesary equipment for each diseaster thay are afraid of.
+It reads gps location services, can send sms, and uses firebase DB's.
